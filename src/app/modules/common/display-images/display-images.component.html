@@ -1,0 +1,9 @@
+<main>
+    <button
+        mat-stroked-button
+        (click)="showImagesDialog($event)"
+        *ngIf="data && data?.imgs && data.imgs.length>0"
+    >
+        VER ARCHIVOS ADJUNTOS
+    </button>
+</main>

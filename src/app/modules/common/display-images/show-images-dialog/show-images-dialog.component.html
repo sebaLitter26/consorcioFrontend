@@ -1,0 +1,22 @@
+<main class="images-container">
+    <div
+        class="image-container"
+        *ngFor="let file of data; let i = index;"
+        (click)="openImageInNewTab(file, $event)"
+    >
+        <div 
+            class="image-overlay"
+            *ngIf="_hoveredIndex == i"
+        >
+            <p>
+                Ver imagen original
+            </p>
+        </div>
+
+        <img
+            src={{file}}
+            (mouseenter)="_hoveredIndex = i"
+            (mouseleave)="_hoveredIndex = -1"
+        >
+    </div>
+</main>

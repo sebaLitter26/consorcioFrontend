@@ -1,0 +1,39 @@
+$ean-image-size: 25vh;
+
+main {
+    width: 100%;
+}
+
+mat-card{
+    //padding: 5px;
+    //box-sizing: border-box;
+    width: max-content;
+
+    .empleado-detail{
+        padding: 30px;
+
+        .action-btn{
+
+            button{
+                position: absolute;
+                bottom: 25px;
+            }
+        }
+    }
+   
+}
+
+
+.profile-image-container {
+    min-width: $ean-image-size;
+    min-height: $ean-image-size;
+    margin: 1rem;
+    
+
+    img {
+        width: $ean-image-size !important;
+        height: $ean-image-size !important;
+        border-radius: 0.5em;
+    }
+}
+

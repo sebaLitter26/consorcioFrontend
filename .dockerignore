@@ -1,0 +1,9 @@
+node_modules
+dist
+staging
+development
+production
+.git
+.gitignore
+.docker
+README.md

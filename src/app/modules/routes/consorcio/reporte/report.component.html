@@ -1,0 +1,103 @@
+<main>
+    <h1>Reporte del consorcio</h1>
+
+    <form [formGroup]="formRenditionListGroup" >
+
+
+        <section class="filters-container" >
+
+            <mat-form-field appearance="fill" color="primary" >
+                <mat-label>Fecha de inserción</mat-label>
+                <mat-date-range-input [rangePicker]="deliveryDate" [max]="today">
+                    <input matStartDate placeholder="" formControlName="fechaDesdeControl"  name="deliveryDateFrom" autocomplete="off">
+                    <input matEndDate placeholder="" formControlName="fechaHastaControl" name="deliveryDateTo" autocomplete="off">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="deliveryDate"></mat-datepicker-toggle>
+                <mat-date-range-picker #deliveryDate></mat-date-range-picker>
+            </mat-form-field>
+            <mat-form-field appearance="fill" color="primary">
+                <mat-label>Dirección</mat-label>
+                <input matInput autocomplete="off" type="text" placeholder="Ingrese Dirección." formControlName="addressControl">
+            </mat-form-field>
+
+            <!-- <mat-form-field appearance="fill" color="primary">
+                <mat-label>D.N.I.</mat-label>
+                <input matInput autocomplete="off" type="text" placeholder="Ingrese DNI." formControlName="dniControl">
+            </mat-form-field>
+
+            <mat-form-field class="tipe-form-field" appearance="fill" color="primary">
+                <mat-label>Resultado</mat-label>
+
+                <mat-select formControlName="resultadoControl">
+                    <mat-option *ngFor="let res of resultados" [value]="res">
+                        {{ res }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field> -->
+
+        </section>
+
+
+        <section class="actions-container">
+            <div class="actions-filters">
+                <button
+                    appRoundButton
+                    mat-stroked-button
+                    color="primary"
+                    class="btn-small"
+                    type="button"
+                    (click)="formRenditionListGroup.reset()"
+                >
+                    <mat-icon>clear</mat-icon>&nbsp;
+                    Limpiar
+                </button>
+
+                <button
+                    appRoundButton
+                    mat-flat-button
+                    color="accent"
+                    class="btn-small"
+                    type="submit"
+                    [disabled]="formRenditionListGroup.invalid"
+                    (click)="searchBuilding()"
+                >
+                
+                    <mat-icon>send</mat-icon>&nbsp;
+                    Enviar
+                </button>
+
+            </div>
+        </section>
+    </form>
+
+    <section class="mat-elevation-z4">
+        <mat-accordion>
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Edificios</mat-panel-title>
+                    <mat-panel-description></mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <app-dynamic-table 
+                    *ngIf="datos && datos.length > 0; else noDatos"
+                    [data]="datos"
+                    [tableDefinition]="tableDefinition"
+                    [columnFormaters]="columnFormaters"
+                    [customColumnComponents]="customColumnComponents"
+                    [updateSource]="tableUpdateSource.asObservable()"
+                    [borderRadius]="'0.5em'"
+                    [useFilters]="false"
+                    [expandableRows]="false"
+                    [itemDetailComponent]="itemDetailComponent"
+                >
+                </app-dynamic-table>
+
+            <ng-template #noDatos>
+                <h2 class="empty-message">No hay resultados</h2>
+            </ng-template>
+        </mat-expansion-panel>
+        </mat-accordion>
+    </section>
+    
+
+</main>
