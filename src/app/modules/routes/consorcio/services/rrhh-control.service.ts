@@ -72,7 +72,7 @@ export class RRHHControlService {
      * @returns un `Observable` con el listado de Usuarios
      */
     getUsers(page: number = 1, limit: number = 10): Observable<User[]> {
-        return this.http.get<any[]>(`${environment.apiUrl}user?page=${page}&limit=${limit}`).pipe( map((elem: any)=> elem['data']) , take(1));
+        return this.http.get<any[]>(`${environment.apiUrl}users?page=${page}&limit=${limit}`).pipe( map((elem: any)=> elem['data']) , take(1));
         
     }
 

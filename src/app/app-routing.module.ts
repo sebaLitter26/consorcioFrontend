@@ -22,7 +22,10 @@ const routes: Routes = [
 
 @NgModule({
     imports: [
-        RouterModule.forRoot(routes, { useHash: true }),
+        RouterModule.forRoot(routes, { 
+            useHash: true,
+            enableTracing: false, // <-- debugging purposes only
+        }),
         AuthenticationModule,
     ],
     exports: [

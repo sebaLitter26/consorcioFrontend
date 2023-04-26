@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivateChild, Router, RouterStateSnapshot } from "@angular/router";
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
 import { SnackBarService } from "src/app/services/snackbar.service";
 import { ProfileService } from "../../main/services/profile.service";
 import { NavbarService } from "../../navbar/services/navbar.service";
 
 @Injectable()
-export class AuthorizationGuard implements CanActivateChild {
+export class AuthorizationGuard {
 
     constructor(
         private router: Router,
@@ -14,7 +14,7 @@ export class AuthorizationGuard implements CanActivateChild {
         private snackBarService: SnackBarService,
     ) {}
 
-    canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         const pageRoute: string = state.url.split("/")[2]; // Ejemplo, de 'localhost/reports/operation-state', obtendria 'operation-state'
         const navbarItemsLength: number = this.navbarService.getNavbarItems().length;
         

@@ -8,22 +8,22 @@ const routes: Routes = [
     {
         path: 'consorcio',
         loadChildren: () => import('./consorcio/consorcio.module').then(m => m.ConsorcioModule),
-        //canActivateChild: [ AuthorizationGuard ],
+        canActivate: [ AuthorizationGuard ],
     },
     {
         path: 'recursos',
         loadChildren: () => import('./resources/resources.module').then(m => m.ResourcesModule),
-        canActivateChild: [ AuthorizationGuard ],
+        canActivate: [ AuthorizationGuard ],
     },
     {
         path: 'development',
         loadChildren: () => import('./development/development.module').then(m => m.DevelopmentModule),
-        canActivateChild: [ AuthorizationGuard ],
+        canActivate: [ AuthorizationGuard ],
     },
     {
         path: 'user',
         loadChildren: () => import('./user/user.module').then(m => m.UserModule),
-        canActivateChild: [ AuthorizationGuard ],
+        canActivate: [ AuthorizationGuard ],
     },
     {
         path: '',
@@ -36,6 +36,7 @@ const routes: Routes = [
     imports: [
         RouterModule.forChild(routes),
         AuthorizationModule,
+        
     ],
     exports: [
         RouterModule,
