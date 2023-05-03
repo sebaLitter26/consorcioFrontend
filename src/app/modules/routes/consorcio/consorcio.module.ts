@@ -17,6 +17,7 @@ import { CargasComponent } from './cargas/cargas.component';
 import { UserModule } from '../user/user.module';
 import { ReportComponent } from './reporte/report.component';
 import { EmpleadoInformationComponent } from './reporte/empleado-detail/empleado-detail.component';
+import { CoolFileInputModule } from '../../ui/cool-file-input/cool-file-input.module';
 
 const routes: Routes = [
     {
@@ -45,6 +46,7 @@ const routes: Routes = [
         LoadersModule,
         DashboardCardModule,
         UserModule,
+        CoolFileInputModule
     ],
     declarations: [
         CargasComponent, 

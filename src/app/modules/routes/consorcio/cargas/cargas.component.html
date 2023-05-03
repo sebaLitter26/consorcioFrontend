@@ -18,6 +18,8 @@
                         <input matInput autocomplete="off" type="text" placeholder="Ingrese Dirección." formControlName="addressControl">
                     </mat-form-field>
 
+                    <app-cool-file-input (finalizaCarga)="addFile($event)"></app-cool-file-input>
+
                     <section class="actions-container">
                         <div class="actions-filters">
                             <button

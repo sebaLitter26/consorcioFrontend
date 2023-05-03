@@ -6,7 +6,7 @@ import { IConfig, NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 const maskConfig: Partial<IConfig> = {
     validation: false,
-  };
+};
 
 const components = [
     CoolInputComponent,

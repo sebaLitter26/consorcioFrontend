@@ -9,6 +9,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from 'src/app/modules/main/services/profile.service';
 import { User } from '../../user';
+import { log } from 'console';
 
 
 @Component({
@@ -78,6 +79,7 @@ export class CargasComponent implements OnInit{
     formBuilding = new FormGroup ({
         /** `FormControl` con el tipo de legajo a filtrar. */
         addressControl: new FormControl('', [Validators.required]),
+        imageControl: new FormControl(null, [Validators.required])
     });
 
     formAppartment = new FormGroup ({
@@ -162,6 +164,8 @@ export class CargasComponent implements OnInit{
 
         const building: any = {
             address: formBuilding.addressControl.value,
+            photo: formBuilding.imageControl.value,
+            status: 1
             //id: (this.tabIndex<1 && this.psicotecnico?.id) ? this.psicotecnico?.id : 0,
         }
 
@@ -315,6 +319,13 @@ export class CargasComponent implements OnInit{
         this.loading = true;
         //this.empleado$ = this.recursosService.getEmpleadoByLegajo(legajo);
         //this.updateForm();
+        
+    }
+
+
+    addFile(event:any){
+        console.log(event);
+        this.formBuilding.controls.imageControl.setValue(event);
         
     }
 

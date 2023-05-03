@@ -58,7 +58,7 @@ export interface Building {
     updatedAt: string;
     deletedAt: string | null;
     photo: string | null;
-    status: Status;
+    status: Status | null;
     __entity: string;
 }
 
