@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './modules/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { OverlayModule } from './modules/overlay/overlay.module';
+import { GraphQLModule } from './graphql.module';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { OverlayModule } from './modules/overlay/overlay.module';
         AppRoutingModule,
         BrowserAnimationsModule,
         SharedModule,
-        HttpClientModule,
+        GraphQLModule,
+        //HttpClientModule,
         OverlayModule,        
     ],
     providers: [],

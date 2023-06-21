@@ -39,6 +39,7 @@
     "@angular/platform-browser-dynamic": "~15.2.8",
     "@angular/router": "~15.2.8",
     "@fortawesome/fontawesome-free": "^6.4.0",
+    "apollo-angular": "^5.0.0",
     "chart.js": "^4.2.1",
     "chartjs-adapter-date-fns": "^3.0.0",
     "date-fns": "^2.29.3",
