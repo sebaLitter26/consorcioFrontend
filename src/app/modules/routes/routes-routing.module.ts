@@ -11,6 +11,11 @@ const routes: Routes = [
         canActivate: [ AuthorizationGuard ],
     },
     {
+        path: 'cart',
+        loadChildren: () => import('./cart/product-list.module').then(m => m.ProductListModule),
+        canActivate: [ AuthorizationGuard ],
+    },
+    {
         path: 'recursos',
         loadChildren: () => import('./resources/resources.module').then(m => m.ResourcesModule),
         canActivate: [ AuthorizationGuard ],

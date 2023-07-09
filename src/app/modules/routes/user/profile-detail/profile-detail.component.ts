@@ -54,13 +54,13 @@ export class ProfileDetailComponent implements OnInit {
    */
   printMyQR() {
 
+    
+    /**Accedemos al SerialService para imprimir el QR. Para eso, pasamos el token de usuario. 
     this.overlayService.displayLoadingOverlay();
-    /**Accedemos al SerialService para imprimir el QR. Para eso, pasamos el token de usuario. */
-
     this.authenticationService[this.qrAction]().pipe(
       /* switchMap((qr: any) => 
       //this.serialPortService.printZPL(this.zplService.generateUserQR(qr.qr, this.profileService.user.nombre)),
-      ), */
+      ), 
       tap((response) => {},
       (err) => {
         //En caso de que falle la impresión o que la estación no esté configurada, entrará acá
@@ -70,19 +70,21 @@ export class ProfileDetailComponent implements OnInit {
       }),
 
     ).subscribe((success) => {
-    /** En caso correcto, se le informará al usuario y el QR será impreso */
+    /** En caso correcto, se le informará al usuario y el QR será impreso 
     //this.setQrActionState(success);
     this.overlayService.hideLoadingOverlay();
     this.snackBarService.open(`¡Impreso con éxito!`, "Aceptar", 5000, "success-snackbar");
   },
     ((err) => {
-      /** En caso de error por parte del servidor, el QR no será impreso */
+      /** En caso de error por parte del servidor, el QR no será impreso 
       this.overlayService.hideLoadingOverlay();
       if (err.error.codigo == "702") {
         this.router.navigate(['sign/in']);
       }
     })
   )
+  */
+
   }
   /**
    * Setea las características que debe tener el botón de impresión de acuerdo al estado dado.
