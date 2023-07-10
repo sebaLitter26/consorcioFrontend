@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Type} from '@angular/core';
-import { Psico, FilterPsico, Empleado } from '../models/order.model';
+import { Order } from '../models/order.model';
 import { CartService } from '../services/cart.service'
 import {  Subject } from 'rxjs';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -58,14 +58,6 @@ export class OrderHistoricComponent{
 
 
     loading: boolean = false;
-
-    resultados: string[] = [
-        '',
-        'Apto',
-        'No apto',
-        'Apto +',
-        'Sin resultado'
-    ];
     
     tableUpdateSource: Subject<boolean> = new Subject<boolean>();
 
@@ -123,25 +115,25 @@ export class OrderHistoricComponent{
     ];
 
     /** Formatos custom para columnas del listado de control seleccionado. */
-    columnFormaters: (((control: Psico) => string | number | boolean) | null)[] = [
+    columnFormaters: (((control: Order) => string | number | boolean) | null)[] = [
         null, null,null, null, null, null, null,
-        (item: Psico) => {
+        /* (item: Order) => {
             const date: Date = new Date(item?.fecha_toma);
             const formatedDate: string = `${date?.toLocaleDateString()} ${date?.toLocaleTimeString()}`;
 
             return `${formatedDate == "Invalid Date" ? item.fecha_toma : formatedDate}`;
         },
         null, null,null,
-        (item: Psico) => {
+        (item: Order) => {
             const date: Date = new Date(item?.idcarga);
             const formatedDate: string = `${date?.toLocaleDateString()} ${date?.toLocaleTimeString()}`;
 
             return `${formatedDate == "Invalid Date" ? item.idcarga : formatedDate}`;
-        }
+        } */
     ];
 
     /** Informacion de todos los psicotecnicos entre las fechas seleccionadas. */
-    psicos: Psico[] = [];
+    orders: Order[] = [];
 
     constructor(
         public cartService: CartService,
@@ -151,27 +143,27 @@ export class OrderHistoricComponent{
         private datepipe: DatePipe,
         public router: Router,
     ) {
-        this.searchEmpleado();
+        this.searchOrders();
     }
 
-    searchEmpleado() : void {
+    searchOrders() : void {
 
         const formList = this.formRenditionListGroup.controls;
 
-        const filters: FilterPsico = {
+        const filters: any = {
             desde: this.datepipe.transform(new Date(formList.fechaDesdeControl.value!), 'yyyyMMdd')!, 
             hasta: this.datepipe.transform(new Date(formList.fechaHastaControl.value ?? this.today), 'yyyyMMdd')!,
             legajo: formList.legajoControl.value ?? '',
-            doc_nro: formList.dniControl.value ?? '',
+            phone: formList.dniControl.value ?? '',
             result: formList.resultadoControl.value ?? '',
         }
        
         this.overlayService.displayLoadingOverlay();
         this.loading = true;
         
-        this.cartService.getPsico(filters).subscribe((data: Psico[]) => {
+        this.cartService.getOrdersByPhone(filters.phone).subscribe((data: Order[]) => {
             
-            this.psicos = data;
+            this.orders = data;
             
             this.overlayService.hideLoadingOverlay();
             this.loading = false;

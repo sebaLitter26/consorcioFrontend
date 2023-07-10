@@ -1,7 +1,7 @@
 import { Injectable, ViewContainerRef } from "@angular/core";
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
 import { Observable, of } from "rxjs";
-import { Empleado } from "../models/order.model";
+import { Order } from "../models/order.model";
 import { CartService } from "../services/cart.service";
 
 /**
@@ -15,12 +15,12 @@ export class ProductDetailResolver {
         public router: Router,
     ) {}
     
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Empleado> | null {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Order[]> | null {
 
         /* if(Object.keys(route.queryParams).length === 0) 
             this.router.navigate(['recursos/carga-psicotecnico']); */
         console.log(route.data);
         
-        return (Object.keys(route.queryParams).length === 0) ? null : this.cartService.getEmpleadoByLegajo(route.queryParams.psicotecnico.legajo);
+        return (Object.keys(route.queryParams).length === 0) ? null : this.cartService.getOrdersByPhone(route.queryParams.order.phone);
     }
 }

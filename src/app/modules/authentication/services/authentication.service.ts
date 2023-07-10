@@ -19,6 +19,7 @@ export class AuthenticationService {
         private apollo: Apollo,
         private profileService: ProfileService,
         private encryptService: EncryptService,
+        private http: HttpClient
     ) { }
 
     /**

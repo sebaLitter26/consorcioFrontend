@@ -25,7 +25,7 @@
                 <input matInput autocomplete="off" type="text" placeholder="Ingrese DNI." formControlName="dniControl">
             </mat-form-field>
 
-            <mat-form-field class="tipe-form-field" appearance="fill" color="primary">
+            <!-- <mat-form-field class="tipe-form-field" appearance="fill" color="primary">
                 <mat-label>Resultado</mat-label>
 
                 <mat-select formControlName="resultadoControl">
@@ -33,7 +33,7 @@
                         {{ res }}
                     </mat-option>
                 </mat-select>
-            </mat-form-field>
+            </mat-form-field> -->
 
         </section>
 
@@ -59,7 +59,7 @@
                     class="btn-small"
                     type="submit"
                     [disabled]="formRenditionListGroup.invalid"
-                    (click)="searchEmpleado()"
+                    (click)="searchOrders()"
                 >
                 
                     <mat-icon>send</mat-icon>&nbsp;
@@ -79,8 +79,8 @@
                 </mat-expansion-panel-header>
 
                 <app-dynamic-table 
-                    *ngIf="psicos && psicos.length > 0; else noPsicos"
-                    [data]="psicos"
+                    *ngIf="orders && orders.length > 0; else noOrders"
+                    [data]="orders"
                     [tableDefinition]="tableDefinition"
                     [columnFormaters]="columnFormaters"
                     [customColumnComponents]="customColumnComponents"
@@ -92,7 +92,7 @@
                 >
                 </app-dynamic-table>
 
-            <ng-template #noPsicos>
+            <ng-template #noOrders>
                 <h2 class="empty-message">No hay Psicotecnicos</h2>
             </ng-template>
         </mat-expansion-panel>
