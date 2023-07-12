@@ -9,7 +9,7 @@ import { AuthorizationModule } from '../../authorization/authorization.module';
 import { DatePipe } from '@angular/common';
 import { ProcessStatusModule } from '../../process-status/process-status.module';
 import { RoutesCommonModule } from '../../common/routes-common.module';
-import { RRHHControlService } from './services/rrhh-control.service'; 
+import { ResourceService } from './services/resource-control.service'; 
 import { LoadersModule } from "../../ui/loaders/loaders.module";
 import { DashboardCardModule } from '../../ui/dashboard-card/dashboard-card.module';
 import { LegajoDetailResolver } from './resolver/legajo-detail-resolver';
@@ -21,6 +21,8 @@ import { CoolFileInputModule } from '../../ui/cool-file-input/cool-file-input.mo
 
 import { BuildingComponent } from './cargas/building/building.component';
 import { AppartmentComponent } from './cargas/appartment/appartment.component';
+import { TenantComponent } from './cargas/tenant/tenant.component';
+import { OwnerComponent } from './cargas/owner/owner.component';
 
 const routes: Routes = [
     {
@@ -58,12 +60,14 @@ const routes: Routes = [
 
         BuildingComponent,
         AppartmentComponent,
+        TenantComponent,
+        OwnerComponent
         
     ],
     providers: [
         DatePipe,
         LegajoDetailResolver,
-        RRHHControlService,
+        ResourceService,
     ]
 })
 export class ConsorcioModule { }

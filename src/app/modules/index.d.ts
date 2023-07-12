@@ -13,13 +13,9 @@ export interface ResponseStatus {
     ok: boolean;
     error: string;
 }
-/*
-export type ResponseStatus = "ok" | "error";
 
-Status: 
-
- export interface ProcessStateStyle {
+export interface ProcessStateStyle {
     label: string;
     color: string;
     backgroundColor: string;
-} */
+}

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { Appartment, Building, Owner, Tenant} from '../../model';
-import { RRHHControlService } from '../services/rrhh-control.service'
+import { ResourceService } from '../services/resource-control.service'
 import { Observable, Subject } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OverlayService } from '../../../overlay/services/overlay.service';
@@ -64,22 +64,14 @@ export class CargasComponent implements OnInit{
 
     tabIndex: number = 0;
 
-    formTenant = new FormGroup ({
-        /** `FormControl` con el tipo de legajo a filtrar. */
-        userControl: new FormControl('',[Validators.required]),
-        appartmentControl: new FormControl(1,[Validators.required]),
-    });
+    
 
-    formOwner = new FormGroup ({
-        /** `FormControl` con el tipo de legajo a filtrar. */
-        userControl: new FormControl('',[Validators.required]),
-        appartmentControl: new FormControl(1,[Validators.required]),
-    });
+    
 
     
 
     constructor(
-        public recursosService: RRHHControlService,
+        public recursosService: ResourceService,
         private overlayService: OverlayService,
         private changeDetectorRef: ChangeDetectorRef,
         private snackBarService: SnackBarService,
@@ -105,55 +97,8 @@ export class CargasComponent implements OnInit{
     
 
 
-    createTenant(): void{
-        const formTenant = this.formTenant.controls;
 
-        //if (!filters.legajo ) return;
-        this.overlayService.displayLoadingOverlay();
-        this.loading = true;
-
-        const Tenant: any = {
-            id_user: formTenant.userControl.value,
-            id_appartment: formTenant.appartmentControl.value,
-            //id: (this.tabIndex<1 && this.psicotecnico?.id) ? this.psicotecnico?.id : 0,
-        }
-
-        this.recursosService.insertTenant(Tenant).subscribe((data: Tenant) => {
-            this.snackBarService.open(`Se registraron los cambios.`, "Aceptar", 6000, "success-snackbar");
-            //this.empleado = data.Data;
-            setTimeout(() =>{
-                this.overlayService.hideLoadingOverlay();
-                this.loading = false;
-            }, 100);
-
-        });
-
-    }
-
-    createOwner(): void{
-        const formOwner = this.formOwner.controls;
-
-        //if (!filters.legajo ) return;
-        this.overlayService.displayLoadingOverlay();
-        this.loading = true;
-
-        const owner: any = {
-            id_user: formOwner.userControl.value,
-            id_appartment: formOwner.appartmentControl.value,
-            //id: (this.tabIndex<1 && this.psicotecnico?.id) ? this.psicotecnico?.id : 0,
-        }
-
-        this.recursosService.insertOwner(owner).subscribe((data: Owner) => {
-            this.snackBarService.open(`Se registraron los cambios.`, "Aceptar", 6000, "success-snackbar");
-            //this.empleado = data.Data;
-            setTimeout(() =>{
-                this.overlayService.hideLoadingOverlay();
-                this.loading = false;
-            }, 100);
-
-        });
-
-    }
+    
 
 
     changeTab(tab:number){

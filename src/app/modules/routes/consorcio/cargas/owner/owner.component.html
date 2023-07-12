@@ -1,0 +1,76 @@
+<main>
+
+    <form [formGroup]="formOwner">
+
+        <mat-form-field appearance="fill">
+            <mat-label>Usuario</mat-label>
+            <input type="text"
+                   placeholder="Ingrese nombre del usuario"
+                   aria-label="Usuario"
+                   matInput
+                   formControlName="userControl"
+                   [matAutocomplete]="autoUser">
+            <mat-autocomplete #autoUser="matAutocomplete">
+              <mat-option *ngFor="let user of user$ | async" [value]="user.id">
+                   
+                <mat-card class="example-card">
+                    <mat-card-header>
+                      <mat-card-title-group>
+                        <mat-card-title>{{user.nombre}} {{user.apellido}} </mat-card-title>
+                        <mat-card-subtitle>{{user.habilitado_rol}}</mat-card-subtitle>
+                        <img mat-card-sm-image src="{{user.image}}" >
+                      </mat-card-title-group>
+                    </mat-card-header>
+                  </mat-card>
+              </mat-option>
+            </mat-autocomplete>
+        </mat-form-field> <!-- photo -->
+
+        <mat-form-field appearance="fill">
+            <mat-label>Departamento</mat-label>
+            <input type="text"
+                   placeholder="Ingrese departamento"
+                   aria-label="Departamento"
+                   matInput
+                   formControlName="appartmentControl"
+                   [matAutocomplete]="autoAppartment">
+            <mat-autocomplete #autoAppartment="matAutocomplete">
+              <mat-option *ngFor="let appartment of appartment$ | async" [value]="appartment.id">
+                {{appartment.floor}} - {{ appartment.division}} ( {{ appartment.building }})    
+              </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+     
+
+        <section class="actions-container">
+            <div class="actions-filters">
+                <button
+                    appRoundButton
+                    mat-stroked-button
+                    color="primary"
+                    class="btn-small"
+                    (click)="formOwner.reset()"
+                >
+                    <mat-icon>clear</mat-icon>&nbsp;
+                    Limpiar
+                </button>
+
+                <button
+                    appRoundButton
+                    mat-flat-button
+                    color="accent"
+                    class="btn-small"
+                    type="submit"
+                    (click)="createOwner()"
+                    [disabled]="formOwner.invalid"
+                >
+                    <mat-icon>send</mat-icon>&nbsp;
+                    Enviar
+                </button>
+
+            </div>
+        </section>
+    </form>
+
+</main>

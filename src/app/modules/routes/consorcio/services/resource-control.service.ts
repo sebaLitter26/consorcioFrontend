@@ -9,7 +9,7 @@ import { User } from "../../user";
 
 
 @Injectable()
-export class RRHHControlService {
+export class ResourceService {
 
     constructor(
         private http: HttpClient,
@@ -47,6 +47,24 @@ export class RRHHControlService {
      */
     getUsers(page: number = 1, limit: number = 10): Observable<User[]> {
         return this.http.get<any[]>(`${environment.apiUrl}users?page=${page}&limit=${limit}`).pipe( map((elem: any)=> elem['data']) , take(1));
+        
+    }
+
+    /**
+     * Obtiene el listado de Inquilinos
+     * @returns un `Observable` con el listado de Departamentos
+     */
+    getTenants(page: number = 1, limit: number = 10): Observable<Tenant[]> {
+        return this.http.get<any[]>(`${environment.apiUrl}tenant?page=${page}&limit=${limit}`).pipe( map((elem: any)=> elem['data']) , take(1));
+        
+    }
+
+    /**
+     * Obtiene el listado de Inquilinos
+     * @returns un `Observable` con el listado de Departamentos
+     */
+    getOwners(page: number = 1, limit: number = 10): Observable<Owner[]> {
+        return this.http.get<any[]>(`${environment.apiUrl}owner?page=${page}&limit=${limit}`).pipe( map((elem: any)=> elem['data']) , take(1));
         
     }
 

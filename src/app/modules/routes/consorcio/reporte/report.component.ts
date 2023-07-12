@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Type} from '@angular/core';
 import { Building } from '../../model';
-import { RRHHControlService } from '../services/rrhh-control.service'
+import { ResourceService } from '../services/resource-control.service'
 import {  Subject } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { OverlayService } from '../../../overlay/services/overlay.service';
@@ -124,7 +124,7 @@ export class ReportComponent{
     datos: Building[] = [];
 
     constructor(
-        public recursosService: RRHHControlService,
+        public recursosService: ResourceService,
         private overlayService: OverlayService,
         private changeDetectorRef: ChangeDetectorRef,
         private datepipe: DatePipe,

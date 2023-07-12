@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { Appartment, Building, Owner, Tenant} from '../../../model';
-import { RRHHControlService } from '../../services/rrhh-control.service'
+import { ResourceService } from '../../services/resource-control.service'
 import { Observable, Subject } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OverlayService } from '../../../../overlay/services/overlay.service';
@@ -58,7 +58,7 @@ export class BuildingComponent implements OnInit{
     
 
     constructor(
-        public recursosService: RRHHControlService,
+        public recursosService: ResourceService,
         private overlayService: OverlayService,
         private changeDetectorRef: ChangeDetectorRef,
         private snackBarService: SnackBarService,
