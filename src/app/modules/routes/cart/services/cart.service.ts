@@ -1,11 +1,11 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { delay, Observable, of, share, take, tap } from "rxjs";
-import { Building, FormPsico, Order,  } from "../models/order.model";
+import { Building, Order,  } from "../../model";
 import { environment } from "src/environments/environment";
 import { GRAL, RRHH } from "../../model";
 
-const DEFAULT_WEB_FILTERS: FormPsico = {
+const DEFAULT_WEB_FILTERS: any = {
     legajo: null,
     sucursalsolicitante: null,
     fecha: null,

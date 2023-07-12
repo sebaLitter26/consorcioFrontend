@@ -1,36 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { delay, map, Observable, of, share, take, tap } from "rxjs";
-import { Appartment, Building, FormPsico, Owner, Tenant } from "../models/inmueble.model";
 import { environment } from "src/environments/environment";
-import { GRAL, RRHH } from "../../model";
+import { Appartment, Building, Owner, Tenant } from "../../model";
 import { User } from "../../user";
 
-const DEFAULT_WEB_FILTERS: FormPsico = {
-    legajo: null,
-    sucursalsolicitante: null,
-    fecha: null,
-    sector: null,
-    puestopostulado: null,
-    postula: null,
-    result: null,
-    psicologo: null,
-    bateriatests: null,
-    tieneveraz: null,
-    observaciones: null,
-    activo: null,
-    apellidonombre: '',
-    cargo: '',
-    refpsico: false,
-    gr_prof: '',
-    doc_tipo: '',
-    doc_nro: '',
-    idcarga: '',
-    nombreusuario: '',
-    nombreequipo: '',
-    tab: '',
-    id: 0
-}
 
 
 

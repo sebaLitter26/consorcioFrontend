@@ -70,6 +70,10 @@ export class NavbarService {
             preItems.push(this._getConsorcioItems());
         }
 
+        if (this.profileService.hasModuleAccess('cart')) {
+            preItems.push(this._getCartItems());
+        }
+
         if (this.profileService.hasModuleAccess('development')) {
             //preItems.push(this._getDevelopmentItems());
         }
@@ -105,6 +109,43 @@ export class NavbarService {
                 description: 'Mis cargas',
                 icon: 'fa fa-fw fa-route',
                 route: 'consorcio/report',
+                checked: true,
+            });
+        }
+
+        /* if (this.profileService.hasRouteAccess('rendicion-report')) {
+            operations.navigationItems.push({
+                description: 'Consultas',
+                icon: 'fa fa-fw fa-route',
+                route: 'recursos/rendicion-report',
+                checked: false,
+            });
+        } */
+
+        return operations;
+    }
+
+    private _getCartItems(): NavbarItem {
+        let operations: NavbarItem = {
+            description: 'Compras',
+            icon: 'fa fa-fw fa-cog',
+            navigationItems: [],
+        };
+
+        if (this.profileService.hasRouteAccess('product-list')) {
+            operations.navigationItems.push({
+                description: 'Lista de productos',
+                icon: 'fa fa-fw fa-tasks',
+                route: 'cart/product-list',
+                checked: true,
+            });
+        }
+
+        if (this.profileService.hasRouteAccess('order')) {
+            operations.navigationItems.push({
+                description: 'Mis Compras',
+                icon: 'fa fa-fw fa-route',
+                route: 'cart/order-history',
                 checked: true,
             });
         }

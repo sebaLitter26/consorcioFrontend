@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import { Building, Order, Identification, Product } from '../models/order.model';
+import { Building, Order, Identification, Product } from '../../model';
 import { CartService } from '../services/cart.service'
 import { Observable, Subject } from 'rxjs';
 import { FormBuilder, Validators } from '@angular/forms';

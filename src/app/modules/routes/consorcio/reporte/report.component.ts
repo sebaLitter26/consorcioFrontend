@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Type} from '@angular/core';
-import { Building } from '../models/inmueble.model';
+import { Building } from '../../model';
 import { RRHHControlService } from '../services/rrhh-control.service'
 import {  Subject } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -109,12 +109,7 @@ export class ReportComponent{
     /** Formatos custom para columnas del listado de control seleccionado. */
     columnFormaters: (((control: Building) => string | number | boolean) | null)[] = [
         null, null,
-        (item: Building) => {
-            const date: Date = new Date(item?.createdAt);
-            const formatedDate: string = `${date?.toLocaleDateString()} ${date?.toLocaleTimeString()}`;
-
-            return `${formatedDate == "Invalid Date" ? item.createdAt : formatedDate}`;
-        },
+       
         /* null, null,null,
         (item: Building) => {
             if(!item.deletedAt) return ' - ' 

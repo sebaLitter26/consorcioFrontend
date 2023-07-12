@@ -19,6 +19,9 @@ import { ReportComponent } from './reporte/report.component';
 import { EmpleadoInformationComponent } from './reporte/empleado-detail/empleado-detail.component';
 import { CoolFileInputModule } from '../../ui/cool-file-input/cool-file-input.module';
 
+import { BuildingComponent } from './cargas/building/building.component';
+import { AppartmentComponent } from './cargas/appartment/appartment.component';
+
 const routes: Routes = [
     {
         path: 'cargas',
@@ -51,7 +54,11 @@ const routes: Routes = [
     declarations: [
         CargasComponent, 
         ReportComponent,
-        EmpleadoInformationComponent
+        EmpleadoInformationComponent,
+
+        BuildingComponent,
+        AppartmentComponent,
+        
     ],
     providers: [
         DatePipe,

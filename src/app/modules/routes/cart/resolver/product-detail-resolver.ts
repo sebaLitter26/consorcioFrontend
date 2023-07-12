@@ -1,7 +1,7 @@
 import { Injectable, ViewContainerRef } from "@angular/core";
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
 import { Observable, of } from "rxjs";
-import { Order } from "../models/order.model";
+import { Order } from "../../model";
 import { CartService } from "../services/cart.service";
 
 /**

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Order } from '../../models/order.model';
+import { Order } from '../../../model';
 
 
 @Component({

@@ -12,145 +12,13 @@
     <mat-tab-group (selectedTabChange)="changeTab($event.index)">
             <mat-tab label="Edificio">
 
-                <form [formGroup]="formBuilding">
-                    <mat-form-field appearance="fill" color="primary">
-                        <mat-label>Dirección</mat-label>
-                        <input matInput autocomplete="off" type="text" placeholder="Ingrese Dirección." formControlName="addressControl">
-                    </mat-form-field>
-
-                    <app-cool-file-input (finalizaCarga)="addFile($event)"></app-cool-file-input>
-
-                    <section class="actions-container">
-                        <div class="actions-filters">
-                            <button
-                                appRoundButton
-                                mat-stroked-button
-                                color="primary"
-                                class="btn-small"
-                                (click)="formBuilding.reset()"
-                            >
-                                <mat-icon>clear</mat-icon>&nbsp;
-                                Limpiar
-                            </button>
-            
-                            <button
-                                appRoundButton
-                                mat-flat-button
-                                color="accent"
-                                class="btn-small"
-                                type="submit"
-                                (click)="createBuilding()"
-                                [disabled]="formBuilding.invalid"
-                            >
-                                <mat-icon>send</mat-icon>&nbsp;
-                                Enviar
-                            </button>
-            
-                        </div>
-                    </section>
-                </form>
-
-                <!-- <mat-card *ngIf="empleado$ | async as empleado" [@inOutAnimation]>
-                    <mat-card-header >
-                        <div class="profile-image-container">
-                            <img mat-card-image [src]="empleado.foto" alt="{{ empleado.nombre }}">
-                        </div>
-    
-                        <div class="empleado-detail">
-                            
-                    
-                            <mat-card-title class="title-space">Cargo</mat-card-title>
-                            <mat-card-subtitle>Legajo: {{ empleado.legajo }}</mat-card-subtitle>
-                            <mat-card-subtitle>Funcion: {{ empleado.funciondescripcion }}</mat-card-subtitle>
-                            <mat-card-subtitle>Gerencia: {{ empleado.gerencia }}</mat-card-subtitle>
-                            <mat-card-subtitle>Sector: {{ empleado.sector }}</mat-card-subtitle>
-                            <mat-card-subtitle>Sucursal: {{ empleado.sucursal }}</mat-card-subtitle>
-                            
-                        </div>
-    
-                        <div class="empleado-detail">
-                            <mat-card-title>Persona</mat-card-title>
-                            <mat-card-subtitle>Nombre: {{empleado.nombre}}</mat-card-subtitle>
-                            <mat-card-subtitle>Fecha de Nacimiento: {{ empleado.edadnacimiento.fechanacimiento}} ( {{ empleado.edadnacimiento.edad}} años)</mat-card-subtitle>
-                            <mat-card-subtitle>Documento: {{empleado.nrodocumento}}</mat-card-subtitle>
-                            <mat-card-subtitle>En la Empresa: {{empleado.antiguedad}}</mat-card-subtitle>
-                            <mat-card-subtitle>Fecha de ingreso {{empleado.fechaingreso | date}}</mat-card-subtitle>
-                            
-    
-                            <mat-card-title class="title-space">Contacto</mat-card-title>
-                            <mat-card-subtitle *ngIf="empleado?.emails?.email?.mail as mail">Email: {{ mail }}</mat-card-subtitle>
-                            <mat-card-subtitle *ngIf="empleado?.telefonos?.telefono?.largo as tel">Telefono: {{ tel }}</mat-card-subtitle> 
-                            
-    
-                        </div>
-                    </mat-card-header>
-                </mat-card> -->
+                <app-building></app-building>
                  
             
             </mat-tab>
             <mat-tab label="Departamento" >
 
-                <form [formGroup]="formAppartment">
-
-                    <mat-form-field appearance="fill">
-                        <mat-label>Edificio</mat-label>
-                        <input type="text"
-                               placeholder="Ingrese Edificio"
-                               aria-label="Edificio"
-                               matInput
-                               formControlName="buildingControl"
-                               [matAutocomplete]="autoBuilding">
-                        <mat-autocomplete #autoBuilding="matAutocomplete">
-                          <mat-option *ngFor="let building of building$ | async" [value]="building.id">
-                            {{building.address}}    
-                          </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field> <!-- photo -->
-
-                    <!-- <mat-form-field appearance="fill" color="primary">
-                        <mat-label>Edificio</mat-label>
-                        <input matInput autocomplete="off" type="text" placeholder="Ingrese Dirección." formControlName="buildingControl">
-                    </mat-form-field> -->
-                    <mat-form-field appearance="fill" color="primary">
-                        <mat-label>Piso</mat-label>
-                        <input matInput autocomplete="off" type="text" placeholder="Ingrese piso." formControlName="floorControl">
-                    </mat-form-field>
-                    <mat-form-field appearance="fill" color="primary">
-                        <mat-label>División</mat-label>
-                        <input matInput autocomplete="off" type="text" placeholder="Ingrese División." formControlName="divisionControl">
-                    </mat-form-field>
-
-                 
-
-                    <section class="actions-container">
-                        <div class="actions-filters">
-                            <button
-                                appRoundButton
-                                mat-stroked-button
-                                color="primary"
-                                class="btn-small"
-                                (click)="formAppartment.reset()"
-                            >
-                                <mat-icon>clear</mat-icon>&nbsp;
-                                Limpiar
-                            </button>
-            
-                            <button
-                                appRoundButton
-                                mat-flat-button
-                                color="accent"
-                                class="btn-small"
-                                type="submit"
-                                (click)="createBuilding()"
-                                [disabled]="formAppartment.invalid"
-                            >
-                                <mat-icon>send</mat-icon>&nbsp;
-                                Enviar
-                            </button>
-            
-                        </div>
-                    </section>
-                </form>
+                <app-appartment></app-appartment>
                 
                 
             <!-- <div class="example-large-box mat-elevation-z4"> [@inOutAnimation]
@@ -159,85 +27,6 @@
         </mat-tab-group>
         <h1>Carga de Usuarios</h1>
         <mat-tab-group (selectedTabChange)="changeTab($event.index)">
-            <mat-tab label="Inquilino" >
-
-                <form [formGroup]="formTenant">
-
-                    <mat-form-field appearance="fill">
-                        <mat-label>Usuario</mat-label>
-                        <input type="text"
-                               placeholder="Ingrese nombre del usuario"
-                               aria-label="Usuario"
-                               matInput
-                               formControlName="userControl"
-                               [matAutocomplete]="autoUser">
-                        <mat-autocomplete #autoUser="matAutocomplete">
-                          <mat-option *ngFor="let user of user$ | async" [value]="user.id">
-                               
-                            <mat-card class="example-card">
-                                <mat-card-header>
-                                  <mat-card-title-group>
-                                    <mat-card-title>{{user.nombre}} {{user.apellido}} </mat-card-title>
-                                    <mat-card-subtitle>{{user.habilitado_rol}}</mat-card-subtitle>
-                                    <img mat-card-sm-image src="{{user.image}}" >
-                                  </mat-card-title-group>
-                                </mat-card-header>
-                              </mat-card>
-                          </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field> <!-- photo -->
-
-                    <mat-form-field appearance="fill">
-                        <mat-label>Departamento</mat-label>
-                        <input type="text"
-                               placeholder="Ingrese departamento"
-                               aria-label="Departamento"
-                               matInput
-                               formControlName="appartmentControl"
-                               [matAutocomplete]="autoAppartment">
-                        <mat-autocomplete #autoAppartment="matAutocomplete">
-                          <mat-option *ngFor="let appartment of appartment$ | async" [value]="appartment.id">
-                            {{appartment.floor}} - {{ appartment.division}} ( {{ appartment.building.address }})    
-                          </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field>
-
-                 
-
-                    <section class="actions-container">
-                        <div class="actions-filters">
-                            <button
-                                appRoundButton
-                                mat-stroked-button
-                                color="primary"
-                                class="btn-small"
-                                (click)="formTenant.reset()"
-                            >
-                                <mat-icon>clear</mat-icon>&nbsp;
-                                Limpiar
-                            </button>
-            
-                            <button
-                                appRoundButton
-                                mat-flat-button
-                                color="accent"
-                                class="btn-small"
-                                type="submit"
-                                (click)="createTenant()"
-                                [disabled]="formTenant.invalid"
-                            >
-                                <mat-icon>send</mat-icon>&nbsp;
-                                Enviar
-                            </button>
-            
-                        </div>
-                    </section>
-                </form>
-                
-                
-            <!-- <div class="example-large-box mat-elevation-z4"> [@inOutAnimation]
-            </div> -->
-            </mat-tab>
             <mat-tab label="Propietario" >
 
                 <form [formGroup]="formOwner">
@@ -276,7 +65,7 @@
                                [matAutocomplete]="autoAppartment">
                         <mat-autocomplete #autoAppartment="matAutocomplete">
                           <mat-option *ngFor="let appartment of appartment$ | async" [value]="appartment.id">
-                            {{appartment.floor}} - {{ appartment.division}} ( {{ appartment.building.address }})    
+                            {{appartment.floor}} - {{ appartment.division}} ( {{ appartment.building }})    
                           </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
@@ -317,6 +106,86 @@
             <!-- <div class="example-large-box mat-elevation-z4"> [@inOutAnimation]
             </div> -->
             </mat-tab>
+            <mat-tab label="Inquilino" >
+
+                <form [formGroup]="formTenant">
+
+                    <mat-form-field appearance="fill">
+                        <mat-label>Usuario</mat-label>
+                        <input type="text"
+                               placeholder="Ingrese nombre del usuario"
+                               aria-label="Usuario"
+                               matInput
+                               formControlName="userControl"
+                               [matAutocomplete]="autoUser">
+                        <mat-autocomplete #autoUser="matAutocomplete">
+                          <mat-option *ngFor="let user of user$ | async" [value]="user.id">
+                               
+                            <mat-card class="example-card">
+                                <mat-card-header>
+                                  <mat-card-title-group>
+                                    <mat-card-title>{{user.nombre}} {{user.apellido}} </mat-card-title>
+                                    <mat-card-subtitle>{{user.habilitado_rol}}</mat-card-subtitle>
+                                    <img mat-card-sm-image src="{{user.image}}" >
+                                  </mat-card-title-group>
+                                </mat-card-header>
+                              </mat-card>
+                          </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field> <!-- photo -->
+
+                    <mat-form-field appearance="fill">
+                        <mat-label>Departamento</mat-label>
+                        <input type="text"
+                               placeholder="Ingrese departamento"
+                               aria-label="Departamento"
+                               matInput
+                               formControlName="appartmentControl"
+                               [matAutocomplete]="autoAppartment">
+                        <mat-autocomplete #autoAppartment="matAutocomplete">
+                          <mat-option *ngFor="let appartment of appartment$ | async" [value]="appartment.id">
+                            {{appartment.floor}} - {{ appartment.division}} ( {{ appartment.building }})    
+                          </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+
+                 
+
+                    <section class="actions-container">
+                        <div class="actions-filters">
+                            <button
+                                appRoundButton
+                                mat-stroked-button
+                                color="primary"
+                                class="btn-small"
+                                (click)="formTenant.reset()"
+                            >
+                                <mat-icon>clear</mat-icon>&nbsp;
+                                Limpiar
+                            </button>
+            
+                            <button
+                                appRoundButton
+                                mat-flat-button
+                                color="accent"
+                                class="btn-small"
+                                type="submit"
+                                (click)="createTenant()"
+                                [disabled]="formTenant.invalid"
+                            >
+                                <mat-icon>send</mat-icon>&nbsp;
+                                Enviar
+                            </button>
+            
+                        </div>
+                    </section>
+                </form>
+                
+                
+            <!-- <div class="example-large-box mat-elevation-z4"> [@inOutAnimation]
+            </div> -->
+            </mat-tab>
+            
         </mat-tab-group>
 
         <!-- <section class=" mat-elevation-z4" >

@@ -1,0 +1,65 @@
+<main>
+
+    <form [formGroup]="formAppartment">
+
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Edificio</mat-label>
+            <input type="text"
+                placeholder="Ingrese Edificio"
+                aria-label="building"
+                matInput
+                formControlName="buildingControl"
+                [matAutocomplete]="building">
+            <mat-autocomplete #building="matAutocomplete">
+            <mat-option *ngFor="let edificio of building$ | async" [value]="edificio.id">
+                {{edificio.direccion + ' - ' + edificio.altura + ', ' + edificio.localidad}}
+            </mat-option>
+            </mat-autocomplete>
+        </mat-form-field> <!-- photo -->
+
+        <!-- <mat-form-field appearance="fill" color="primary">
+            <mat-label>Edificio</mat-label>
+            <input matInput autocomplete="off" type="text" placeholder="Ingrese Dirección." formControlName="buildingControl">
+        </mat-form-field> -->
+        <mat-form-field appearance="fill" color="primary">
+            <mat-label>Piso</mat-label>
+            <input matInput autocomplete="off" type="text" placeholder="Ingrese piso." formControlName="floorControl">
+        </mat-form-field>
+        <mat-form-field appearance="fill" color="primary">
+            <mat-label>División</mat-label>
+            <input matInput autocomplete="off" type="text" placeholder="Ingrese División." formControlName="divisionControl">
+        </mat-form-field>
+
+     
+
+        <section class="actions-container">
+            <div class="actions-filters">
+                <button
+                    appRoundButton
+                    mat-stroked-button
+                    color="primary"
+                    class="btn-small"
+                    (click)="formAppartment.reset()"
+                >
+                    <mat-icon>clear</mat-icon>&nbsp;
+                    Limpiar
+                </button>
+
+                <button
+                    appRoundButton
+                    mat-flat-button
+                    color="accent"
+                    class="btn-small"
+                    type="submit"
+                    (click)="createAppartment()"
+                    [disabled]="formAppartment.invalid"
+                >
+                    <mat-icon>send</mat-icon>&nbsp;
+                    Enviar
+                </button>
+
+            </div>
+        </section>
+    </form>
+
+</main>

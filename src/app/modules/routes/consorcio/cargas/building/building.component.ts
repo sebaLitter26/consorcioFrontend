@@ -1,20 +1,19 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import { Appartment, Building, Owner, Tenant} from '../../model';
-import { RRHHControlService } from '../services/rrhh-control.service'
+import { Appartment, Building, Owner, Tenant} from '../../../model';
+import { RRHHControlService } from '../../services/rrhh-control.service'
 import { Observable, Subject } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { OverlayService } from '../../../overlay/services/overlay.service';
+import { OverlayService } from '../../../../overlay/services/overlay.service';
 import { SnackBarService } from 'src/app/services/snackbar.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfileService } from 'src/app/modules/main/services/profile.service';
-import { User } from '../../user';
 
 
 @Component({
-    selector: 'app-cargas',
-    templateUrl: './cargas.component.html',
-    styleUrls: ['./cargas.component.scss'],
+    selector: 'app-building',
+    templateUrl: './building.component.html',
+    styleUrls: ['./building.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         trigger(
@@ -40,40 +39,20 @@ import { User } from '../../user';
         )
     ]
 })
-export class CargasComponent implements OnInit{
-
-    /* psicotecnico?: Psico;
-    empleado$: Observable<Empleado> | null = null; 
-    sucursal$ : Observable<Sucursal[]> = this.recursosService.getSucursales();  
-    sector$: Observable<Sector[]> = this.recursosService.getSectores(); */
-    /* GProf$ : Observable<Nomina[]> = this.recursosService.getEmpleadoByLegajo(128346); */
-   
+export class BuildingComponent implements OnInit{
 
     building$: Observable<Building[]> = this.recursosService.getBuildings(); 
-    appartment$: Observable<Appartment[]> = this.recursosService.getAppartments(); 
-    user$: Observable<User[]> = this.recursosService.getUsers(); 
-
 
     today = new Date();
+    loading: boolean = false;
     isChangedAnimation: Subject<boolean> = new Subject<boolean>();
 
-    selectedSucursal: number = 1;
-    loading: boolean = false;
-
-    canSave: boolean = true;
-
-    tabIndex: number = 0;
-
-    formTenant = new FormGroup ({
+    formBuilding = new FormGroup ({
         /** `FormControl` con el tipo de legajo a filtrar. */
-        userControl: new FormControl('',[Validators.required]),
-        appartmentControl: new FormControl(1,[Validators.required]),
-    });
-
-    formOwner = new FormGroup ({
-        /** `FormControl` con el tipo de legajo a filtrar. */
-        userControl: new FormControl('',[Validators.required]),
-        appartmentControl: new FormControl(1,[Validators.required]),
+        streetControl: new FormControl('', [Validators.required]),
+        numberControl: new FormControl('', [Validators.required]),
+        locationControl: new FormControl('', [Validators.required]),
+        imageControl: new FormControl(null, [Validators.required])
     });
 
     
@@ -102,66 +81,39 @@ export class CargasComponent implements OnInit{
         
     }
 
+    createBuilding(): void{
+        const formBuilding = this.formBuilding.controls;
+
+        //if (!filters.legajo ) return;
+        this.overlayService.displayLoadingOverlay();
+        this.loading = true;
+
+        const building: any = {
+            street: formBuilding.streetControl.value,
+            number: formBuilding.numberControl.value,
+            location: formBuilding.locationControl.value,
+            photo: formBuilding.imageControl.value,
+            status: 1
+            //id: (this.tabIndex<1 && this.psicotecnico?.id) ? this.psicotecnico?.id : 0,
+        }
+
+        this.recursosService.insertBuilding(building).subscribe((data: Building) => {
+            this.snackBarService.open(`Se registraron los cambios.`, "Aceptar", 6000, "success-snackbar");
+            //this.empleado = data.Data;
+            setTimeout(() =>{
+                this.overlayService.hideLoadingOverlay();
+                this.loading = false;
+            }, 100);
+
+        });
+
+    }
+
     
 
+    modifyPsicotecnico() : void {
 
-    createTenant(): void{
-        const formTenant = this.formTenant.controls;
-
-        //if (!filters.legajo ) return;
-        this.overlayService.displayLoadingOverlay();
-        this.loading = true;
-
-        const Tenant: any = {
-            id_user: formTenant.userControl.value,
-            id_appartment: formTenant.appartmentControl.value,
-            //id: (this.tabIndex<1 && this.psicotecnico?.id) ? this.psicotecnico?.id : 0,
-        }
-
-        this.recursosService.insertTenant(Tenant).subscribe((data: Tenant) => {
-            this.snackBarService.open(`Se registraron los cambios.`, "Aceptar", 6000, "success-snackbar");
-            //this.empleado = data.Data;
-            setTimeout(() =>{
-                this.overlayService.hideLoadingOverlay();
-                this.loading = false;
-            }, 100);
-
-        });
-
-    }
-
-    createOwner(): void{
-        const formOwner = this.formOwner.controls;
-
-        //if (!filters.legajo ) return;
-        this.overlayService.displayLoadingOverlay();
-        this.loading = true;
-
-        const owner: any = {
-            id_user: formOwner.userControl.value,
-            id_appartment: formOwner.appartmentControl.value,
-            //id: (this.tabIndex<1 && this.psicotecnico?.id) ? this.psicotecnico?.id : 0,
-        }
-
-        this.recursosService.insertOwner(owner).subscribe((data: Owner) => {
-            this.snackBarService.open(`Se registraron los cambios.`, "Aceptar", 6000, "success-snackbar");
-            //this.empleado = data.Data;
-            setTimeout(() =>{
-                this.overlayService.hideLoadingOverlay();
-                this.loading = false;
-            }, 100);
-
-        });
-
-    }
-
-
-    changeTab(tab:number){
-        this.tabIndex = tab; 
-        const input_id = document.querySelector('input[id^="coolinput"]')?.id;
-        if(input_id) document.getElementById(input_id)?.focus();
-        this.changeDetectorRef.detectChanges();
-        //this.updateForm();
+        
     }
 
     findLegajo(legajo: number){
@@ -171,6 +123,13 @@ export class CargasComponent implements OnInit{
         this.loading = true;
         //this.empleado$ = this.recursosService.getEmpleadoByLegajo(legajo);
         //this.updateForm();
+        
+    }
+
+
+    addFile(event:any){
+        console.log(event);
+        this.formBuilding.controls.imageControl.setValue(event);
         
     }
 

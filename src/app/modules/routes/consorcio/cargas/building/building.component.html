@@ -1,0 +1,51 @@
+<main>
+
+    <form [formGroup]="formBuilding">
+        <mat-form-field appearance="fill" color="primary">
+            <mat-label>Dirección</mat-label>
+            <input matInput autocomplete="off" type="text" placeholder="Ingrese Dirección." formControlName="streetControl">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" color="primary">
+            <mat-label>Altura</mat-label>
+            <input matInput autocomplete="off" type="text" placeholder="Ingrese Altura." formControlName="numberControl">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" color="primary">
+            <mat-label>Localidad</mat-label>
+            <input matInput autocomplete="off" type="text" placeholder="Ingrese Localidad." formControlName="locationControl">
+        </mat-form-field>
+
+        <app-cool-file-input height="200px" width="50%" (finalizaCarga)="addFile($event)"></app-cool-file-input>
+
+        <section class="actions-container">
+            <div class="actions-filters">
+                <button
+                    appRoundButton
+                    mat-stroked-button
+                    color="primary"
+                    class="btn-small"
+                    (click)="formBuilding.reset()"
+                >
+                    <mat-icon>clear</mat-icon>&nbsp;
+                    Limpiar
+                </button>
+
+                <button
+                    appRoundButton
+                    mat-flat-button
+                    color="accent"
+                    class="btn-small"
+                    type="submit"
+                    (click)="createBuilding()"
+                    [disabled]="formBuilding.invalid"
+                >
+                    <mat-icon>send</mat-icon>&nbsp;
+                    Enviar
+                </button>
+
+            </div>
+        </section>
+    </form>
+
+</main>

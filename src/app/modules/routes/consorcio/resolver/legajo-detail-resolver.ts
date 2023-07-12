@@ -1,14 +1,14 @@
 import { Injectable, ViewContainerRef } from "@angular/core";
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from "@angular/router";
 import { Observable, of } from "rxjs";
-import { Building } from "../models/inmueble.model";
+import { Building } from "../../model";
 import { RRHHControlService } from "../services/rrhh-control.service";
 
 /**
  * Es un resolver para precargar los Pedidos, se utiliza en el Operations module
  */
 @Injectable()
-export class LegajoDetailResolver implements Resolve<Building[] | null> {
+export class LegajoDetailResolver {
 
     constructor(
         private recursosService: RRHHControlService,
