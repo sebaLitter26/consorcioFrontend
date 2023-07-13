@@ -1,0 +1,55 @@
+$image-size: 128px;
+
+.form {
+    width: 100%;
+    min-width: 450px;
+    display: flex;
+    flex-direction: column;
+}
+.input-spinner {
+    display: flex;
+    height: 36px;
+    flex-direction: row;
+    .spinner {
+        padding-right: 8px;
+    }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.pluDetails {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0px;
+    box-sizing: border-box;
+    
+    img {
+        width: $image-size;
+        height: $image-size;
+        border-radius: 3px;
+    }
+    .details {
+        margin-left: 10px;
+        text-align: left;
+        p {
+            font-size: 11px;
+        }
+
+    }
+}
+.submit-button-and-spinner {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    button {
+        width: 100%;
+    }
+}

@@ -1,0 +1,45 @@
+<form class="form" [formGroup]="countForm" (ngSubmit)="onSubmit()">
+    <h2>Crear Conteo nuevo</h2>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Elija el tipo de conteo</mat-label>
+        <mat-select formControlName="tipoConteo">
+            <mat-option value=1 (click)="resetPluControl()">Para todos los PLUs</mat-option>
+            <mat-option value=2 (click)="this.countForm.get('plu')!.enable();">Para un PLU</mat-option>
+        </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill" color="primary" *ngIf="this.countForm.get('tipoConteo')!.value == '2'" >
+        <mat-label>PLU</mat-label>
+        <div class="input-spinner">
+            <input formControlName="plu" matInput autocomplete="off" type="number" placeholder="Ingrese PLU...">
+            <mat-spinner class="spinner" diameter="36" *ngIf="bFetchingData"></mat-spinner>
+        </div>
+        <div class="pluDetails" *ngIf="this.countPlu">
+            <img 
+            [src]="countPlu.imagen"
+            >
+            <div class="details">
+                <p>{{ countPlu.descripcion }}</p>
+            </div>
+        </div>
+
+    </mat-form-field>
+
+    <div class="submit-button-and-spinner">
+        <button *ngIf="!bSubmitting; else submitting"
+        appRoundButton
+        mat-flat-button
+        color="primary"
+        class="btn btn--small btn--form"
+        type="submit"
+        [disabled]="isSubmitButtonDisabled()"
+        >
+            Aceptar
+        </button>
+
+        <ng-template #submitting>
+            <mat-spinner class="spinner" diameter="36"></mat-spinner>
+        </ng-template>
+    </div>
+</form>

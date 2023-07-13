@@ -1,0 +1,28 @@
+<div class="tables-container">
+    <main>
+        <h2>Eventos</h2>
+        <div class="table-container">
+            <app-dynamic-table
+            *ngIf="!fetching && events.length > 0; else tableLoaderEvents"
+            [data]="events"
+            [backgroundColor]="'var(--color-card-fade)'"
+            [columnFormaters]="columnFormatersEvents"
+            [tableDefinition]="tableDefinitionEvents"
+            [columnStyles]="columnStylesEvents"
+            ></app-dynamic-table>
+            
+            <ng-template #tableLoaderEvents>
+                <app-table-loader
+                    *ngIf="fetching; else tableNoEvents"
+                    [backgroundColor]="'var(--color-card-fade)'"
+                    [columns]="3"
+                    [rows]="6"
+                ></app-table-loader>
+
+                <ng-template #tableNoEvents>
+                    <p>No se encontraron eventos</p>
+                </ng-template>
+            </ng-template>
+        </div>
+    </main>
+</div>

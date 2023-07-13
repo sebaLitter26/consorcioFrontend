@@ -1,0 +1,28 @@
+<div class="tables-container">
+    <main>
+        <h2>Series</h2>
+        <div class="table-container">
+            <app-dynamic-table
+            *ngIf="!fetching && serials.length > 0; else tableLoaderSerials"
+            [data]="serials"
+            [backgroundColor]="'var(--color-card-fade)'"
+            [tableDefinition]="tableDefinitionSerials"
+            [columnFormaters]="columnFormatersSerials"
+            [columnStyles]="columnStylesSerials"
+            ></app-dynamic-table>
+            
+            <ng-template #tableLoaderSerials>
+                <app-table-loader
+                    *ngIf="fetching; else tableNoSerials"
+                    [backgroundColor]="'var(--color-card-fade)'"
+                    [columns]="4"
+                    [rows]="6"
+                ></app-table-loader>
+
+                <ng-template #tableNoSerials>
+                    <p>No se encontraron series</p>
+                </ng-template>
+            </ng-template>
+        </div>
+    </main>
+</div>
