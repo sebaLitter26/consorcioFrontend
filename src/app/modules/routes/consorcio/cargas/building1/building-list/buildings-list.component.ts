@@ -3,9 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { DynamicTableDefinition, ItemDetailComponent } from 'src/app/modules/ui/dynamic-table';
 import { Building, BuildingListFilters, BuildingStateOption, BuildingStateStyle, BuildingTypeOption } from '..';
 import { BuildingService } from '../services/buildings.service';
-import { buildingsListProductComponent } from './buildings-list-product/buildings-list-product.component';
 import { MatDialog } from '@angular/material/dialog';
-import { CreatebuildingFormComponent } from './forms/create-building-form/create-building-form.component';
+import { CreateBuildingFormComponent } from './forms/create-building-form/create-building-form.component';
 import { BuildingActionsComponent } from './building-actions/building-actions.component';
 import { BuildingState, BuildingType, BUILDING_STATE_MAP } from '../model';
 import { filter, Subject } from 'rxjs';
@@ -17,16 +16,16 @@ import { OverlayService } from 'src/app/modules/overlay/services/overlay.service
   templateUrl: './buildings-list.component.html',
   styleUrls: ['./buildings-list.component.scss']
 })
-export class BuildingsListComponent implements OnInit {
-  /** Los conteos que se muestran en la lista */
+export class BuildingListComponent implements OnInit {
+  /** Los buildings que se muestran en la lista */
   buildings: Building[]= [];
 
   filters: BuildingListFilters = {
-    tipoConteo: [],
+    tipo_building: [],
     fechaDesde: null,
     fechaHasta: null,
     estado: [],
-    idConteo: null,
+    id_building: null,
     plu: null,
     usuario: null,
   }
@@ -34,24 +33,24 @@ export class BuildingsListComponent implements OnInit {
   /** Se utiliza para mostrar el app-table-loader mientras carga */
   loading: boolean = true;
 
-  /** La definición de la tabla que muestra el listado de conteos. */
+  /** La definición de la tabla que muestra el listado de buildings. */
   tableDefinition: DynamicTableDefinition = {
-    displayedColumns: ["id_conteo", "tipo_Conteo", "id_estado", "plu", "fecha_creacion", "nombre", "acciones"],
-    headerCellDefinitions: ["ID Conteo", "Tipo", "Estado", "PLU", "Fecha y hora de creacion", "Usuario", ""],
+    displayedColumns: ["id_building", "tipo_building", "id_estado", "plu", "fecha_creacion", "nombre", "acciones"],
+    headerCellDefinitions: ["ID building", "Tipo", "Estado", "PLU", "Fecha y hora de creacion", "Usuario", ""],
   }
   
   constructor(
     private activatedRoute: ActivatedRoute, 
     private buildingService: BuildingService, 
     private matDialog: MatDialog,
-    private buildingsSharedService: BuildingsSharedService,
+    private buildingSharedService: BuildingSharedService,
     private overlayService: OverlayService,
   ) {}
   
-  /** Componentes custom a usar en el listado de conteos. */
+  /** Componentes custom a usar en el listado de buildings. */
   customComponents: (Type<any> | null)[] = [null, null, null, null, null, null, BuildingActionsComponent];
   
-  /** Formatos custom para columnas del listado de conteos. */
+  /** Formatos custom para columnas del listado de buildings. */
   columnFormaters: (((item: any) => string | number | boolean) | null)[] = [
     null, null,       
     (item: Building) => {
@@ -67,7 +66,7 @@ export class BuildingsListComponent implements OnInit {
     null, null,
   ];
 
-  /** Estilos custom para columnas del listado de conteos. */
+  /** Estilos custom para columnas del listado de buildings. */
   columnStyles: (((item: Building) => {[key: string]: string}) | null)[] = [
     null, null,
     (item: Building) => {
@@ -86,14 +85,14 @@ export class BuildingsListComponent implements OnInit {
   buildingsUpdateSource: Subject<boolean> = new Subject<boolean>();
 
   ngOnInit(): void {
-    /** Obtiene la lista de conteos precargada por el resolver */
+    /** Obtiene la lista de buildings precargada por el resolver */
     this.loading = true;
     this.activatedRoute.data.subscribe(data => {
       this.buildings = data.buildings;
       this.loading = false;
     });
 
-    this.buildingSharedService.updateBuildingsEvent.subscribe((update: boolean) => {
+    this.buildingSharedService.updateBuildingEvent.subscribe((update: boolean) => {
       this.updateTable();
     });
   }
@@ -120,8 +119,8 @@ export class BuildingsListComponent implements OnInit {
     });
   }
 
-  /** Abre el form para crear un conteo nuevo */
+  /** Abre el form para crear un building nuevo */
   openDialogCreatebuilding(){
-    this.matDialog.open(CreatebuildingFormComponent);
+    this.matDialog.open(CreateBuildingFormComponent);
   }
 }

@@ -8,43 +8,43 @@
     </div>
 
     <div class="header" role="header">
-        <h1>Detalle de conteo</h1>
+        <h1>Detalle de building</h1>
         <button appRoundButton mat-flat-button color="accent" class="btn btn-info" (click)="backTobuildingsList()">
             <mat-icon>arrow_back</mat-icon> Volver
         </button>
     </div>
 
-    <mat-card class="mat-elevation-z0" *ngIf="buildingDetail?.conteo">
+    <mat-card class="mat-elevation-z0" *ngIf="buildingDetail?.building">
         <mat-card-header class="product-information">
-            <div class="ean-image-container" *ngIf="buildingDetail?.conteo?.producto">
-                <img mat-card-image [src]="buildingDetail?.conteo?.producto?.imagen" alt="{{ buildingDetail?.conteo?.plu }}">
+            <div class="ean-image-container" *ngIf="buildingDetail?.building?.producto">
+                <img mat-card-image [src]="buildingDetail?.building?.producto?.imagen" alt="{{ buildingDetail?.building?.plu }}">
             </div>
 
             <div class="product-detail">
 
-                <mat-card-title>NÚMERO DE CONTEO</mat-card-title>
-                <mat-card-subtitle>{{ buildingDetail?.conteo?.id_conteo }}</mat-card-subtitle>
+                <mat-card-title>NÚMERO DE building</mat-card-title>
+                <mat-card-subtitle>{{ buildingDetail?.building?.id_building }}</mat-card-subtitle>
 
                 <mat-card-title>ESTADO</mat-card-title>
-                <mat-card-subtitle>{{ buildingDetail?.conteo?.estado }}</mat-card-subtitle>
+                <mat-card-subtitle>{{ buildingDetail?.building?.estado }}</mat-card-subtitle>
 
-                <mat-card-title>TIPO DE CONTEO</mat-card-title>
-                <mat-card-subtitle>{{ buildingDetail?.conteo?.tipo_Conteo }}</mat-card-subtitle>
+                <mat-card-title>TIPO DE building</mat-card-title>
+                <mat-card-subtitle>{{ buildingDetail?.building?.tipo_building }}</mat-card-subtitle>
 
             </div>
             <div class="product-detail">
 
                 <mat-card-title>FECHA</mat-card-title>
-                <mat-card-subtitle>{{ buildingDetail?.conteo?.fecha | date: 'dd/MM/yyyy hh:mm' }}</mat-card-subtitle>
+                <mat-card-subtitle>{{ buildingDetail?.building?.fecha | date: 'dd/MM/yyyy hh:mm' }}</mat-card-subtitle>
                 
                 <mat-card-title>USUARIO</mat-card-title>
-                <mat-card-subtitle>{{ buildingDetail?.conteo?.nombre }} ({{ buildingDetail?.conteo?.legajo }})</mat-card-subtitle>
-                <span *ngIf="buildingDetail?.conteo?.producto">
+                <mat-card-subtitle>{{ buildingDetail?.building?.nombre }} ({{ buildingDetail?.building?.legajo }})</mat-card-subtitle>
+                <span *ngIf="buildingDetail?.building?.producto">
                     <mat-card-title>PLU</mat-card-title>
-                    <mat-card-subtitle>{{ buildingDetail?.conteo?.producto?.plu }}</mat-card-subtitle>
+                    <mat-card-subtitle>{{ buildingDetail?.building?.producto?.plu }}</mat-card-subtitle>
 
                     <mat-card-title>DESCRIPCIÓN</mat-card-title>
-                    <mat-card-subtitle>{{ buildingDetail?.conteo?.producto?.descripcion }}</mat-card-subtitle>
+                    <mat-card-subtitle>{{ buildingDetail?.building?.producto?.descripcion }}</mat-card-subtitle>
                 </span>
             </div>
 

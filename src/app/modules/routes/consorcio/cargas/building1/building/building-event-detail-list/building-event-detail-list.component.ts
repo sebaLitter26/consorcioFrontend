@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, T
 import { Observable, of } from 'rxjs';
 import { DynamicTableDefinition } from 'src/app/modules/ui/dynamic-table';
 import { Building, BuildingDetail, BuildingEvent, BuildingFlow, BuildingSerial, BuildingStateStyle } from '../..';
-import { BuildingActionsComponent } from '../../buildings-list/building-actions/building-actions.component';
+import { BuildingActionsComponent } from '../../building-list/building-actions/building-actions.component';
 import { BUILDING_SERIAL_STATE_MAP, BUILDING_STATE_ENUM_MAP, BUILDING_STATE_MAP } from '../../model';
 
 /**
@@ -14,7 +14,7 @@ import { BUILDING_SERIAL_STATE_MAP, BUILDING_STATE_ENUM_MAP, BUILDING_STATE_MAP 
   styleUrls: ['./building-event-detail-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class buildingEventsListComponent implements OnInit {
+export class BuildingEventsListComponent implements OnInit {
    
   /** El detalle de conteo.*/
   @Input()

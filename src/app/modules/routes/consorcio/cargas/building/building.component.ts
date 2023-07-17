@@ -70,6 +70,8 @@ export class BuildingComponent implements OnInit{
     ngOnInit(): void {
         /** Obtiene la lista de conteos precargada por el resolver */
         this.loading = true;
+        console.log('HOLAAA');
+        
     
         /* this.psicotecnico = this.activatedRoute.snapshot.queryParams as Psico;
         if(!this.psicotecnico.legajo){

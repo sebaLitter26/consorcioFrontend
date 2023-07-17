@@ -8,7 +8,7 @@ import { Observable, of, Subject, take } from 'rxjs';
   styleUrls: ['./building-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class buildingDetailComponent implements OnInit {
+export class BuildingDetailComponent implements OnInit {
   
   buildingDetail: BuildingDetail | null = null;
   $buildingDetail: Observable<BuildingDetail> = of(); 

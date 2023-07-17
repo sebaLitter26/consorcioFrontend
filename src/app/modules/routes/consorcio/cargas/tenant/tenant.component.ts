@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { Appartment, Tenant} from '../../../model';
 import { ResourceService } from '../../services/resource-control.service'
-import { Observable, Subject, Subscription } from 'rxjs';
+import { finalize, Observable, Subject, Subscription } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OverlayService } from '../../../../overlay/services/overlay.service';
 import { SnackBarService } from 'src/app/services/snackbar.service';
@@ -14,35 +14,8 @@ import { PluImageComponent } from '../../../../common/plu-image/plu-image.compon
 import { StringSplitterData } from '../../../../common';
 import { StringSplitterComponent } from '../../../../common/string-splitter/string-splitter.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ProcessStateStyle } from '../../../..';
+import { TenantFilters, TenantType } from './model';
 
-
-/** 
- * Mapa de estilos de etiquetas para tipos de novedades.
- * Define la forma en la que se muestran los ids de novedades en el listado de novedades.
- */
-const NOVELTIES_MAP: {[keys in NoveltyType]: ProcessStateStyle} = {
-    1: {
-        label: "FALTANTE",
-        color: "white",
-        backgroundColor: "var(--color-missing)",
-    },
-    2: {
-        label: "SOBRANTE",
-        color: "white",
-        backgroundColor: "var(--color-surplus)",
-    },
-    3: {
-        label: "DEFECTUOSO",
-        color: "white",
-        backgroundColor: "var(--color-defective)",
-    },
-    4: {
-        label: "NO APTO",
-        color: "white",
-        backgroundColor: "var(--color-unfit)",
-    },
-}
 
 
 @Component({
@@ -94,6 +67,11 @@ export class TenantComponent implements OnInit{
         userControl: new FormControl('',[Validators.required]),
         appartmentControl: new FormControl(1,[Validators.required]),
     });
+    tenantFormFilter= new FormGroup ({
+        /** `FormControl` con el tipo de legajo a filtrar. */
+        userControl: new FormControl('',[Validators.required]),
+        appartmentControl: new FormControl(1,[Validators.required]),
+    });
 
 
     /** La definición de la tabla que muestra el listado de novedades. */
@@ -123,8 +101,8 @@ export class TenantComponent implements OnInit{
     /** Estilos custom para columnas del listado de novedades. */
     columnStyles: (((item: Tenant) => {[key: string]: string}) | null)[] = [
         null, null, null,
-        (item: Tenant) => {
-            const TenantTypeStyle: ProcessStateStyle = NOVELTIES_MAP[item.ID_TIPO_NOVEDAD];
+        /* (item: Tenant) => {
+            const TenantTypeStyle: ProcessStateStyle = TENANT_MAP[item.ID_TIPO_NOVEDAD];
             
             return {
                 "color": TenantTypeStyle.color,
@@ -136,44 +114,35 @@ export class TenantComponent implements OnInit{
             }
         },
         (item: Tenant) => {
-            const noveltyTypeStyle: ProcessStateStyle = PROCESS_STATES_MAP[item.ESTADO];
+            const tenantTypeStyle: ProcessStateStyle = PROCESS_STATES_MAP[item.ESTADO];
 
             return {
-                "color": noveltyTypeStyle.color,
+                "color": tenantTypeStyle.color,
                 "padding": "5px 15px",
                 "box-sizing": "border-box",
                 "width": "100px",
                 "border-radius": "5px",
-                "background-color": noveltyTypeStyle.backgroundColor,
+                "background-color": tenantTypeStyle.backgroundColor,
             }
-        }, null, null, null, null, null
+        }, null, null, null, null, null */
     ];
 
     /** Formatos custom para columnas del listado de novedades. */
     columnFormaters: (((item: Tenant) => string | number | boolean) | null)[] = [
-        null, null,
-        (item: Tenant) => {
-            return item.ID_NOVEDAD ?? '-';
-        },
-        (item: Tenant) => {
-            return NOVELTIES_MAP[item.ID_TIPO_NOVEDAD].label;
-        },
-        (item: Tenant) => {
-            return `${PROCESS_STATES_LABELS_MAP[item.ESTADO]}`;
-        },
-        (item: Tenant) => {
-            return item.ID_RESERVA ?? '-';
-        },
-        (item: Tenant) => {
-            return item.PLU ?? '-';
-        },
-        (item: Tenant) => {
+        null, null,       
+        /* (item: Tenant) => {
             return item.DESCRIPCION ?? '-';
         },
         (item: Tenant) => {
             let date = new Date(item.FECHA);
             return `${date.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})}` ?? '-';
         },
+        (item: Tenant) => {
+            return NOVELTIES_MAP[item.ID_TIPO_NOVEDAD].label;
+        },
+        (item: Tenant) => {
+            return `${PROCESS_STATES_LABELS_MAP[item.ESTADO]}`;
+        }, */
     ];
 
     tenantUpdateSource: Subject<boolean> = new Subject<boolean>();
@@ -233,14 +202,16 @@ export class TenantComponent implements OnInit{
 
 
 
-    private _getFilters(): NoveltyFilters {
+    private _getFilters(): TenantFilters {
         return {
-            tipoNovedad: this.noveltyForm.controls.noveltyTypeControl.value?.toString() ?? null,
-            estado: this.noveltyForm.controls.noveltyStateControl.value?.toString() ?? null,
-            fechaDesde: this.noveltyForm.controls.dateFromControl.value,
-            fechaHasta: this.noveltyForm.controls.dateToControl.value,
-            nroReserva: this.noveltyForm.controls.nroReservaControl.value?.toString() ?? null,
-            idNovedad: this.noveltyForm.controls.noveltyControl.value,
+            tipoInquilino: null, //this.tenantFormFilter.controls.tenantTypeControl.value?.toString() ?? null,
+            estado: null, //this.tenantFormFilter.controls.tenantStateControl.value?.toString() ?? null,
+            fechaDesde: null, //this.tenantFormFilter.controls.dateFromControl.value,
+            fechaHasta: null, //this.tenantFormFilter.controls.dateToControl.value,
+            nroReserva: null, //this.tenantFormFilter.controls.nroReservaControl.value?.toString() ?? null,
+            //idNovedad: this.tenantFormFilter.controls.tenantControl.value,
+            limit: 10,
+            page: 1
         };
     }
 
@@ -251,16 +222,17 @@ export class TenantComponent implements OnInit{
     update(): void {
         this.overlayService.displayLoadingOverlay();
         this.loading = true;
-        this.actionsSubscription$ = this.recursosService.getTenants(this._getFilters()).subscribe({
-            next: (result: Tenant[]) => {
-                this.tenants = result;
-                this.overlayService.hideLoadingOverlay();
-                this.loading = false;
-
+        this.actionsSubscription$ = this.recursosService.getTenants(this._getFilters()).pipe(
+            finalize(() => {
                 setTimeout(() => {
+                    this.overlayService.hideLoadingOverlay();
+                    this.loading = false;
                     this.tenantUpdateSource.next(true);
                     this.changeDetectorRef.detectChanges();
                 }, 100);
+            })).subscribe({
+            next: (result: Tenant[]) => {
+                this.tenants = result;
                 
                 if (this.tenants.length == 0) {
                     this.snackBarService.open("No se encontraron inquilinos para los filtros ingresados", "Aceptar", 6000, "warning-snackbar");
@@ -268,12 +240,7 @@ export class TenantComponent implements OnInit{
             },
             error: (error: HttpErrorResponse) => {
                 this.tenants = [];
-                this.loading = false;
-
-                setTimeout(() => {
-                    this.tenantUpdateSource.next(true);
-                    this.changeDetectorRef.detectChanges();
-                }, 100);
+                
             },
         });
     }

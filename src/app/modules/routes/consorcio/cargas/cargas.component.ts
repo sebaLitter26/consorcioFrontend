@@ -103,8 +103,13 @@ export class CargasComponent implements OnInit{
 
     changeTab(tab:number){
         this.tabIndex = tab; 
-        const input_id = document.querySelector('input[id^="coolinput"]')?.id;
-        if(input_id) document.getElementById(input_id)?.focus();
+        
+        const arrDir = ['building1', 'appartment', 'owner', 'tenant'];
+        
+        this.router.navigate(['/consorcio/cargas',{ outlets: { carga: [`${arrDir[tab]}`] } }]);
+
+        /* const input_id = document.querySelector('input[id^="coolinput"]')?.id;
+        if(input_id) document.getElementById(input_id)?.focus(); */
         this.changeDetectorRef.detectChanges();
         //this.updateForm();
     }

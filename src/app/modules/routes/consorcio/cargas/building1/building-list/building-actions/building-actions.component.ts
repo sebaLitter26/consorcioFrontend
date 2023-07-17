@@ -21,7 +21,7 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
   /** Es asginada por la dynamic table */
   data: Building | null = null;
 
-  /** Las acciones posibles que se pueden realizar de ese conteo segun su estado */
+  /** Las acciones posibles que se pueden realizar de ese building segun su estado */
   actions: BuildingAction[] = [];
   constructor(
     private matDialog: MatDialog,
@@ -37,7 +37,7 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
   }
 
   /**
-   * Realiza la accion clickeada en el menu de acciones del conteo y avisa para que se actualice la tabla
+   * Realiza la accion clickeada en el menu de acciones del building y avisa para que se actualice la tabla
    * @param action La accion a realizar
    */
   handleAction(action: BuildingAction){
@@ -45,13 +45,13 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
     switch(action.name)
     {
       case('detalle'):{
-        this.router.navigate(['/buildings/building'], {queryParams: {id: this.data?.id_conteo}} );
+        this.router.navigate(['/buildings/building'], {queryParams: {id: this.data?.id_building}} );
         break;
       }
       case('informar'):{
         const confirmationDialogData: ConfirmationDialogData = {
-          title: 'Informar conteo',
-          message: 'Esta seguro que desea informar a la PDA los series a contar?',
+          title: 'Informar Edificio',
+          message: 'Esta seguro que desea crear el edificio?',
           color: 'primary',
         }
         this.matDialog.open(ConfirmationDialogComponent, {
@@ -59,8 +59,8 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
           data: confirmationDialogData
         }).afterClosed().subscribe((result: boolean | string) => {
           if (result) {
-            this.buildingService.informBuilding(this.data!.id_conteo).subscribe(() => {
-              this.snackBarService.open(`Conteo ${this.data!.id_conteo} informado`, "Aceptar", 5000, "success-snackbar");
+            this.buildingService.informBuilding(this.data!.id_building).subscribe(() => {
+              this.snackBarService.open(`Edificio ${this.data!.id_building} informado`, "Aceptar", 5000, "success-snackbar");
               this.BuildingSharedService.updateTable();
             });
           }
@@ -70,8 +70,8 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
       
       case('cancelar'):{
         const confirmationDialogData: ConfirmationDialogData = {
-          title: 'Cancelar conteo',
-          message: 'Se cancelará el conteo ' + this.data?.id_conteo + ' ¿Desea continuar?',
+          title: 'Cancelar building',
+          message: 'Se cancelará el building ' + this.data?.id_building + ' ¿Desea continuar?',
           color: 'primary',
         }
         this.matDialog.open(ConfirmationDialogComponent, {
@@ -80,8 +80,8 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
         })
         .afterClosed().subscribe((result: boolean | string) => {
           if (result) {
-            this.buildingService.cancelBuilding(this.data!.id_conteo).subscribe(() => {
-              this.snackBarService.open(`Conteo ${this.data!.id_conteo} cancelado`, "Aceptar", 5000, "success-snackbar");
+            this.buildingService.cancelBuilding(this.data!.id_building).subscribe(() => {
+              this.snackBarService.open(`building ${this.data!.id_building} cancelado`, "Aceptar", 5000, "success-snackbar");
               this.BuildingSharedService.updateTable();
             });
           }
@@ -93,21 +93,21 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
   }
 
   /**
-   * Devuelve todas las acciones que se pueden realizar para un conteo
+   * Devuelve todas las acciones que se pueden realizar para un building
    */
   private getAllBuildingActions(): BuildingAction[]{
     const actions: BuildingAction[] = [
       {name: 'detalle', title: 'Ver detalle', icon: 'info', permission: 'buildings_ver-detalle', availableStates: []},
-        {name: 'informar', title: 'Informar conteo', icon: 'announcement', permission: 'buildings_informar-conteo', 
+        {name: 'informar', title: 'Informar building', icon: 'announcement', permission: 'buildings_informar-building', 
           availableStates: [BuildingState.CREADO]},
-        {name: 'cancelar', title: 'Cancelar conteo', icon: 'cancel', color: '#F08080',  permission: 'buildings_cancelar-conteo',
+        {name: 'cancelar', title: 'Cancelar building', icon: 'cancel', color: '#F08080',  permission: 'buildings_cancelar-building',
           availableStates: []},
     ];
     return actions;
   }
   
   /**
-   * Devuelve la lista de acciones que pueden realizarse para ese conteo
+   * Devuelve la lista de acciones que pueden realizarse para ese building
    * @param state 
    * @returns Una lista de acciones
    */

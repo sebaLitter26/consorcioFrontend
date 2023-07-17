@@ -3,14 +3,14 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { CreateBuildingPayload, BuildingsListProduct } from '../../..';
-import { GdmService } from 'src/app/modules/gdm/services/gdm.service';
+//import { GdmService } from 'src/app/modules/gdm/services/gdm.service';
 import { PluUtils } from 'src/app/utils/plu.utils';
 import { BuildingType } from '../../../model';
 import { SnackBarService } from 'src/app/services/snackbar.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BuildingService } from '../../../services/buildings.service';
 //import { IpService } from 'src/app/services/ip.service';
-import { BuildingsSharedService } from '../../../services/buildings-shared.service';
+import { BuildingSharedService } from '../../../services/buildings-shared.service';
 
 
 /**
@@ -21,7 +21,7 @@ import { BuildingsSharedService } from '../../../services/buildings-shared.servi
   templateUrl: './create-building-form.component.html',
   styleUrls: ['./create-building-form.component.scss']
 })
-export class CreatebuildingFormComponent implements OnInit {
+export class CreateBuildingFormComponent implements OnInit {
   /** El form para crear un conteo nuevo */
   buildingForm!: FormGroup;
   
@@ -35,17 +35,17 @@ export class CreatebuildingFormComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private gdmService: GdmService, 
+    //private gdmService: GdmService, 
     private snackBarService: SnackBarService,
-    public dialogRef: MatDialogRef<CreatebuildingFormComponent>,
+    public dialogRef: MatDialogRef<CreateBuildingFormComponent>,
     private buildingService: BuildingService,
-    private buildingsSharedService: BuildingsSharedService,
+    private buildingsSharedService: BuildingSharedService,
   ) { }
 
 
   ngOnInit(): void {
     this.buildingForm = this.formBuilder.group({
-      tipoConteo: {value: null, validators: Validators.required},
+      tipo_building: {value: null, validators: Validators.required},
       plu: {value: null, disabled: true},
       // plu: {value: null, disabled: true, validators: this.pluValidator(this.buildingPlu)},
     })
@@ -61,7 +61,7 @@ export class CreatebuildingFormComponent implements OnInit {
   onSubmit(){
     this.bSubmitting = true;
     const payload: CreateBuildingPayload = {
-      id_tipo_conteo: Number(this.buildingForm.get('tipoConteo')?.value),
+      id_tipo_building: Number(this.buildingForm.get('tipo_building')?.value),
       plu: this.buildingForm.get('plu')?.value ? this.buildingForm.get('plu')?.value.toString() : null,
       hostname: "",
     }
@@ -90,7 +90,7 @@ export class CreatebuildingFormComponent implements OnInit {
   }
 
   isSubmitButtonDisabled(): boolean {
-    let enabled = (Number(this.buildingForm.get('tipoConteo')!.value) == BuildingType.TODOS_LOS_PLU || this.buildingPlu !== null)
+    let enabled = (Number(this.buildingForm.get('tipo_building')!.value) == BuildingType.TODOS_LOS_PLU || this.buildingPlu !== null)
       && !this.bFetchingData;
     return !enabled;
   }
@@ -107,7 +107,7 @@ export class CreatebuildingFormComponent implements OnInit {
     }
     
     // Si gdmService no encuentra el plu devuelve un undefined object, no devuelve un error
-    this.gdmService.getPluInformation(plu).subscribe(pluObject => {
+    /* this.gdmService.getPluInformation(plu).subscribe(pluObject => {
       if(pluObject !== undefined){
         this.buildingPlu = {plu: plu, descripcion: pluObject.descripcion, imagen: PluUtils.buildPluImageUrl(plu)};
       }
@@ -115,7 +115,7 @@ export class CreatebuildingFormComponent implements OnInit {
         this.snackBarService.open("PLU no encontrado", "Aceptar", 5000, "error-snackbar");
         this.buildingPlu = null; 
       } 
-    })
+    }) */
   }
 
   resetPluControl(){

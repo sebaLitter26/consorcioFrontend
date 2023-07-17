@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { of, Observable, iif, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { RRHHResponse } from '../modules';
 import { ExpiredSessionDialogComponent } from '../modules/authentication/expired-session-dialog/expired-session-dialog.component';
 import { ProfileService } from '../modules/main/services/profile.service';
+import { RRHHResponse } from '../modules/model';
 import { OverlayService } from '../modules/overlay/services/overlay.service';
 import { SnackBarService } from './snackbar.service';
 

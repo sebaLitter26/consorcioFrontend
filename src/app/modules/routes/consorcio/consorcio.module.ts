@@ -18,16 +18,14 @@ import { UserModule } from '../user/user.module';
 import { ReportComponent } from './reporte/report.component';
 import { EmpleadoInformationComponent } from './reporte/empleado-detail/empleado-detail.component';
 import { CoolFileInputModule } from '../../ui/cool-file-input/cool-file-input.module';
-
-import { BuildingComponent } from './cargas/building/building.component';
-import { AppartmentComponent } from './cargas/appartment/appartment.component';
-import { TenantComponent } from './cargas/tenant/tenant.component';
-import { OwnerComponent } from './cargas/owner/owner.component';
+import { AuthorizationGuard } from '../../authorization/guards/authorization-guard.service';
 
 const routes: Routes = [
     {
         path: 'cargas',
-        component: CargasComponent,
+        loadChildren: () => import('./cargas/carga.module').then(m => m.CargasModule),
+        canActivate: [ AuthorizationGuard ],
+        //component: CargasComponent,
         //resolve: {empleadoDetail: LegajoDetailResolver},
         data: { animation: 'isRight' } 
     },
@@ -36,6 +34,11 @@ const routes: Routes = [
         component: ReportComponent,
         data: { animation: 'isLeft' } 
     }, 
+    {
+        path: '',
+        redirectTo: '/cargas',
+        pathMatch: 'full'
+    },
 ]
 @NgModule({
     imports: [
@@ -54,14 +57,9 @@ const routes: Routes = [
         CoolFileInputModule
     ],
     declarations: [
-        CargasComponent, 
+        //CargasComponent, 
         ReportComponent,
-        EmpleadoInformationComponent,
-
-        BuildingComponent,
-        AppartmentComponent,
-        TenantComponent,
-        OwnerComponent
+        EmpleadoInformationComponent
         
     ],
     providers: [

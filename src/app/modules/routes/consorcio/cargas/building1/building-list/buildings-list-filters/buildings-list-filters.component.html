@@ -1,15 +1,15 @@
 <form class="form " [formGroup]="filtersForm" (ngSubmit)="onSubmitFilters()">
     <div class="filters-container">
         <mat-form-field class="state-form-field" appearance="fill" color="primary">
-            <mat-label>Tipo de conteo</mat-label>
-            <mat-select multiple formControlName="tipoConteo">
-                <mat-option class="first-option" [value]="'all'" (click)="setAllCountTypeOptions()">Todos</mat-option>
-                <mat-option *ngFor="let typeOption of countTypeOptions" [value]="typeOption.value">{{ typeOption.displayValue }}</mat-option>
+            <mat-label>Tipo de Edificio</mat-label>
+            <mat-select multiple formControlName="tipo_building">
+                <mat-option class="first-option" [value]="'all'" (click)="setAllBuildingTypeOptions()">Todos</mat-option>
+                <mat-option *ngFor="let typeOption of buildingTypeOptions" [value]="typeOption.value">{{ typeOption.displayValue }}</mat-option>
             </mat-select>
         </mat-form-field>
         
         <mat-form-field appearance="fill" color="primary">
-            <mat-label>Fecha del conteo</mat-label>
+            <mat-label>Fecha del Edificio</mat-label>
             <mat-date-range-input [rangePicker]="deliveryDate">
                 <input matStartDate placeholder="" formControlName="fechaDesde" name="deliveryDateFrom" autocomplete="off">
                 <input matEndDate placeholder="" formControlName="fechaHasta" name="deliveryDateTo" autocomplete="off">
@@ -21,14 +21,14 @@
         <mat-form-field class="state-form-field" appearance="fill" color="primary">
             <mat-label>Estado</mat-label>
             <mat-select multiple formControlName="estado">
-                <mat-option class="first-option" [value]="'all'" (click)="setAllCountStateOptions()">Todos</mat-option>
-                <mat-option *ngFor="let stateOption of countStateOptions" [value]="stateOption.value">{{ stateOption.displayValue }}</mat-option>
+                <mat-option class="first-option" [value]="'all'" (click)="setAllBuildingStateOptions()">Todos</mat-option>
+                <mat-option *ngFor="let stateOption of buildingStateOptions" [value]="stateOption.value">{{ stateOption.displayValue }}</mat-option>
             </mat-select>
         </mat-form-field>
         
         <mat-form-field appearance="fill" color="primary">
-            <mat-label>ID Conteo</mat-label> 
-            <input matInput type="number" formControlName="idConteo">
+            <mat-label>ID Edificio</mat-label> 
+            <input matInput type="number" formControlName="id_building">
         </mat-form-field>
 
         <mat-form-field appearance="fill" color="primary">

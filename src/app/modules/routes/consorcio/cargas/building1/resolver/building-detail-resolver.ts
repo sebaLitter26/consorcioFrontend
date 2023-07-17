@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { ActivatedRoute, ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/router";
 import { Observable, of } from "rxjs";
 import { BuildingDetail } from "..";
-import { BuildingService } from "../services/building.service";
+import { BuildingService } from "../services/buildings.service";
 
 /**
  * Es un resolver para precargar los conteos, se utiliza en el Counts module
@@ -15,6 +15,6 @@ export class BuildingDetailResolver {
     ) {}
     
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<BuildingDetail> {
-        return this.buildingService.getbuildingDetails(+route.queryParams.id);
+        return this.buildingService.getBuildingDetails(+route.queryParams.id);
     }
 }

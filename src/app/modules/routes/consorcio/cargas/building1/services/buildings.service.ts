@@ -1,21 +1,24 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, take, tap } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { map, switchMap } from "rxjs/operators";
 import { IpService } from "src/app/services/ip.service";
 import { PluUtils } from "src/app/utils/plu.utils";
 import { environment } from "src/environments/environment";
 import { CancelBuildingPayload, Building, BuildingDetail, BuildingListFilters, BuildingsListProduct, CreateBuildingPayload, InformBuildingPayload } from "..";
-import { GdmService } from "../../../gdm/services/gdm.service";
-import { RESOURCE_BUILDING } from "../../model";
+import { GdmService } from "../../../../../gdm/services/gdm.service";
 import { BuildingType } from "../model";
 
+import { Apollo } from 'apollo-angular';
+import { BUILDINGS } from './building.graphql';
+
+
 const DEFAULT_BUILDING_FILTERS: BuildingListFilters = {
-    tipoConteo: [],
+    tipo_building: [],
     fechaDesde: null,
     fechaHasta: null,
     estado: [],
-    idConteo: null,
+    id_building: null,
     plu: null,
     usuario: null,
 }
@@ -25,16 +28,25 @@ export class BuildingService {
     
     constructor(
         private http: HttpClient, 
+        public apollo: Apollo,
         //private gdmService: GdmService,
         private ipService: IpService
     ) {}
 
     /**
-     * Obtiene el listado de conteos
-     * @returns un Observable con el listado de conteos 
+     * Obtiene el listado de buildings
+     * @returns un Observable con el listado de buildings 
      */
     getBuildings(filters: BuildingListFilters = DEFAULT_BUILDING_FILTERS): Observable<Building[]>{
-        return this.http.post<Building[]>(`${environment.apiUrl}${RESOURCE_BUILDING}/getConteos`, filters);
+        return this.apollo.watchQuery({
+            query: BUILDINGS,
+            variables: filters,
+            fetchPolicy: 'network-only'
+        }).valueChanges.pipe(map((result: any) => {  
+            return result.data.buildings;
+        }));
+    
+        //return this.http.post<Building[]>(`${environment.apiUrl}/getbuildings`, filters);
     }
 
     /**
@@ -53,55 +65,55 @@ export class BuildingService {
     }
 
     /**
-     * Crea un conteo nuevo 
+     * Crea un building nuevo 
      * @return un observable con el resultado de la peticion
      */
     createBuilding(createBuildingPayload: CreateBuildingPayload): Observable<any>{
         return this.ipService.getIP().pipe(
             //tap(ip => createBuildingPayload.hostname = ip),
-            switchMap(() => this.http.post(`${environment.apiUrl}${RESOURCE_BUILDING}/CrearConteo`, createBuildingPayload))
+            switchMap(() => this.http.post(`${environment.apiUrl}/Crearbuilding`, createBuildingPayload))
         );
     }
     
     /**
-     * Envia el id de un conteo para que se le cambie el estado a informado
+     * Envia el id de un building para que se le cambie el estado a informado
      * @return un observable con el resultado de la peticion
      */
     informBuilding(BuildingId: number): Observable<any>{
         const payload: InformBuildingPayload = {
-            id_conteo: BuildingId,
+            id_building: BuildingId,
             hostname: "",
         }
         return this.ipService.getIP().pipe(
             //tap(ip => payload.hostname = ip),
-            switchMap(ip => this.http.put(`${environment.apiUrl}${RESOURCE_BUILDING}/InformarConteo`, payload))
+            switchMap(ip => this.http.put(`${environment.apiUrl}/Informarbuilding`, payload))
         );
     }
 
     /**
-     * Envia el id de un conteo para que se le cambie el estado a cancelado
+     * Envia el id de un building para que se le cambie el estado a cancelado
      * @return un observable con el resultado de la peticion
      */
     cancelBuilding(BuildingId: number): Observable<any> {
         const payload: CancelBuildingPayload = {
-            id_conteo: BuildingId,
+            id_building: BuildingId,
             hostname: "",
         }
         return this.ipService.getIP().pipe(
             tap((ip: string) => payload.hostname = ip),
-            switchMap((ip: string) => this.http.put(`${environment.apiUrl}${RESOURCE_BUILDING}/CancelarConteo`, payload))
+            switchMap((ip: string) => this.http.put(`${environment.apiUrl}/Cancelarbuilding`, payload))
         );
     }
 
     /**
-     * Obtiene el detalle de un conteo
-     * @return un observable con el detalle de un conteo
+     * Obtiene el detalle de un building
+     * @return un observable con el detalle de un building
      */
     getBuildingDetails(BuildingId: number): Observable<BuildingDetail> {
-        return this.http.get<BuildingDetail>(`${environment.apiUrl}${RESOURCE_BUILDING}/getDetalleConteo?id_conteo=${BuildingId}`).pipe(
+        return this.http.get<BuildingDetail>(`${environment.apiUrl}/getDetallebuilding?id_building=${BuildingId}`).pipe(
             tap(BuildingDetail => {
-                if (BuildingDetail.conteo.plu && BuildingDetail.conteo.id_tipo_conteo === BuildingType.UN_PLU) {
-                    BuildingDetail.conteo.producto = this.getPluDetails(BuildingDetail.conteo.plu);
+                if (BuildingDetail.building.plu && BuildingDetail.building.id_tipo_building === BuildingType.UN_PLU) {
+                    BuildingDetail.building.producto = this.getPluDetails(BuildingDetail.building.plu);
                 }
             }), 
         );

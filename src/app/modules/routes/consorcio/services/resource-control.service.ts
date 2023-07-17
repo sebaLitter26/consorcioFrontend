@@ -4,6 +4,7 @@ import { delay, map, Observable, of, share, take, tap } from "rxjs";
 import { environment } from "src/environments/environment";
 import { Appartment, Building, Owner, Tenant } from "../../model";
 import { User } from "../../user";
+import { TenantFilters } from "../cargas/tenant/model";
 
 
 
@@ -54,8 +55,8 @@ export class ResourceService {
      * Obtiene el listado de Inquilinos
      * @returns un `Observable` con el listado de Departamentos
      */
-    getTenants(page: number = 1, limit: number = 10): Observable<Tenant[]> {
-        return this.http.get<any[]>(`${environment.apiUrl}tenant?page=${page}&limit=${limit}`).pipe( map((elem: any)=> elem['data']) , take(1));
+    getTenants(filter: TenantFilters): Observable<Tenant[]> {
+        return this.http.get<any[]>(`${environment.apiUrl}tenant?page=${filter.page}&limit=${filter.limit}`).pipe( map((elem: any)=> elem['data']) , take(1));
         
     }
 

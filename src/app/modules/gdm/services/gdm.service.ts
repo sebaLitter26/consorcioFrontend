@@ -19,7 +19,7 @@ export class GdmService {
      * @returns un `Observable` con la información del PLU
      */
     getPluInformation(plu: string): Observable<GdmPlu> {
-        return this.http.get<GdmPlu[]>(`${environment.apiInterfaceUrl}${RESOURCE_GDM}/consultaPlu?plu=${plu}`).pipe(
+        return this.http.get<GdmPlu[]>(`${environment.apiUrl}${RESOURCE_GDM}/consultaPlu?plu=${plu}`).pipe(
             map(pluArray => {
                 return pluArray[0];
             }));
@@ -30,6 +30,6 @@ export class GdmService {
      * @returns un `Observable` con la respuesta del servicio
      */
     updatePlus(): Observable<any> {
-        return this.http.put(`${environment.apiInterfaceUrl}${RESOURCE_GDM}/actualizarPlus`, {});
+        return this.http.put(`${environment.apiUrl}${RESOURCE_GDM}/actualizarPlus`, {});
     }
 }

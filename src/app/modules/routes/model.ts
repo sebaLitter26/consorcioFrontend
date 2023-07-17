@@ -13,6 +13,7 @@ export const ACCOUNT: string = "ACCOUNT";
 
 
 
+
 export interface error {
     CODIGO: number;
     MENSAJE: string;

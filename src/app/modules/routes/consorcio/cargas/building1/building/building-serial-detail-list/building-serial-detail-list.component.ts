@@ -9,9 +9,9 @@ import { BuildingActionsComponent } from '../../building-list/building-actions/b
  * Componente para mostrar los detalles del conteo en una expandable row
  */
 @Component({
-  selector: 'app-Building-serial-detail-list',
-  templateUrl: './Building-serial-detail-list.component.html',
-  styleUrls: ['./Building-serial-detail-list.component.scss'],
+  selector: 'app-building-serial-detail-list',
+  templateUrl: './building-serial-detail-list.component.html',
+  styleUrls: ['./building-serial-detail-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BuildingSerialsListComponent implements OnInit {

@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 @NgModule({
     exports: [
         CommonModule,
-        MaterialModule,
+        MaterialModule
     ]
 })
 export class SharedModule {}

@@ -1,19 +1,50 @@
+import { ProcessState, ProcessStateStyle } from "src/app/modules/model";
+
+
+
+/** 
+ * Mapa de estilos de etiquetas para tipos de novedades.
+ * Define la forma en la que se muestran los ids de novedades en el listado de novedades.
+ */
+export const TENANT_MAP: {[keys in TenantType]: ProcessStateStyle} = {
+    1: {
+        label: "FALTANTE",
+        color: "white",
+        backgroundColor: "var(--color-missing)",
+    },
+    2: {
+        label: "SOBRANTE",
+        color: "white",
+        backgroundColor: "var(--color-surplus)",
+    },
+    3: {
+        label: "DEFECTUOSO",
+        color: "white",
+        backgroundColor: "var(--color-defective)",
+    },
+    4: {
+        label: "NO APTO",
+        color: "white",
+        backgroundColor: "var(--color-unfit)",
+    },
+}
+
 /** Los tipos de novedad. */
-export enum NoveltyType {
+export enum TenantType {
     FALTANTE = 1,
     SOBRANTE = 2,
     DEFECTUOSO = 3,
     NO_APTO = 4,
 }
 
-export const NOVELTY_STATES_PRIORITY: {[key: string]: number} = {
+export const TENANT_STATES_PRIORITY: {[key: string]: number} = {
     "wip": 0,
     "nok": 1,
     "ok": 2,
 }
 
-export interface Novelty {
-    id_tipo_novedad: NoveltyType;
+export interface Tenant {
+    id_tipo_novedad: TenantType;
     imagen: string;
     estado: ProcessState;
     fecha: string;
@@ -28,36 +59,17 @@ export interface Novelty {
     pedido_wf: string;
     solicitud_wf: string;
     usuario: string;
-    autorizaciones: NoveltyAuthorization[];
-    series: ReservationSerial[];    
-    reservasOT: ReservationWorkOrder[];
-    altoProducto: number;
-    anchoProducto: number;
-    cantidadComponentes: number;
-    codigoTipoSerializable: SerializableType;
-    descripcion: string;
-    ean: string;
-    longitudProducto: number;
-    peso: number;
-    plu: string;
-    poseeSerie: YesNo | null;
-    serializaProducto: YesNo | null;
-    stock: number;
-    tipoDeElectro: string;
-    tipoSerializable: string;
-    unidadDePeso: string;
-    unidadDeVolumen: string;
-    volumen: number;
+  
 }
 
-export interface NoveltyAuthorization {
+export interface TenantAuthorization {
     accion: string | null;
     estado: ProcessState;
     hostname: string | null;
     id_accion: number;
     id_novedad: string;
     id_rol: number;
-    id_tipo_novedad: NoveltyType;
+    id_tipo_novedad: TenantType;
     observacion: string | null;
     orden: number;
     roll: string | null;
@@ -68,12 +80,12 @@ export interface NoveltyAuthorization {
 }
 
 export interface CurrentNoveltiesResolvedData {
-    novelties: Novelty[];
+    novelties: Tenant[];
 }
 
 
 
-export interface NoveltyAction {
+export interface TenantAction {
     text: string;
     icon: string;
     dialogTitle: string;
@@ -82,7 +94,7 @@ export interface NoveltyAction {
     clickFn: (observation: string) => void;
 }
 
-export interface NoveltyUpdatePayload {
+export interface TenantUpdatePayload {
     novedad: string;
     orden: number;
     aprueba: boolean;
@@ -92,22 +104,24 @@ export interface NoveltyUpdatePayload {
     ubicacion: string;
 }
 
-export interface NoveltyTypeOption {
-    value: NoveltyType;
+export interface TenantTypeOption {
+    value: TenantType;
     displayValue: string;
 }
 
-export interface NoveltyStateOption {
+export interface TenantStateOption {
     value: ProcessState;
     displayValue: string;
 }
 
-export interface NoveltyFilters {
-    tipoNovedad: NoveltyType[] | null;
+export interface TenantFilters {
+    tipoInquilino: TenantType[] | null;
     estado: ProcessState[] | null;
     fechaDesde: string | null;
     fechaHasta: string | null;
     nroReserva: string | null;
+    limit: number;
+    page: number;
 }
 
 export interface CustomCard<T> {

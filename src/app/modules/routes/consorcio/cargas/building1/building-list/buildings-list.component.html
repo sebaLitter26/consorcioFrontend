@@ -1,16 +1,16 @@
 <main>
     <div class="header" role="header">
         <h1>Gestión de edificios</h1>
-        <button appRoundButton mat-flat-button color="primary" class="btn btn-primary" (click)="openDialogCreateCount()">
-            <mat-icon>add</mat-icon> Agregar conteo
+        <button appRoundButton mat-flat-button color="primary" class="btn btn-primary" (click)="openDialogCreatebuilding()">
+            <mat-icon>add</mat-icon> Agregar edificio
         </button>
     </div>
 
-    <app-counts-list-filters (onFiltersChanged)="onFiltersChanged($event)"></app-counts-list-filters>
+    <app-buildings-list-filters (onFiltersChanged)="onFiltersChanged($event)"></app-buildings-list-filters>
     
     <div class="table-container">
-        <app-dynamic-table *ngIf="counts.length > 0; else tableLoader"
-        [data]="counts"
+        <app-dynamic-table *ngIf="buildings && buildings.length > 0; else tableLoader"
+        [data]="buildings"
         [borderRadius]="'10px'"
         [tableDefinition]="tableDefinition"
         [customColumnComponents]="customComponents"
@@ -18,7 +18,7 @@
         [columnStyles]="columnStyles"
         [usePagination]="true"
         [pageSize]="16"
-        [updateSource]="countsUpdateSource.asObservable()"
+        [updateSource]="buildingsUpdateSource.asObservable()"
         >
         </app-dynamic-table>
         <ng-template #tableLoader>
