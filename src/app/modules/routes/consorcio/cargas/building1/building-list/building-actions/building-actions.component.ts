@@ -33,7 +33,7 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
     ) {}
 
   ngOnInit(): void {
-    this.actions = this.getBuildingActions(this.data!.id_estado).filter(action => this.userHasPermissionForAction(action))
+    this.actions = this.getBuildingActions(this.data!.id).filter(action => this.userHasPermissionForAction(action))
   }
 
   /**
@@ -45,7 +45,7 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
     switch(action.name)
     {
       case('detalle'):{
-        this.router.navigate(['/buildings/building'], {queryParams: {id: this.data?.id_building}} );
+        this.router.navigate(['/buildings/building'], {queryParams: {id: this.data?.id}} );
         break;
       }
       case('informar'):{

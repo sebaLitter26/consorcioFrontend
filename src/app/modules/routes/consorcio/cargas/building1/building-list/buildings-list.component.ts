@@ -35,8 +35,8 @@ export class BuildingListComponent implements OnInit {
 
   /** La definición de la tabla que muestra el listado de buildings. */
   tableDefinition: DynamicTableDefinition = {
-    displayedColumns: ["id_building", "tipo_building", "id_estado", "plu", "fecha_creacion", "nombre", "acciones"],
-    headerCellDefinitions: ["ID building", "Tipo", "Estado", "PLU", "Fecha y hora de creacion", "Usuario", ""],
+    displayedColumns: ["address", "location", "floors", "letter", "acciones"],
+    headerCellDefinitions: ["Direccion", "Localidad", "Pisos", "Letra maxima", "Acciones"],
   }
   
   constructor(
@@ -48,12 +48,12 @@ export class BuildingListComponent implements OnInit {
   ) {}
   
   /** Componentes custom a usar en el listado de buildings. */
-  customComponents: (Type<any> | null)[] = [null, null, null, null, null, null, BuildingActionsComponent];
+  customComponents: (Type<any> | null)[] = [null, null, null, null, BuildingActionsComponent];
   
   /** Formatos custom para columnas del listado de buildings. */
   columnFormaters: (((item: any) => string | number | boolean) | null)[] = [
     null, null,       
-    (item: Building) => {
+    /* (item: Building) => {
       return BUILDING_STATE_MAP[item.id_estado].label;
     },
     (item: Building) => {
@@ -62,14 +62,14 @@ export class BuildingListComponent implements OnInit {
     (item: Building) => {
       let date = new Date(item.fecha);
       return `${date.toLocaleDateString() + '\n' + date.toLocaleTimeString()}` ?? '-';
-    },
+    }, */
     null, null,
   ];
 
   /** Estilos custom para columnas del listado de buildings. */
   columnStyles: (((item: Building) => {[key: string]: string}) | null)[] = [
     null, null,
-    (item: Building) => {
+    /* (item: Building) => {
         const buildingStateStyle: BuildingStateStyle = BUILDING_STATE_MAP[item.id_estado];
         return {
             "color": buildingStateStyle.color,
@@ -79,7 +79,7 @@ export class BuildingListComponent implements OnInit {
             "border-radius": "5px",
             "background-color": buildingStateStyle.backgroundColor,
         }
-    }, null, null, null, null
+    }, */ null, null, null, null
   ];
  
   buildingsUpdateSource: Subject<boolean> = new Subject<boolean>();
@@ -90,9 +90,12 @@ export class BuildingListComponent implements OnInit {
     this.activatedRoute.data.subscribe(data => {
       this.buildings = data.buildings;
       this.loading = false;
+      console.log("hola");
     });
 
     this.buildingSharedService.updateBuildingEvent.subscribe((update: boolean) => {
+        
+        
       this.updateTable();
     });
   }
@@ -109,13 +112,15 @@ export class BuildingListComponent implements OnInit {
   updateTable() {
     this.overlayService.displayLoadingOverlay();
     this.buildingService.getBuildings(this.filters).subscribe(buildings => {
-      this.buildings = buildings;
+        console.log(buildings);
+        
+        this.buildings = buildings;
 
-      setTimeout(() => {
-        this.buildingsUpdateSource.next(true);
-      }, 100);
+        setTimeout(() => {
+            this.buildingsUpdateSource.next(true);
+        }, 100);
 
-      this.overlayService.hideLoadingOverlay();
+        this.overlayService.hideLoadingOverlay();
     });
   }
 

@@ -11,20 +11,21 @@ export interface BuildingDetail {
 
 /** El building de uno o de todos los productos */
 export interface Building {
-    id_building: number, 
+    id: number,
+    floors: number,
+    letter: string, 
+    appartments: any[],
+    createdAt: string, 
+    updatedAt: string,
+    /*
     id_estado: BuildingState,
-    estado: BuildingStateType,
-    id_tipo_building: number,
-    tipo_building: string, 
-    plu: string | null, 
-    producto?: BuildingsListProduct,
-    fecha: string, 
-    legajo: string,
+    estado: BuildingStateType, 
     nombre: string,
     hostname: string,
     flujo: BuildingFlow[];
     eventos: BuildingEvent[];
-    series: BuildingSerial[];
+    series: BuildingSerial[]; 
+    */
 }
 export interface BuildingsResolvedData {
     Buildings: Building[];
@@ -107,9 +108,8 @@ export interface InformBuildingPayload {
 }
 
 /** Payload para cancelar un building */
-export interface CancelBuildingPayload {
-    id_building: number,
-    hostname: string | null;
+export interface IDBuildingPayload {
+    id: string
 }
 
 export interface BuildingTypeOption {

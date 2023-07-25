@@ -27,7 +27,7 @@ export const EXCLUDED_API_URLS: string[] = [
     "serialapi",
     "ipadwebservices",
     "TrackingApi",
-    "localhost:3000"
+    //"localhost:3000"
     //"ApiAuditoriaOperativa",
 ];
 
@@ -60,6 +60,9 @@ export class HttpInterceptorService implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         let authReq;
         let headers: HttpHeaders;
+
+        console.log("INTERCEPTOR");
+        
         if (!this._excludedUrl(req.url, EXCLUDED_API_URLS)) {
             //authReq;
             headers = req.headers

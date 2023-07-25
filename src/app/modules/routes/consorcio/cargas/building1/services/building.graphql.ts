@@ -7,7 +7,16 @@ export const BUILDINGS = gql`
 query buildings{
   buildings{
     address,
-    appartments{ content}
+    location,
+    letter,
+  	floors,
+    id,
+    appartments{ 
+      floor,
+      letter,
+      observation,
+      id,
+    }
   }
 }
 `;
@@ -41,8 +50,14 @@ export const CREATE_BUILDING = gql`
     mutation createBuilding($input: UserInput!) {
       createBuilding(user: $input) {
         address,
-        appartments{
-          createdAt
+        location,
+        floors,
+        letter,
+        appartments{ 
+            floor,
+            letter,
+            observation,
+            id,
         }
       }
     }

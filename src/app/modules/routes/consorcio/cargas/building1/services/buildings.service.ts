@@ -5,7 +5,7 @@ import { map, switchMap } from "rxjs/operators";
 import { IpService } from "src/app/services/ip.service";
 import { PluUtils } from "src/app/utils/plu.utils";
 import { environment } from "src/environments/environment";
-import { CancelBuildingPayload, Building, BuildingDetail, BuildingListFilters, BuildingsListProduct, CreateBuildingPayload, InformBuildingPayload } from "..";
+import { CancelBuildingPayload, Building, BuildingDetail, BuildingListFilters, BuildingsListProduct, CreateBuildingPayload, InformBuildingPayload, DeleteBuildingPayload, IDBuildingPayload } from "..";
 import { GdmService } from "../../../../../gdm/services/gdm.service";
 import { BuildingType } from "../model";
 
@@ -68,11 +68,21 @@ export class BuildingService {
      * Crea un building nuevo 
      * @return un observable con el resultado de la peticion
      */
-    createBuilding(createBuildingPayload: CreateBuildingPayload): Observable<any>{
-        return this.ipService.getIP().pipe(
+    createBuilding(createBuildingPayload: CreateBuildingPayload): Observable<Building>{
+
+        return this.apollo.mutate({
+            mutation: BUILDINGS,
+            variables: createBuildingPayload,
+            fetchPolicy: 'network-only'
+        }).valueChanges.pipe(map((result: any) => {  
+            return result.data.building;
+        }));
+        //return this.http.post(`${environment.apiUrl}/createBuilding`, createBuildingPayload);
+
+        /* return this.ipService.getIP().pipe(
             //tap(ip => createBuildingPayload.hostname = ip),
-            switchMap(() => this.http.post(`${environment.apiUrl}/Crearbuilding`, createBuildingPayload))
-        );
+            switchMap(() => )
+        ); */
     }
     
     /**
@@ -84,38 +94,46 @@ export class BuildingService {
             id_building: BuildingId,
             hostname: "",
         }
-        return this.ipService.getIP().pipe(
+
+        return this.http.post(`${environment.apiUrl}/Informarbuilding`, payload);
+
+        /* return this.ipService.getIP().pipe(
             //tap(ip => payload.hostname = ip),
-            switchMap(ip => this.http.put(`${environment.apiUrl}/Informarbuilding`, payload))
-        );
+            switchMap(ip => this.http.post(`${environment.apiUrl}/Informarbuilding`, payload))
+        ); */
     }
 
     /**
      * Envia el id de un building para que se le cambie el estado a cancelado
      * @return un observable con el resultado de la peticion
      */
-    cancelBuilding(BuildingId: number): Observable<any> {
-        const payload: CancelBuildingPayload = {
-            id_building: BuildingId,
-            hostname: "",
+    deleteBuilding(buildingId: string): Observable<any> {
+        const payload: IDBuildingPayload = {
+            id: buildingId
         }
-        return this.ipService.getIP().pipe(
+        return this.http.post(`${environment.apiUrl}/deleteBuilding`, payload);
+
+        /* return this.ipService.getIP().pipe(
             tap((ip: string) => payload.hostname = ip),
-            switchMap((ip: string) => this.http.put(`${environment.apiUrl}/Cancelarbuilding`, payload))
-        );
+            switchMap((ip: string) => this.http.put(`${environment.apiUrl}/deleteBuilding`, payload))
+        ); */
     }
 
     /**
      * Obtiene el detalle de un building
      * @return un observable con el detalle de un building
      */
-    getBuildingDetails(BuildingId: number): Observable<BuildingDetail> {
-        return this.http.get<BuildingDetail>(`${environment.apiUrl}/getDetallebuilding?id_building=${BuildingId}`).pipe(
-            tap(BuildingDetail => {
+    getBuildingDetails(buildingId: string): Observable<BuildingDetail> {
+        const payload: IDBuildingPayload = {
+            id: buildingId
+        }
+        return this.http.post<BuildingDetail>(`${environment.apiUrl}/building`, payload);
+        /*.pipe(
+             tap(BuildingDetail => {
                 if (BuildingDetail.building.plu && BuildingDetail.building.id_tipo_building === BuildingType.UN_PLU) {
                     BuildingDetail.building.producto = this.getPluDetails(BuildingDetail.building.plu);
                 }
-            }), 
-        );
+            }),
+        ); */ 
     }
 } 
