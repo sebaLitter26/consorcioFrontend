@@ -15,6 +15,6 @@ export class BuildingDetailResolver {
     ) {}
     
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<BuildingDetail> {
-        return this.buildingService.getBuildingDetails(+route.queryParams.id);
+        return this.buildingService.getBuildingDetails(route.queryParams.id);
     }
 }

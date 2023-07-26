@@ -1,17 +1,4 @@
-
-export const RESOURCE_CRM: string = "crm";
-
-export const RESOURCE_WAREFLOW: string = "wareflow";
-
-export const RESOURCE_TRACK: string = "track";
-
-export const RRHH: string = "RRHH";
-
-export const GRAL: string = "GRAL";
-
-export const ACCOUNT: string = "ACCOUNT";
-
-
+import { User } from "./user";
 
 
 export interface error {
@@ -29,44 +16,46 @@ export interface CustomCard {
 
 
 export interface Building{
-    id: number;
-    localidad: string;
-    direccion: string;
-    altura: number;
+    id: string;
+    address: string;
+    location: string;
+    letter: string;
+    floors: number;
+    createdAt?: string;
+    updatedAt?: string;
+    appartment?: Appartment[]
+    //photo?: string | null;
 }
 
 
 export interface Appartment {
-    id: number;
+    id: string;
     building: Building;
-    tenant: Tenant | null;
+    owner?: Owner | null;
+    tenant?: Tenant | null;
     floor: number;
-    division: string;
+    letter: string;
+    observation: string;
     createdAt: string;
     updatedAt: string;
-    deletedAt: string | null;
-    photo: string | null;
-    status: string;
 }
 
 export interface Tenant {
-    id: number;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt: string | null;
-    id_appartment: number;
-    id_user: number
-    __entity: string;
+    id: string;
+    createdAt?: string;
+    observation: string;
+    appartments: Appartment;
+    user: User;
+    //__entity: string;
 }
 
 
 export interface Owner {
-    id: number;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt: string | null;
-    id_appartment: number;
-    id_user: number;
+    id: string;
+    createdAt?: string;
+    observation: string;
+    appartments: Appartment[];
+    user: User;
 }
 
 export interface Identification{

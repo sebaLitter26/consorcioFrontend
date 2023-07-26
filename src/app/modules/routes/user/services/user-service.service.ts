@@ -1,9 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { delay, Observable, of, share, take, tap } from "rxjs";
+import { Apollo } from "apollo-angular";
+import { delay, map, Observable, of, share, take, tap } from "rxjs";
 import { environment } from "src/environments/environment";
 import { User, FormUser } from "..";
-import { ACCOUNT } from "../../model";
+import { USERS } from "./graphql";
 
 const DEFAULT_WEB_FILTERS: FormUser = {
     legajo: null,
@@ -36,7 +37,7 @@ const DEFAULT_WEB_FILTERS: FormUser = {
 export class UserService {
 
     constructor(
-        private http: HttpClient,
+        private apollo: Apollo,
     ) {}
 
 
@@ -51,7 +52,15 @@ export class UserService {
      * @returns un `Observable` con el listado de Sectores
      */
     getUsers(): Observable<User[]> {
-        return this.http.get<User[]>(`${environment.apiUrl}${ACCOUNT}/GetUsuarios`).pipe(take(1));
+        const filters = {}
+        return this.apollo.watchQuery({
+            query: USERS,
+            variables: filters,
+            fetchPolicy: 'network-only'
+        }).valueChanges.pipe(map((result: any) => {  
+            return result.data.users;
+        }));
+        //return this.http.get<User[]>(`${environment.apiUrl}/GetUsuarios`).pipe(take(1));
         
     }
 

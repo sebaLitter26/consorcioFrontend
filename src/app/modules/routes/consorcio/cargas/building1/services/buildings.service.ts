@@ -1,16 +1,12 @@
-import { HttpClient } from "@angular/common/http";
+
 import { Injectable } from "@angular/core";
-import { Observable, take, tap } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
-import { IpService } from "src/app/services/ip.service";
-import { PluUtils } from "src/app/utils/plu.utils";
-import { environment } from "src/environments/environment";
-import { CancelBuildingPayload, Building, BuildingDetail, BuildingListFilters, BuildingsListProduct, CreateBuildingPayload, InformBuildingPayload, DeleteBuildingPayload, IDBuildingPayload } from "..";
-import { GdmService } from "../../../../../gdm/services/gdm.service";
-import { BuildingType } from "../model";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { Building, BuildingDetail, BuildingListFilters, BuildingsListProduct, CreateBuildingPayload, IDBuildingPayload, UpdateBuildingPayload } from "..";
+
 
 import { Apollo } from 'apollo-angular';
-import { BUILDINGS } from './building.graphql';
+import { BUILDING, BUILDINGS, CREATE_BUILDING, DELETE_BUILDING, UPDATE_BUILDING } from './building.graphql';
 
 
 const DEFAULT_BUILDING_FILTERS: BuildingListFilters = {
@@ -27,10 +23,9 @@ const DEFAULT_BUILDING_FILTERS: BuildingListFilters = {
 export class BuildingService {
     
     constructor(
-        private http: HttpClient, 
         public apollo: Apollo,
         //private gdmService: GdmService,
-        private ipService: IpService
+        //private ipService: IpService
     ) {}
 
     /**
@@ -71,10 +66,10 @@ export class BuildingService {
     createBuilding(createBuildingPayload: CreateBuildingPayload): Observable<Building>{
 
         return this.apollo.mutate({
-            mutation: BUILDINGS,
+            mutation: CREATE_BUILDING,
             variables: createBuildingPayload,
             fetchPolicy: 'network-only'
-        }).valueChanges.pipe(map((result: any) => {  
+        }).pipe(map((result: any) => {  
             return result.data.building;
         }));
         //return this.http.post(`${environment.apiUrl}/createBuilding`, createBuildingPayload);
@@ -89,51 +84,54 @@ export class BuildingService {
      * Envia el id de un building para que se le cambie el estado a informado
      * @return un observable con el resultado de la peticion
      */
-    informBuilding(BuildingId: number): Observable<any>{
-        const payload: InformBuildingPayload = {
-            id_building: BuildingId,
-            hostname: "",
-        }
+    updateBuilding(updateBuildingPayload: UpdateBuildingPayload): Observable<any>{
 
-        return this.http.post(`${environment.apiUrl}/Informarbuilding`, payload);
+        return this.apollo.mutate({
+            mutation: UPDATE_BUILDING,
+            variables: updateBuildingPayload,
+            fetchPolicy: 'network-only'
+        }).pipe(map((result: any) => {  
+            return result.data.building;
+        }));
 
-        /* return this.ipService.getIP().pipe(
-            //tap(ip => payload.hostname = ip),
-            switchMap(ip => this.http.post(`${environment.apiUrl}/Informarbuilding`, payload))
-        ); */
     }
 
     /**
-     * Envia el id de un building para que se le cambie el estado a cancelado
-     * @return un observable con el resultado de la peticion
+     * Envia el id de un edificio para que se elimine
+     * @return un observable con el edificio eliminado
      */
     deleteBuilding(buildingId: string): Observable<any> {
         const payload: IDBuildingPayload = {
             id: buildingId
         }
-        return this.http.post(`${environment.apiUrl}/deleteBuilding`, payload);
 
-        /* return this.ipService.getIP().pipe(
-            tap((ip: string) => payload.hostname = ip),
-            switchMap((ip: string) => this.http.put(`${environment.apiUrl}/deleteBuilding`, payload))
-        ); */
+        return this.apollo.mutate({
+            mutation: DELETE_BUILDING,
+            variables: payload,
+            fetchPolicy: 'network-only'
+        }).pipe(map((result: any) => {  
+            return result.data.building;
+        }));
+    
     }
 
     /**
      * Obtiene el detalle de un building
      * @return un observable con el detalle de un building
      */
+    
     getBuildingDetails(buildingId: string): Observable<BuildingDetail> {
         const payload: IDBuildingPayload = {
             id: buildingId
         }
-        return this.http.post<BuildingDetail>(`${environment.apiUrl}/building`, payload);
-        /*.pipe(
-             tap(BuildingDetail => {
-                if (BuildingDetail.building.plu && BuildingDetail.building.id_tipo_building === BuildingType.UN_PLU) {
-                    BuildingDetail.building.producto = this.getPluDetails(BuildingDetail.building.plu);
-                }
-            }),
-        ); */ 
+
+        return this.apollo.mutate({
+            mutation: BUILDING,
+            variables: payload,
+            fetchPolicy: 'network-only'
+        }).pipe(map((result: any) => {  
+            return result.data.building;
+        }));
+    
     }
 } 

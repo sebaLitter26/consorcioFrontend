@@ -28,7 +28,10 @@ export class ResourceService {
      * @returns un `Observable` con el listado de Edificios
      */
     getBuildings(page: number = 1, limit: number = 10): Observable<Building[]> {
-        return this.http.get<any[]>(`${environment.apiUrl}building?page=${page}&limit=${limit}`).pipe( map((elem: any)=> elem['data']) , take(1));
+        const payload = {
+            page, limit
+        }
+        return this.http.post<any[]>(`${environment.apiUrl}buildings`,payload);
         
     }
 
@@ -38,7 +41,10 @@ export class ResourceService {
      * @returns un `Observable` con el listado de Departamentos
      */
     getAppartments(page: number = 1, limit: number = 10): Observable<Appartment[]> {
-        return this.http.get<any[]>(`${environment.apiUrl}appartment?page=${page}&limit=${limit}`).pipe( map((elem: any)=> elem['data']) , take(1));
+        const payload = {
+            page, limit
+        }
+        return this.http.post<Appartment[]>(`${environment.apiUrl}appartments`, payload);
         
     }
 
@@ -47,7 +53,10 @@ export class ResourceService {
      * @returns un `Observable` con el listado de Usuarios
      */
     getUsers(page: number = 1, limit: number = 10): Observable<User[]> {
-        return this.http.get<any[]>(`${environment.apiUrl}users?page=${page}&limit=${limit}`).pipe( map((elem: any)=> elem['data']) , take(1));
+        const payload = {
+            page, limit
+        }
+        return this.http.post<any[]>(`${environment.apiUrl}users`, payload);
         
     }
 
@@ -55,8 +64,11 @@ export class ResourceService {
      * Obtiene el listado de Inquilinos
      * @returns un `Observable` con el listado de Departamentos
      */
-    getTenants(filter: TenantFilters): Observable<Tenant[]> {
-        return this.http.get<any[]>(`${environment.apiUrl}tenant?page=${filter.page}&limit=${filter.limit}`).pipe( map((elem: any)=> elem['data']) , take(1));
+    getTenants(page: number = 1, limit: number = 10): Observable<Tenant[]> {
+        const payload = {
+            page, limit
+        }
+        return this.http.post<any[]>(`${environment.apiUrl}tenants`, payload);
         
     }
 
@@ -65,7 +77,10 @@ export class ResourceService {
      * @returns un `Observable` con el listado de Departamentos
      */
     getOwners(page: number = 1, limit: number = 10): Observable<Owner[]> {
-        return this.http.get<any[]>(`${environment.apiUrl}owner?page=${page}&limit=${limit}`).pipe( map((elem: any)=> elem['data']) , take(1));
+        const payload = {
+            page, limit
+        }
+        return this.http.post<any[]>(`${environment.apiUrl}owners`, payload);
         
     }
 
@@ -83,24 +98,25 @@ export class ResourceService {
         
     } */
 
-    insertBuilding(building: Building): Observable<Building> {
-        return (building.id>0) ? this.http.patch<Building>(`${environment.apiUrl}building`, building) : this.http.post<Building>(`${environment.apiUrl}building`, building);
+    insertBuilding(payload: Building): Observable<Building> {
+        const updateORcreate = (payload.id.length>10) ? `update` : `create` + `Building`;
+        return this.http.post<Building>(`${environment.apiUrl}${updateORcreate}`, payload);
         
     }
 
-    insertAppartment(appartment: Appartment): Observable<Appartment> {
-        return (appartment.id>0) ? this.http.patch<Appartment>(`${environment.apiUrl}appartment`, appartment) : this.http.post<Appartment>(`${environment.apiUrl}appartment`, appartment);
-        
+    insertAppartment(payload: Appartment): Observable<Appartment> {
+        const updateORcreate = (payload.id.length>10) ? `update` : `create` + `Appartment`;
+        return this.http.post<Appartment>(`${environment.apiUrl}${updateORcreate}`, payload);
     }
 
-    insertTenant(tenant: Tenant): Observable<Tenant> {
-        return (tenant.id>0) ? this.http.patch<Tenant>(`${environment.apiUrl}tenant`, tenant) : this.http.post<Tenant>(`${environment.apiUrl}tenant`, tenant);
-        
+    insertTenant(payload: Tenant): Observable<Tenant> {
+        const updateORcreate = (payload.id.length>10) ? `update` : `create` + `Tenant`;
+        return this.http.post<Tenant>(`${environment.apiUrl}${updateORcreate}`, payload);
     }
 
-    insertOwner(owner: Owner): Observable<Owner> {
-        return (owner.id>0) ? this.http.patch<Owner>(`${environment.apiUrl}owner`, owner) : this.http.post<Tenant>(`${environment.apiUrl}tenant`, owner);
-        
+    insertOwner(payload: Owner): Observable<Owner> {
+        const updateORcreate = (payload.id.length>10) ? `update` : `create` + `Owner`;
+        return this.http.post<Owner>(`${environment.apiUrl}${updateORcreate}`, payload);
     }
 
 
@@ -108,5 +124,9 @@ export class ResourceService {
         return this.http.post<Psico[]>(`${environment.apiUrl}${RRHH}/GetPsico`, filter );
         
     } */
+    
+    action(payload: any, action: string): Observable<any> {
+        return this.http.post<any>(`${environment.apiUrl}${action}`, payload);
+    }
 
 }

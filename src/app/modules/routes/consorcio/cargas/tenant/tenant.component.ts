@@ -222,7 +222,7 @@ export class TenantComponent implements OnInit{
     update(): void {
         this.overlayService.displayLoadingOverlay();
         this.loading = true;
-        this.actionsSubscription$ = this.recursosService.getTenants(this._getFilters()).pipe(
+        this.actionsSubscription$ = this.recursosService.getTenants().pipe(
             finalize(() => {
                 setTimeout(() => {
                     this.overlayService.hideLoadingOverlay();

@@ -45,14 +45,17 @@ export class CreateBuildingFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildingForm = this.formBuilder.group({
-      tipo_building: {value: null, validators: Validators.required},
-      plu: {value: null, disabled: true},
+        address: {value: null, validators: Validators.required},
+        location: {value: null, validators: Validators.required},
+        floors: {value: null, validators: Validators.required},
+        letter: {value: null, validators: Validators.required},
       // plu: {value: null, disabled: true, validators: this.pluValidator(this.buildingPlu)},
     })
 
-    /** Busca el PLU despues de un tiempo de escribir el input */
+    /** Busca el PLU despues de un tiempo de escribir el input 
     this.buildingForm.get('plu')!.valueChanges.pipe(debounceTime(2000)).subscribe(pluInput => this.showPluDetails(pluInput));
     this.buildingForm.get('plu')!.valueChanges.subscribe(() => { if(this.buildingForm.get('plu')!.dirty) this.bFetchingData = true });
+    */
   }
 
   /**
@@ -61,9 +64,10 @@ export class CreateBuildingFormComponent implements OnInit {
   onSubmit(){
     this.bSubmitting = true;
     const payload: CreateBuildingPayload = {
-      id_tipo_building: Number(this.buildingForm.get('tipo_building')?.value),
-      plu: this.buildingForm.get('plu')?.value ? this.buildingForm.get('plu')?.value.toString() : null,
-      hostname: "",
+        address: this.buildingForm.get('address')?.value,
+        location: this.buildingForm.get('location')?.value,
+        floors: this.buildingForm.get('floors')?.value,
+        letter: this.buildingForm.get('letter')?.value,
     }
     this.buildingService.createBuilding(payload).subscribe({
       next: () => {

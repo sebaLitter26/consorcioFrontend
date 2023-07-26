@@ -16,11 +16,6 @@ const routes: Routes = [
         canActivate: [ AuthorizationGuard ],
     },
     {
-        path: 'recursos',
-        loadChildren: () => import('./resources/resources.module').then(m => m.ResourcesModule),
-        canActivate: [ AuthorizationGuard ],
-    },
-    {
         path: 'development',
         loadChildren: () => import('./development/development.module').then(m => m.DevelopmentModule),
         canActivate: [ AuthorizationGuard ],

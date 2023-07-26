@@ -1,6 +1,6 @@
 import { BuildingSerialState, BuildingState, BuildingStateType, BuildingType } from "./model";
 
-export type ActionName = "informar" | "cancelar" | "detalle";
+export type ActionName = "crear" | "eliminar" | "detalle";
 
 /** El detalle del building */
 export interface BuildingDetail {
@@ -11,12 +11,14 @@ export interface BuildingDetail {
 
 /** El building de uno o de todos los productos */
 export interface Building {
-    id: number,
+    id: string,
     floors: number,
     letter: string, 
     appartments: any[],
     createdAt: string, 
     updatedAt: string,
+    address: string,
+    location: string,
     /*
     id_estado: BuildingState,
     estado: BuildingStateType, 
@@ -96,15 +98,15 @@ export interface BuildingStateStyle {
 
 /** Payload para la creacion de un building */
 export interface CreateBuildingPayload{
-    id_tipo_building: number,
-    plu: string | null,
-    hostname: string | null,
+    address: string,
+    location: string,
+    floors: number,
+    letter: string,
 }
 
 /** Payload para informar un building */
-export interface InformBuildingPayload {
-    id_building: number,
-    hostname: string | null;
+export interface UpdateBuildingPayload extends CreateBuildingPayload {
+    id: string;
 }
 
 /** Payload para cancelar un building */

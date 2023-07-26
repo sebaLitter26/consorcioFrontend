@@ -33,7 +33,7 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
     ) {}
 
   ngOnInit(): void {
-    this.actions = this.getBuildingActions(this.data!.id).filter(action => this.userHasPermissionForAction(action))
+    this.actions = this.getBuildingActions(this.data!.id); //.filter(action => this.userHasPermissionForAction(action))
   }
 
   /**
@@ -48,9 +48,9 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
         this.router.navigate(['/buildings/building'], {queryParams: {id: this.data?.id}} );
         break;
       }
-      case('informar'):{
+      case('crear'):{
         const confirmationDialogData: ConfirmationDialogData = {
-          title: 'Informar Edificio',
+          title: 'Crear Edificio',
           message: 'Esta seguro que desea crear el edificio?',
           color: 'primary',
         }
@@ -59,8 +59,8 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
           data: confirmationDialogData
         }).afterClosed().subscribe((result: boolean | string) => {
           if (result) {
-            this.buildingService.informBuilding(this.data!.id_building).subscribe(() => {
-              this.snackBarService.open(`Edificio ${this.data!.id_building} informado`, "Aceptar", 5000, "success-snackbar");
+            this.buildingService.updateBuilding(this.data!.id).subscribe(() => {
+              this.snackBarService.open(`Edificio ubicado en ${this.data!.address}, ${this.data!.location} fue creado satisfactoriamente.`, "Aceptar", 5000, "success-snackbar");
               this.BuildingSharedService.updateTable();
             });
           }
@@ -68,10 +68,12 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
         break;
       }
       
-      case('cancelar'):{
+      case('eliminar'):{
+        const title =  `ubicado en ${this.data?.address}, ${this.data?.location}`;
+        
         const confirmationDialogData: ConfirmationDialogData = {
-          title: 'Cancelar building',
-          message: 'Se cancelará el building ' + this.data?.id_building + ' ¿Desea continuar?',
+          title: 'Borrar edificio.',
+          message: `Se borrara el edificio ${title}. ¿Desea continuar?`,
           color: 'primary',
         }
         this.matDialog.open(ConfirmationDialogComponent, {
@@ -80,8 +82,8 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
         })
         .afterClosed().subscribe((result: boolean | string) => {
           if (result) {
-            this.buildingService.cancelBuilding(this.data!.id_building).subscribe(() => {
-              this.snackBarService.open(`building ${this.data!.id_building} cancelado`, "Aceptar", 5000, "success-snackbar");
+            this.buildingService.deleteBuilding(this.data!.id).subscribe(() => {
+              this.snackBarService.open(`Edificio ${title} eliminado.`, "Aceptar", 5000, "success-snackbar");
               this.BuildingSharedService.updateTable();
             });
           }
@@ -98,9 +100,9 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
   private getAllBuildingActions(): BuildingAction[]{
     const actions: BuildingAction[] = [
       {name: 'detalle', title: 'Ver detalle', icon: 'info', permission: 'buildings_ver-detalle', availableStates: []},
-        {name: 'informar', title: 'Informar building', icon: 'announcement', permission: 'buildings_informar-building', 
+        {name: 'crear', title: 'Crear edificio', icon: 'announcement', permission: 'buildings_informar-building', 
           availableStates: [BuildingState.CREADO]},
-        {name: 'cancelar', title: 'Cancelar building', icon: 'cancel', color: '#F08080',  permission: 'buildings_cancelar-building',
+        {name: 'eliminar', title: 'Borrar edificio', icon: 'cancel', color: '#F08080',  permission: 'buildings_cancelar-building',
           availableStates: []},
     ];
     return actions;
@@ -111,8 +113,8 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
    * @param state 
    * @returns Una lista de acciones
    */
-  getBuildingActions(state: BuildingState): BuildingAction[]{
-    return this.getAllBuildingActions().filter(a => a.availableStates?.length==0 || a.availableStates!.includes(state));
+  getBuildingActions(id_building: string): BuildingAction[]{
+    return this.getAllBuildingActions(); //.filter(a => a.availableStates?.length==0 || a.availableStates!.includes(state));
   }
 
   userHasPermissionForAction(action: BuildingAction): boolean {

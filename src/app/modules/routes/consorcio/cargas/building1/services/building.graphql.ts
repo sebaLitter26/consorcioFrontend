@@ -31,7 +31,7 @@ query login($email: String!, $password: String!) {
 }
 `;
 
-export const getUsers = gql`
+/* export const getUsers = gql`
 query {
   users {
     id
@@ -39,6 +39,24 @@ query {
     lastname
     email
     registerDate
+  }
+}
+`; */
+
+export const BUILDING = gql`
+query building($id: string){
+    building(id: $id) {
+        location,
+        address,
+        id,
+        appartments{
+        floor,
+        letter,
+        observation,
+        id,
+        ownerId,
+        tenantId,
+    }
   }
 }
 `;
@@ -49,6 +67,43 @@ query {
 export const CREATE_BUILDING = gql`
     mutation createBuilding($input: UserInput!) {
       createBuilding(user: $input) {
+        address,
+        location,
+        floors,
+        letter,
+        appartments{ 
+            floor,
+            letter,
+            observation,
+            id,
+        }
+      }
+    }
+`;
+
+// mutations
+export const UPDATE_BUILDING = gql`
+    mutation updateBuilding($input: UserInput!) {
+      updateBuilding(user: $input) {
+        address,
+        location,
+        floors,
+        letter,
+        appartments{ 
+            floor,
+            letter,
+            observation,
+            id,
+        }
+      }
+    }
+`;
+
+
+// mutations
+export const DELETE_BUILDING = gql`
+    mutation deleteBuilding($input: UserInput!) {
+      deleteBuilding(user: $input) {
         address,
         location,
         floors,

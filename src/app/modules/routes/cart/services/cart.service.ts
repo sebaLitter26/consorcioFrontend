@@ -3,7 +3,6 @@ import { Injectable } from "@angular/core";
 import { delay, Observable, of, share, take, tap } from "rxjs";
 import { Building, Order,  } from "../../model";
 import { environment } from "src/environments/environment";
-import { GRAL, RRHH } from "../../model";
 
 const DEFAULT_WEB_FILTERS: any = {
     legajo: null,
@@ -35,18 +34,18 @@ export class CartService {
      * @returns un `Observable` con el listado de Edificios
      */
     getBuildings(): Observable<Building[]> {
-        return this.http.get<Building[]>(`${environment.apiUrl}${GRAL}/GetBuildings`).pipe(take(1));
+        return this.http.get<Building[]>(`${environment.apiUrl}/GetBuildings`).pipe(take(1));
         
     }
 
     getOrdersByPhone(phone: number): Observable<Order[]> {
-        return this.http.get<Order[]>(`${environment.apiUrl}${GRAL}/getOrdersByPhone?PHONE=${phone}`).pipe(take(1), share());
+        return this.http.get<Order[]>(`${environment.apiUrl}/getOrdersByPhone?PHONE=${phone}`).pipe(take(1), share());
         
     }
 
     createOrder(order: Order): Observable<Order> {
         const updateCreate =(order.id>0) ? 'UpdateOrder' : 'InsertOrder';
-        return this.http.post<Order>(`${environment.apiUrl}${RRHH}/${updateCreate}`, order);
+        return this.http.post<Order>(`${environment.apiUrl}/${updateCreate}`, order);
         
     }
 
