@@ -15,7 +15,7 @@ query buildings{
       floor,
       letter,
       observation,
-      id,
+      id
     }
   }
 }
@@ -46,36 +46,36 @@ query {
 export const BUILDING = gql`
 query building($id: string){
     building(id: $id) {
-        location,
-        address,
-        id,
+        location
+        address
+        id
         appartments{
-        floor,
-        letter,
-        observation,
-        id,
-        ownerId,
-        tenantId,
+          floor
+          letter
+          observation
+          id
+          ownerId
+          tenantId
+      }
     }
-  }
 }
 `;
 
 
 
-// mutations
+// mutations Variable \"$input\" of required type \
 export const CREATE_BUILDING = gql`
-    mutation createBuilding($input: UserInput!) {
-      createBuilding(user: $input) {
-        address,
-        location,
-        floors,
-        letter,
+    mutation createBuilding($input: CreateBuildingDTO!) {
+      createBuilding(input: $input) {
+        address
+        location
+        floors
+        letter
         appartments{ 
-            floor,
-            letter,
-            observation,
-            id,
+            floor
+            letter
+            observation
+            id
         }
       }
     }
@@ -83,17 +83,17 @@ export const CREATE_BUILDING = gql`
 
 // mutations
 export const UPDATE_BUILDING = gql`
-    mutation updateBuilding($input: UserInput!) {
+    mutation updateBuilding($input: UpdateBuildingDTO!) {
       updateBuilding(user: $input) {
-        address,
-        location,
-        floors,
-        letter,
+        address
+        location
+        floors
+        letter
         appartments{ 
-            floor,
-            letter,
-            observation,
-            id,
+            floor
+            letter
+            observation
+            id
         }
       }
     }
@@ -102,17 +102,17 @@ export const UPDATE_BUILDING = gql`
 
 // mutations
 export const DELETE_BUILDING = gql`
-    mutation deleteBuilding($input: UserInput!) {
+    mutation deleteBuilding($input: IDBuildingPayload) {
       deleteBuilding(user: $input) {
-        address,
-        location,
-        floors,
-        letter,
+        address
+        location
+        floors
+        letter
         appartments{ 
-            floor,
-            letter,
-            observation,
-            id,
+            floor
+            letter
+            observation
+            id
         }
       }
     }

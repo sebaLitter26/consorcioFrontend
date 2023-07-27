@@ -9,7 +9,7 @@ export interface BuildingDetail {
     series: BuildingSerial[];
 }
 
-/** El building de uno o de todos los productos */
+/** Los datos que contiene el edificio */
 export interface Building {
     id: string,
     floors: number,
@@ -102,6 +102,7 @@ export interface CreateBuildingPayload{
     location: string,
     floors: number,
     letter: string,
+    image: string | null
 }
 
 /** Payload para informar un building */

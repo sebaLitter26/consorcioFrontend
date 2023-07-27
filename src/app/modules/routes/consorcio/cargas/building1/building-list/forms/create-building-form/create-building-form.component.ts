@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { CreateBuildingPayload, BuildingsListProduct } from '../../..';
 //import { GdmService } from 'src/app/modules/gdm/services/gdm.service';
@@ -12,6 +12,11 @@ import { BuildingService } from '../../../services/buildings.service';
 //import { IpService } from 'src/app/services/ip.service';
 import { BuildingSharedService } from '../../../services/buildings-shared.service';
 
+export type ControlsOf<T extends Record<string, any>> = {
+  [K in keyof T]: T[K] extends Record<any, any>
+  ? FormGroup<ControlsOf<T[K]>>
+  : FormControl<T[K]>;
+};
 
 /**
  * Componente para manejar el form de crear un nuevo conteo
@@ -23,7 +28,26 @@ import { BuildingSharedService } from '../../../services/buildings-shared.servic
 })
 export class CreateBuildingFormComponent implements OnInit {
   /** El form para crear un conteo nuevo */
-  buildingForm!: FormGroup;
+  buildingForm = new FormGroup<ControlsOf<CreateBuildingPayload>> ({
+    /** `FormControl` con el tipo de legajo a filtrar. */
+    address: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required]
+    }),
+    location: new FormControl('',{
+        nonNullable: true,
+        validators: [Validators.required]
+      }),
+    floors: new FormControl(1,{
+        nonNullable: true,
+        validators: [Validators.required]
+      }),
+    letter: new FormControl('',{
+        nonNullable: true,
+        validators: [Validators.required]
+      }),
+    image: new FormControl(null)
+  });
   
   /** El PLU que se encuentra al buscar en el form, si es null no se muestra ese template */
   buildingPlu: BuildingsListProduct | null = null;
@@ -33,8 +57,10 @@ export class CreateBuildingFormComponent implements OnInit {
 
   bSubmitting: boolean = false;
 
+  floors: Array<number> = [2,3,4,5,6,7,8,9];
+  letters: Array<string> = ['A','B','C','D','E'];
+
   constructor(
-    private formBuilder: FormBuilder,
     //private gdmService: GdmService, 
     private snackBarService: SnackBarService,
     public dialogRef: MatDialogRef<CreateBuildingFormComponent>,
@@ -44,13 +70,7 @@ export class CreateBuildingFormComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.buildingForm = this.formBuilder.group({
-        address: {value: null, validators: Validators.required},
-        location: {value: null, validators: Validators.required},
-        floors: {value: null, validators: Validators.required},
-        letter: {value: null, validators: Validators.required},
-      // plu: {value: null, disabled: true, validators: this.pluValidator(this.buildingPlu)},
-    })
+    
 
     /** Busca el PLU despues de un tiempo de escribir el input 
     this.buildingForm.get('plu')!.valueChanges.pipe(debounceTime(2000)).subscribe(pluInput => this.showPluDetails(pluInput));
@@ -61,16 +81,19 @@ export class CreateBuildingFormComponent implements OnInit {
   /**
    * Envia el formulario al endpoint cuando se da Aceptar en el form
    */
-  onSubmit(){
+  createBuilding(){
     this.bSubmitting = true;
     const payload: CreateBuildingPayload = {
-        address: this.buildingForm.get('address')?.value,
-        location: this.buildingForm.get('location')?.value,
-        floors: this.buildingForm.get('floors')?.value,
-        letter: this.buildingForm.get('letter')?.value,
+        address: this.buildingForm.controls.address.value,
+        location: this.buildingForm.controls.location?.value,
+        floors: this.buildingForm.controls.floors?.value,
+        letter: this.buildingForm.controls.letter?.value,
+        image: this.buildingForm.controls.image?.value,
     }
+    
     this.buildingService.createBuilding(payload).subscribe({
       next: () => {
+        this.snackBarService.open(`Se agrego el nuevo edificio.`, "Aceptar", 6000, "success-snackbar");
         this.buildingsSharedService.updateTable();
         this.dialogRef.close(); 
       },
@@ -78,6 +101,12 @@ export class CreateBuildingFormComponent implements OnInit {
       error: (error) => this.bSubmitting = false,
     });
   }
+
+  addFile(event:any){
+    console.log(event);
+    this.buildingForm.controls.image.setValue(event);
+    
+}
 
   /**
    * [NO FUNCIONA] Un validator para ver si se encontro el plu buscado

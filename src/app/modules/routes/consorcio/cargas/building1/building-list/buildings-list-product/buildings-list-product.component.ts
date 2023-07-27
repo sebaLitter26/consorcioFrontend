@@ -17,20 +17,20 @@ import { ImageDialogComponent } from 'src/app/modules/ui/dialogs/image-dialog/im
 export class BuildingsListProductComponent implements OnInit, CustomCellComponent {
   /** Se asigna por la Dynamic table */
   data: Building | null = null;
-  product: BuildingsListProduct | null = null;
+  appartments: any | null = null;  //BuildingsListProduct
   _mouseOver: boolean = false;
 
   constructor(private matDialog: MatDialog) { }
 
   ngOnInit(): void {
-    if(this.data && this.data.producto) this.product = this.data?.producto;
+    if(this.data && this.data) this.appartments = this.data?.appartments;
   }
 
   openPluImage($event: MouseEvent): void {
     $event.stopPropagation();
 
     this.matDialog.open(ImageDialogComponent, {
-        data: this.data?.producto?.imagen,
+        data: this.data?.appartments,
         panelClass: "xs-padding-panel",
     });
 }

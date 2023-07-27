@@ -1,45 +1,74 @@
-<form class="form" [formGroup]="buildingForm" (ngSubmit)="onSubmit()">
+<main>
     <h2>Crear edificio nuevo</h2>
+    <form class="form" [formGroup]="buildingForm" (ngSubmit)="createBuilding()">
+        
 
-    <mat-form-field appearance="fill">
-        <mat-label>Elija el tipo de edificio</mat-label>
-        <mat-select formControlName="tipo_building">
-            <mat-option value=1 (click)="resetPluControl()">Para todos los PLUs</mat-option>
-            <mat-option value=2 (click)="this.buildingForm.get('plu')!.enable();">Para un PLU</mat-option>
-        </mat-select>
-    </mat-form-field>
-    
-    <mat-form-field appearance="fill" color="primary" *ngIf="this.buildingForm.get('tipo_building')!.value == '2'" >
-        <mat-label>PLU</mat-label>
-        <div class="input-spinner">
-            <input formControlName="plu" matInput autocomplete="off" type="number" placeholder="Ingrese PLU...">
-            <mat-spinner class="spinner" diameter="36" *ngIf="bFetchingData"></mat-spinner>
-        </div>
-        <div class="pluDetails" *ngIf="this.buildingPlu">
-            <img 
-            [src]="buildingPlu.imagen"
-            >
-            <div class="details">
-                <p>{{ buildingPlu.descripcion }}</p>
-            </div>
-        </div>
+        <mat-form-field appearance="fill" color="primary">
+            <mat-label>Dirección</mat-label>
+            <input matInput autocomplete="off" type="text" placeholder="Ingrese Dirección." formControlName="address">
+        </mat-form-field>
 
-    </mat-form-field>
+        <mat-form-field appearance="fill" color="primary">
+            <mat-label>Localidad</mat-label>
+            <input matInput autocomplete="off" type="text" placeholder="Ingrese Localidad." formControlName="location">
+        </mat-form-field>
+
+        <!-- <mat-form-field appearance="fill" color="primary">
+            <mat-label>Pisos</mat-label>
+            <input matInput autocomplete="off" type="text" placeholder="Ingrese pisos." formControlName="floors">
+        </mat-form-field> -->
+
+        <mat-form-field class="state-form-field" appearance="fill" color="primary">
+            <mat-label>Pisos</mat-label>
+            <mat-select formControlName="floors">
+                <!-- <mat-option class="first-option" [value]="'all'" >P</mat-option> -->
+                <mat-option *ngFor="let floor of floors" [value]="floor">{{ floor }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" color="primary">
+            <mat-label>Letra máxima de departamento</mat-label>
+            <mat-select formControlName="letter">
+                <!-- <mat-option class="first-option" [value]="'all'" >P</mat-option> -->
+                <mat-option *ngFor="let letter of letters" [value]="letter">{{ letter }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+       
+    </form>
+
+    <app-cool-file-input height="200px" (finalizaCarga)="addFile($event)"></app-cool-file-input>
 
     <div class="submit-button-and-spinner">
         <button *ngIf="!bSubmitting; else submitting"
-        appRoundButton
-        mat-flat-button
-        color="primary"
-        class="btn btn--small btn--form"
-        type="submit"
-        [disabled]="isSubmitButtonDisabled()"
+            appRoundButton
+            mat-stroked-button
+            color="primary"
+            class="btn-small"
+            (click)="buildingForm.reset()"
         >
-            Aceptar
+            <mat-icon>clear</mat-icon>&nbsp;
+            Limpiar
+        </button>
+
+        <button
+            appRoundButton
+            mat-flat-button
+            color="accent"
+            class="btn-small"
+            type="submit"
+            (click)="createBuilding()" 
+            [disabled]="buildingForm.invalid"
+        >
+        
+            <mat-icon>send</mat-icon>&nbsp;
+            Enviar
         </button>
 
         <ng-template #submitting>
             <mat-spinner class="spinner" diameter="36"></mat-spinner>
         </ng-template>
     </div>
-</form>
+
+
+</main>

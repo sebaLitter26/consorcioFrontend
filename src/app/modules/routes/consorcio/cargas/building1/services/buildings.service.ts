@@ -67,7 +67,7 @@ export class BuildingService {
 
         return this.apollo.mutate({
             mutation: CREATE_BUILDING,
-            variables: createBuildingPayload,
+            variables: {input: createBuildingPayload},
             fetchPolicy: 'network-only'
         }).pipe(map((result: any) => {  
             return result.data.building;

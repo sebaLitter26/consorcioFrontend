@@ -5,6 +5,7 @@ $profile-image-size: 25vh;
 
 main {
     padding: var.$container-padding; 
+    color: var(--color-text-fade);
 
     .header {
         display: flex;

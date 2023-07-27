@@ -59,10 +59,10 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
           data: confirmationDialogData
         }).afterClosed().subscribe((result: boolean | string) => {
           if (result) {
-            this.buildingService.updateBuilding(this.data!.id).subscribe(() => {
+            /* this.buildingService.updateBuilding(this.data.).subscribe(() => {
               this.snackBarService.open(`Edificio ubicado en ${this.data!.address}, ${this.data!.location} fue creado satisfactoriamente.`, "Aceptar", 5000, "success-snackbar");
               this.BuildingSharedService.updateTable();
-            });
+            }); */
           }
         })
         break;

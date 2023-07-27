@@ -22,6 +22,7 @@ import { DynamicTableModule } from 'src/app/modules/ui/dynamic-table/dynamic-tab
 import { LoadersModule } from 'src/app/modules/ui/loaders/loaders.module';
 import { CoolDirectivesModule } from 'src/app/modules/ui/cool-input/cool-directives/cool-directives.module';
 import { SharedModule } from 'src/app/modules/shared.module';
+import { CoolFileInputModule } from '../../../../ui/cool-file-input/cool-file-input.module';
 const routes: Routes = [
     { 
         path: 'buildings-list',
@@ -48,6 +49,7 @@ const routes: Routes = [
         DynamicTableModule,
         LoadersModule,
         CoolDirectivesModule,
+        CoolFileInputModule,
         SharedModule,
         ReactiveFormsModule,
         //GdmModule,

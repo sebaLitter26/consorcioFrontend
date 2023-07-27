@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, Type } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, Type } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DynamicTableDefinition, ItemDetailComponent } from 'src/app/modules/ui/dynamic-table';
 import { Building, BuildingListFilters, BuildingStateOption, BuildingStateStyle, BuildingTypeOption } from '..';
@@ -14,7 +14,8 @@ import { OverlayService } from 'src/app/modules/overlay/services/overlay.service
 @Component({
   selector: 'app-buildings-list',
   templateUrl: './buildings-list.component.html',
-  styleUrls: ['./buildings-list.component.scss']
+  styleUrls: ['./buildings-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BuildingListComponent implements OnInit {
   /** Los buildings que se muestran en la lista */
@@ -31,7 +32,7 @@ export class BuildingListComponent implements OnInit {
   }
  
   /** Se utiliza para mostrar el app-table-loader mientras carga */
-  loading: boolean = true;
+  loading: boolean = false;
 
   /** La definición de la tabla que muestra el listado de buildings. */
   tableDefinition: DynamicTableDefinition = {
@@ -44,6 +45,7 @@ export class BuildingListComponent implements OnInit {
     private buildingService: BuildingService, 
     private matDialog: MatDialog,
     private buildingSharedService: BuildingSharedService,
+    private changeDetectorRef: ChangeDetectorRef,
     private overlayService: OverlayService,
   ) {}
   
@@ -90,7 +92,7 @@ export class BuildingListComponent implements OnInit {
     this.activatedRoute.data.subscribe(data => {
       this.buildings = data.buildings;
       this.loading = false;
-      console.log("hola");
+      console.log("hola", data);
     });
 
     this.buildingSharedService.updateBuildingEvent.subscribe((update: boolean) => {
@@ -111,16 +113,20 @@ export class BuildingListComponent implements OnInit {
    */
   updateTable() {
     this.overlayService.displayLoadingOverlay();
-    this.buildingService.getBuildings(this.filters).subscribe(buildings => {
-        console.log(buildings);
+    this.loading = true;
+    this.buildingService.getBuildings(this.filters).subscribe((buildings: Building[]) => {
+        
         
         this.buildings = buildings;
 
         setTimeout(() => {
-            this.buildingsUpdateSource.next(true);
+          this.overlayService.hideLoadingOverlay();
+          this.loading = false;
+          this.buildingsUpdateSource.next(true);
+          this.changeDetectorRef.detectChanges();
         }, 100);
 
-        this.overlayService.hideLoadingOverlay();
+        
     });
   }
 
