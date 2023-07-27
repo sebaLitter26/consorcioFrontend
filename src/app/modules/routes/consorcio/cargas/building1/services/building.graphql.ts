@@ -11,6 +11,7 @@ query buildings{
     letter,
   	floors,
     id,
+    image
     appartments{ 
       floor,
       letter,
@@ -44,11 +45,12 @@ query {
 `; */
 
 export const BUILDING = gql`
-query building($id: string){
+query building($id: String!){
     building(id: $id) {
         location
         address
         id
+        image
         appartments{
           floor
           letter
@@ -71,6 +73,7 @@ export const CREATE_BUILDING = gql`
         location
         floors
         letter
+        image
         appartments{ 
             floor
             letter
@@ -84,11 +87,12 @@ export const CREATE_BUILDING = gql`
 // mutations
 export const UPDATE_BUILDING = gql`
     mutation updateBuilding($input: UpdateBuildingDTO!) {
-      updateBuilding(user: $input) {
+      updateBuilding(input: $input) {
         address
         location
         floors
         letter
+        image
         appartments{ 
             floor
             letter
@@ -102,12 +106,13 @@ export const UPDATE_BUILDING = gql`
 
 // mutations
 export const DELETE_BUILDING = gql`
-    mutation deleteBuilding($input: IDBuildingPayload) {
-      deleteBuilding(user: $input) {
+    mutation deleteBuilding($id: String!) {
+      deleteBuilding(id: $id) {
         address
         location
         floors
         letter
+        image
         appartments{ 
             floor
             letter

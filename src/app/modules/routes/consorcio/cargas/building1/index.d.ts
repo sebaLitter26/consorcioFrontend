@@ -102,7 +102,7 @@ export interface CreateBuildingPayload{
     location: string,
     floors: number,
     letter: string,
-    image: string | null
+    images: string[]
 }
 
 /** Payload para informar un building */

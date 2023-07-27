@@ -35,8 +35,8 @@ export class BuildingService {
     getBuildings(filters: BuildingListFilters = DEFAULT_BUILDING_FILTERS): Observable<Building[]>{
         return this.apollo.watchQuery({
             query: BUILDINGS,
-            variables: filters,
-            fetchPolicy: 'network-only'
+            //variables: filters,
+            //fetchPolicy: 'network-only'
         }).valueChanges.pipe(map((result: any) => {  
             return result.data.buildings;
         }));
@@ -64,7 +64,7 @@ export class BuildingService {
      * @return un observable con el resultado de la peticion
      */
     createBuilding(createBuildingPayload: CreateBuildingPayload): Observable<Building>{
-
+        console.log(createBuildingPayload);
         return this.apollo.mutate({
             mutation: CREATE_BUILDING,
             variables: {input: createBuildingPayload},
@@ -88,7 +88,7 @@ export class BuildingService {
 
         return this.apollo.mutate({
             mutation: UPDATE_BUILDING,
-            variables: updateBuildingPayload,
+            variables: {input: updateBuildingPayload},
             fetchPolicy: 'network-only'
         }).pipe(map((result: any) => {  
             return result.data.building;
@@ -101,13 +101,13 @@ export class BuildingService {
      * @return un observable con el edificio eliminado
      */
     deleteBuilding(buildingId: string): Observable<any> {
-        const payload: IDBuildingPayload = {
+        /* const payload: IDBuildingPayload = {
             id: buildingId
-        }
+        } */
 
         return this.apollo.mutate({
             mutation: DELETE_BUILDING,
-            variables: payload,
+            variables: {id: buildingId},
             fetchPolicy: 'network-only'
         }).pipe(map((result: any) => {  
             return result.data.building;
@@ -121,13 +121,13 @@ export class BuildingService {
      */
     
     getBuildingDetails(buildingId: string): Observable<BuildingDetail> {
-        const payload: IDBuildingPayload = {
+        /* const payload: IDBuildingPayload = {
             id: buildingId
-        }
+        } */
 
         return this.apollo.mutate({
             mutation: BUILDING,
-            variables: payload,
+            variables: {id: buildingId},
             fetchPolicy: 'network-only'
         }).pipe(map((result: any) => {  
             return result.data.building;

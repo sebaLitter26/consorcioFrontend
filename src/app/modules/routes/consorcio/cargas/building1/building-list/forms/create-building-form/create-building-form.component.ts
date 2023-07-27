@@ -11,6 +11,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { BuildingService } from '../../../services/buildings.service';
 //import { IpService } from 'src/app/services/ip.service';
 import { BuildingSharedService } from '../../../services/buildings-shared.service';
+import { CoolFile } from '../../../../../../../ui/cool-file-input';
 
 export type ControlsOf<T extends Record<string, any>> = {
   [K in keyof T]: T[K] extends Record<any, any>
@@ -46,7 +47,7 @@ export class CreateBuildingFormComponent implements OnInit {
         nonNullable: true,
         validators: [Validators.required]
       }),
-    image: new FormControl(null)
+    images: new FormControl([])
   });
   
   /** El PLU que se encuentra al buscar en el form, si es null no se muestra ese template */
@@ -88,9 +89,9 @@ export class CreateBuildingFormComponent implements OnInit {
         location: this.buildingForm.controls.location?.value,
         floors: this.buildingForm.controls.floors?.value,
         letter: this.buildingForm.controls.letter?.value,
-        image: this.buildingForm.controls.image?.value,
+        images: this.buildingForm.controls.images?.value,
     }
-    
+    console.log(payload);
     this.buildingService.createBuilding(payload).subscribe({
       next: () => {
         this.snackBarService.open(`Se agrego el nuevo edificio.`, "Aceptar", 6000, "success-snackbar");
@@ -102,9 +103,11 @@ export class CreateBuildingFormComponent implements OnInit {
     });
   }
 
-  addFile(event:any){
-    console.log(event);
-    this.buildingForm.controls.image.setValue(event);
+  addFile(event:CoolFile[]){
+    
+    const names = event.map(elem=> elem.name);
+    this.buildingForm.controls.images.setValue(names);
+    console.log(event[0], this.buildingForm.controls.images.value);
     
 }
 

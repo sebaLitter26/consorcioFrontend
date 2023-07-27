@@ -46,7 +46,7 @@ export class CoolFileInputComponent implements OnInit {
     allowMaxFileSize: number = 2000000; //2MB
 
     @Output()
-    finalizaCarga = new EventEmitter<Object>();
+    finalizaCarga = new EventEmitter<CoolFile[]>();
 
     files: CoolFile[] = [];
 
