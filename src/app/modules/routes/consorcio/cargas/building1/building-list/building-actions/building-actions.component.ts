@@ -10,6 +10,7 @@ import { BuildingState } from '../../model';
 import { BuildingSharedService } from '../../services/buildings-shared.service';
 import { ProfileService } from 'src/app/modules/main/services/profile.service';
 import { Router } from '@angular/router';
+import { CreateBuildingFormComponent } from '../forms/create-building-form/create-building-form.component';
 
 @Component({
   selector: 'app-building-actions',
@@ -44,14 +45,25 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
     
     switch(action.name)
     {
-      case('detalle'):{
+      case('detail'):{
         this.router.navigate(['/buildings/building'], {queryParams: {id: this.data?.id}} );
         break;
       }
-      case('crear'):{
-        const confirmationDialogData: ConfirmationDialogData = {
-          title: 'Crear Edificio',
-          message: 'Esta seguro que desea crear el edificio?',
+      case('update'):{
+        this.matDialog.open(CreateBuildingFormComponent,{
+          data: this.data
+        }).afterClosed().subscribe((result: boolean | string) => {
+          if (result) {
+            /* this.buildingService.updateBuilding(this.data.).subscribe(() => {
+              this.snackBarService.open(`Edificio ubicado en ${this.data!.address}, ${this.data!.location} fue creado satisfactoriamente.`, "Aceptar", 5000, "success-snackbar");
+              this.BuildingSharedService.updateTable();
+            }); */
+          }
+        })
+        break;
+        /* const confirmationDialogData: ConfirmationDialogData = {
+          title: 'Modificar edificio',
+          message: 'Esta seguro que desea modificar el edificio?',
           color: 'primary',
         }
         this.matDialog.open(ConfirmationDialogComponent, {
@@ -62,13 +74,13 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
             /* this.buildingService.updateBuilding(this.data.).subscribe(() => {
               this.snackBarService.open(`Edificio ubicado en ${this.data!.address}, ${this.data!.location} fue creado satisfactoriamente.`, "Aceptar", 5000, "success-snackbar");
               this.BuildingSharedService.updateTable();
-            }); */
+            }); 
           }
         })
-        break;
+        break; */
       }
       
-      case('eliminar'):{
+      case('delete'):{
         const title =  `ubicado en ${this.data?.address}, ${this.data?.location}`;
         
         const confirmationDialogData: ConfirmationDialogData = {
@@ -99,10 +111,10 @@ export class BuildingActionsComponent implements CustomCellComponent, OnInit {
    */
   private getAllBuildingActions(): BuildingAction[]{
     const actions: BuildingAction[] = [
-      {name: 'detalle', title: 'Ver detalle', icon: 'info', permission: 'buildings_ver-detalle', availableStates: []},
-        {name: 'crear', title: 'Crear edificio', icon: 'announcement', permission: 'buildings_informar-building', 
+      {name: 'detail', title: 'Ver detalle', icon: 'info', permission: 'buildings_ver-detalle', availableStates: []},
+        {name: 'update', title: 'Modificar edificio', icon: 'announcement', permission: 'buildings_informar-building', 
           availableStates: [BuildingState.CREADO]},
-        {name: 'eliminar', title: 'Borrar edificio', icon: 'cancel', color: '#F08080',  permission: 'buildings_cancelar-building',
+        {name: 'delete', title: 'Borrar edificio', icon: 'cancel', color: '#F08080',  permission: 'buildings_cancelar-building',
           availableStates: []},
     ];
     return actions;

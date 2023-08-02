@@ -19,6 +19,7 @@ import { ReportComponent } from './reporte/report.component';
 import { EmpleadoInformationComponent } from './reporte/empleado-detail/empleado-detail.component';
 import { CoolFileInputModule } from '../../ui/cool-file-input/cool-file-input.module';
 import { AuthorizationGuard } from '../../authorization/guards/authorization-guard.service';
+import {CloudinaryModule} from '@cloudinary/ng';
 
 const routes: Routes = [
     {
@@ -45,16 +46,13 @@ const routes: Routes = [
         SharedModule,
         RouterModule.forChild(routes),
         DynamicTableModule,
-        ReactiveFormsModule,
-        CoolDirectivesModule,
         CoolInputModule,
         AuthorizationModule,
-        ProcessStatusModule,
         RoutesCommonModule,
         LoadersModule,
         DashboardCardModule,
         UserModule,
-        CoolFileInputModule
+        
     ],
     declarations: [
         //CargasComponent, 

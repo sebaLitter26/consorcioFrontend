@@ -5,9 +5,7 @@ import { switchMap, tap } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/modules/authentication/services/authentication.service';
 import { ProfileService } from 'src/app/modules/main/services/profile.service';
 import { OverlayService } from 'src/app/modules/overlay/services/overlay.service';
-import { SerialService } from 'src/app/services/serial.service';
 import { SnackBarService } from 'src/app/services/snackbar.service';
-import { ZPLService } from 'src/app/services/zpl.service';
 import { CustomCard, Empleado, QrAction } from '..';
 const CUSTOM_CARD_MAP: CustomCard<Empleado>[] = [
   {
@@ -38,8 +36,6 @@ export class ProfileDetailComponent implements OnInit {
 
   constructor(
     private overlayService: OverlayService,
-    private serialPortService: SerialService,
-    private zplService: ZPLService,
     private profileService: ProfileService,
     private snackBarService: SnackBarService,
     private authenticationService: AuthenticationService,

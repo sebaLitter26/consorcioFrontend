@@ -1,1 +1,14 @@
-<img [src]="data" width="325px" height="325px">
+
+<main>
+
+<mat-grid-list cols="{{data.length}}" rowHeight="400px">
+    <mat-grid-tile
+        *ngFor="let image of tiles"
+        [colspan]="image.cols"
+        [rowspan]="image.rows"
+        [style.background]="image.color">
+        <img [src]="image.src" width="325px" height="325px">
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</main>

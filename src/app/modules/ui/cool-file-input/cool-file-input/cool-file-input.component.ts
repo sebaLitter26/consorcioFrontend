@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { from } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { CoolFile } from '..';
+import { CoolFile, Cloudinary } from '..';
 import { FileSizePipe } from '../pipes/file-size.pipe';
 import { IsImagePipe } from '../pipes/is-image.pipe';
 import { SnackBarService } from '../../../../services/snackbar.service';
+import { UploadService } from '../cool-file-input.service';
 
 
 @Component({
@@ -50,21 +51,56 @@ export class CoolFileInputComponent implements OnInit {
 
     files: CoolFile[] = [];
 
+    @Input()
+    initialFiles: string[] = [];
+
     constructor(
         private isImagePipe: IsImagePipe,
         private fileSizePipe: FileSizePipe,
         private changeDetectorRef: ChangeDetectorRef,
         private snackBarService: SnackBarService,
-    ) {}
+        private uploadService: UploadService
+    ) {
+        
+    }
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        console.log(this.initialFiles);
+        this.initialFiles.forEach(elem=>{
+            console.log(elem);
+            
+            const arch = JSON.parse(elem) as Cloudinary;
+            const coolFile: CoolFile = {
+                src: new Blob([arch.secure_url]),
+                name: arch.original_filename,
+                type: arch.resource_type,
+                extension: arch.secure_url.substring(arch.secure_url.lastIndexOf("."), arch.secure_url.length),
+                progress: 100,
+                size: arch.bytes,
+                loaded: 0,
+                cloudinary: arch
+            }
+            this.files.push(coolFile);
+            /* let file = this.uploadService.getFile(elem).subscribe(elem=>{
+                console.log(elem, file);
+            }); */
+            
+            
+        })
+    }
 
     /**
      * Elimina un archivo del array de archivos.
      * @param index la posición del archivo dentro del array de archivos
      */
     removeFile(index: number): void {
-        this.files.splice(index, 1);
+        if(!this.files[index].cloudinary) return;
+        this.uploadService.deleteFile(this.files[index].cloudinary!).subscribe(elem=>{
+            console.log(elem);
+            
+            this.files.splice(index, 1);
+        });
+        
     }
 
     /**
@@ -90,7 +126,8 @@ export class CoolFileInputComponent implements OnInit {
                         const fileReader = new FileReader();
                         const fileSrc: Blob = new Blob([buffer]);
 
-                        fileReader.onloadstart = (event: ProgressEvent<FileReader>) => {
+                        fileReader.onloadstart = async (event: ProgressEvent<FileReader>) => {
+
                             const fileIndex: number = this.files.findIndex(file => file.name == currentFile?.name);
                             const coolFile: CoolFile = {
                                 src: fileSrc,
@@ -99,16 +136,21 @@ export class CoolFileInputComponent implements OnInit {
                                 extension: currentFile?.name.substring(currentFile?.name.lastIndexOf("."), currentFile?.name.length),
                                 progress: (event.loaded / event.total) * 100,
                                 size: event.total,
-                                loaded: event.loaded,
+                                loaded: event.loaded
+                                
                             }
+                            await this.uploadService.uploadFile(currentFile).subscribe(elem=> coolFile.cloudinary= elem);
 
                             if (fileIndex < 0) {
                                 this.files.push(coolFile);
                             } else {
                                 this.files[fileIndex] = coolFile;
                             }
-
                             this.changeDetectorRef.detectChanges();
+                                
+                               
+                            
+                            
                         };
 
                         fileReader.onprogress = (event: ProgressEvent<FileReader>) => {

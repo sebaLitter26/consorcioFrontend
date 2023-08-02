@@ -7,9 +7,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateBuildingFormComponent } from './forms/create-building-form/create-building-form.component';
 import { BuildingActionsComponent } from './building-actions/building-actions.component';
 import { BuildingState, BuildingType, BUILDING_STATE_MAP } from '../model';
-import { filter, Subject } from 'rxjs';
+import { filter, Observable, Subject } from 'rxjs';
 import { BuildingSharedService } from '../services/buildings-shared.service';
 import { OverlayService } from 'src/app/modules/overlay/services/overlay.service';
+import { PluImageComponent } from '../../../../../common/plu-image/plu-image.component';
+import { DynamicComponent } from '../../../../../ui/dynamic-table';
+import { StringSplitterData } from '../../../../../common';
 
 @Component({
   selector: 'app-buildings-list',
@@ -19,7 +22,7 @@ import { OverlayService } from 'src/app/modules/overlay/services/overlay.service
 })
 export class BuildingListComponent implements OnInit {
   /** Los buildings que se muestran en la lista */
-  buildings: Building[]= [];
+  //buildings: Building[]= [];
 
   filters: BuildingListFilters = {
     tipo_building: [],
@@ -30,14 +33,16 @@ export class BuildingListComponent implements OnInit {
     plu: null,
     usuario: null,
   }
+
+  building$: Observable<Building[]> = this.buildingService.getBuildings(this.filters)
  
   /** Se utiliza para mostrar el app-table-loader mientras carga */
   loading: boolean = false;
 
   /** La definición de la tabla que muestra el listado de buildings. */
   tableDefinition: DynamicTableDefinition = {
-    displayedColumns: ["address", "location", "floors", "letter", "acciones"],
-    headerCellDefinitions: ["Direccion", "Localidad", "Pisos", "Letra maxima", "Acciones"],
+    displayedColumns: ["images","address", "location", "floors", "letter", "acciones"],
+    headerCellDefinitions: ["","Direccion", "Localidad", "Pisos", "Letra maxima", "Acciones"],
   }
   
   constructor(
@@ -50,7 +55,20 @@ export class BuildingListComponent implements OnInit {
   ) {}
   
   /** Componentes custom a usar en el listado de buildings. */
-  customComponents: (Type<any> | null)[] = [null, null, null, null, BuildingActionsComponent];
+  customComponents: (DynamicComponent | null)[] = [
+    {
+        type: PluImageComponent,
+        componentData: <StringSplitterData>{
+            propertyPath: 'images',
+        },
+    },
+    null, null, null, null, 
+    {
+      type: BuildingActionsComponent,
+      componentData: <StringSplitterData>{
+          propertyPath: 'images',
+      },
+  }];
   
   /** Formatos custom para columnas del listado de buildings. */
   columnFormaters: (((item: any) => string | number | boolean) | null)[] = [
@@ -90,7 +108,7 @@ export class BuildingListComponent implements OnInit {
     /** Obtiene la lista de buildings precargada por el resolver */
     this.loading = true;
     this.activatedRoute.data.subscribe(data => {
-      this.buildings = data.buildings;
+      //this.buildings = data.buildings;
       this.loading = false;
       console.log("hola", data);
     });
@@ -105,19 +123,20 @@ export class BuildingListComponent implements OnInit {
   onFiltersChanged(filters: BuildingListFilters) {
     console.log(filters);
     this.filters = filters;
-    this.updateTable();
+    //this.updateTable();
   }
 
   /**
    * Actualiza la tabla con los filtros seleccionados
    */
   updateTable() {
-    this.overlayService.displayLoadingOverlay();
-    this.loading = true;
-    this.buildingService.getBuildings(this.filters).subscribe((buildings: Building[]) => {
+    /* this.overlayService.displayLoadingOverlay();
+    this.loading = true; */
+    this.building$ = this.buildingService.getBuildings(this.filters)
+    /* .subscribe((buildings: Building[]) => {
         
         
-        this.buildings = buildings;
+        //this.buildings = buildings;
 
         setTimeout(() => {
           this.overlayService.hideLoadingOverlay();
@@ -127,7 +146,7 @@ export class BuildingListComponent implements OnInit {
         }, 100);
 
         
-    });
+    }); */
   }
 
   /** Abre el form para crear un building nuevo */

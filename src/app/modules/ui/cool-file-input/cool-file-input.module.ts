@@ -1,5 +1,6 @@
 import { NgModule, Type } from "@angular/core";
 import { SharedModule } from "../../shared.module";
+import { UploadService } from "./cool-file-input.service";
 import { CoolFileInputComponent } from './cool-file-input/cool-file-input.component';
 import { FileSizePipe } from "./pipes/file-size.pipe";
 import { IsImagePipe } from "./pipes/is-image.pipe";
@@ -23,6 +24,7 @@ const pipes: Type<any>[] = [
     ],
     providers: [
         ...pipes,
+        UploadService
     ],
     exports: [
         ...components,

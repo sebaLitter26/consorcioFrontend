@@ -11,7 +11,7 @@ query buildings{
     letter,
   	floors,
     id,
-    image
+    images
     appartments{ 
       floor,
       letter,
@@ -50,7 +50,7 @@ query building($id: String!){
         location
         address
         id
-        image
+        images
         appartments{
           floor
           letter
@@ -73,7 +73,7 @@ export const CREATE_BUILDING = gql`
         location
         floors
         letter
-        image
+        images
         appartments{ 
             floor
             letter
@@ -92,7 +92,7 @@ export const UPDATE_BUILDING = gql`
         location
         floors
         letter
-        image
+        images
         appartments{ 
             floor
             letter
@@ -112,7 +112,7 @@ export const DELETE_BUILDING = gql`
         location
         floors
         letter
-        image
+        images
         appartments{ 
             floor
             letter

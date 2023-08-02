@@ -1,6 +1,6 @@
 <main>
-    <h2>Crear edificio nuevo</h2>
-    <form class="form" [formGroup]="buildingForm" (ngSubmit)="createBuilding()">
+    <h2>{{buildingAction}}r edificio</h2>
+    <form class="form" [formGroup]="buildingForm" (ngSubmit)="onSubmit()">
         
 
         <mat-form-field appearance="fill" color="primary">
@@ -37,7 +37,7 @@
        
     </form>
 
-    <app-cool-file-input height="200px" (finalizaCarga)="addFile($event)"></app-cool-file-input>
+    <app-cool-file-input height="200px" [initialFiles]="this.building.images" (finalizaCarga)="addFile($event)"></app-cool-file-input>
 
     <div class="submit-button-and-spinner">
         <button *ngIf="!bSubmitting; else submitting"
@@ -57,12 +57,12 @@
             color="accent"
             class="btn-small"
             type="submit"
-            (click)="createBuilding()" 
+            (click)="onSubmit()" 
             [disabled]="buildingForm.invalid"
         >
         
             <mat-icon>send</mat-icon>&nbsp;
-            Enviar
+            {{buildingAction}}r
         </button>
 
         <ng-template #submitting>

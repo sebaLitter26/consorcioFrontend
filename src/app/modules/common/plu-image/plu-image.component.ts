@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ImageDialogComponent } from 'src/app/modules/ui/dialogs/image-dialog/image-dialog.component';
 import { CustomCellComponent } from 'src/app/modules/ui/dynamic-table';
 import { Image, StringSplitterData } from '..';
+import { Cloudinary } from '../../ui/cool-file-input';
 
 @Component({
     selector: 'app-plu-image',
@@ -16,7 +17,7 @@ export class PluImageComponent implements CustomCellComponent, OnInit {
     /** Data que contiene el path de la propiedad a mostrar. */
     componentData?: StringSplitterData;
 
-    image: string = '';
+    images: string[] = [];
 
     _mouseOver: boolean = false;
 
@@ -29,9 +30,17 @@ export class PluImageComponent implements CustomCellComponent, OnInit {
             if (!this.componentData?.propertyPath) {
                 return;
             }
-            this.image = this.data[this.componentData?.propertyPath!] ?? '';
-            console.log(this.image);
+
+            let cloudinary_source: Cloudinary[] = [];
+
+            this.data[this.componentData?.propertyPath!].forEach((elem: string)=>{
+                cloudinary_source.push( JSON.parse(elem));
+                
+            })
             
+            
+            console.log('cloudinary_source', cloudinary_source);
+            this.images = cloudinary_source.map(elem=> elem.secure_url);
             
         }
     }
@@ -40,7 +49,7 @@ export class PluImageComponent implements CustomCellComponent, OnInit {
         $event.stopPropagation();
 
         this.matDialog.open(ImageDialogComponent, {
-            data: this.image ,
+            data: this.images ,
             panelClass: "xs-padding-panel",
         });
     }

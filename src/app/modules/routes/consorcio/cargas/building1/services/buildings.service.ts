@@ -35,9 +35,11 @@ export class BuildingService {
     getBuildings(filters: BuildingListFilters = DEFAULT_BUILDING_FILTERS): Observable<Building[]>{
         return this.apollo.watchQuery({
             query: BUILDINGS,
-            //variables: filters,
-            //fetchPolicy: 'network-only'
+            variables: filters,
+            fetchPolicy: 'network-only'
         }).valueChanges.pipe(map((result: any) => {  
+            console.log(result.data.buildings);
+            
             return result.data.buildings;
         }));
     

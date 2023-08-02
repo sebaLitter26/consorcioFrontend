@@ -1,5 +1,4 @@
 import { NgModule, Type } from "@angular/core";
-import { ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "../../shared.module";
 import { ConfirmationDialogComponent } from "./confirmation-dialog/confirmation-dialog.component";
 import { ImageDialogComponent } from "./image-dialog/image-dialog.component";
@@ -11,10 +10,9 @@ const components: Type<any>[] = [
 
 @NgModule({
     imports: [
-        SharedModule,
-        ReactiveFormsModule,
+        SharedModule
     ],
     declarations: components,
-    exports: components,
+    exports: components
 })
 export class DialogsModule {}

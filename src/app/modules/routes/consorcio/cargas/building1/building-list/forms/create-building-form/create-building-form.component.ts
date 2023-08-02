@@ -1,17 +1,19 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
-import { CreateBuildingPayload, BuildingsListProduct } from '../../..';
+import { CreateBuildingPayload, BuildingsListProduct, Building, UpdateBuildingPayload } from '../../..';
 //import { GdmService } from 'src/app/modules/gdm/services/gdm.service';
 import { PluUtils } from 'src/app/utils/plu.utils';
 import { BuildingType } from '../../../model';
 import { SnackBarService } from 'src/app/services/snackbar.service';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BuildingService } from '../../../services/buildings.service';
 //import { IpService } from 'src/app/services/ip.service';
 import { BuildingSharedService } from '../../../services/buildings-shared.service';
 import { CoolFile } from '../../../../../../../ui/cool-file-input';
+import {Cloudinary, CloudinaryImage} from '@cloudinary/url-gen';
+import { environment } from 'src/environments/environment';
 
 export type ControlsOf<T extends Record<string, any>> = {
   [K in keyof T]: T[K] extends Record<any, any>
@@ -41,13 +43,13 @@ export class CreateBuildingFormComponent implements OnInit {
       }),
     floors: new FormControl(1,{
         nonNullable: true,
-        validators: [Validators.required]
+        validators: [Validators.required, Validators.pattern("^[0-9]{1,2}$")]
       }),
     letter: new FormControl('',{
         nonNullable: true,
-        validators: [Validators.required]
+        validators: [Validators.required, Validators.pattern("^[A-Ha-h]{1}$")]
       }),
-    images: new FormControl([])
+    images: new FormControl(<string[]>[], {nonNullable: true})
   });
   
   /** El PLU que se encuentra al buscar en el form, si es null no se muestra ese template */
@@ -58,25 +60,47 @@ export class CreateBuildingFormComponent implements OnInit {
 
   bSubmitting: boolean = false;
 
+  buildingAction: string = 'Crea';
+
   floors: Array<number> = [2,3,4,5,6,7,8,9];
   letters: Array<string> = ['A','B','C','D','E'];
+
+  images: CoolFile[] = [];
 
   constructor(
     //private gdmService: GdmService, 
     private snackBarService: SnackBarService,
     public dialogRef: MatDialogRef<CreateBuildingFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public building: Building,
     private buildingService: BuildingService,
     private buildingsSharedService: BuildingSharedService,
-  ) { }
+  ) { 
+    console.log(this.building);
+    
+    if(this.building){
+      this.buildingAction= 'Modifica';
+      this.buildingForm.patchValue({
+        address: this.building.address,
+        location: this.building.location,
+        floors: this.building.floors,
+        letter: this.building.letter,
+        images: this.building.images
+      })
+    }
+  }
 
 
   ngOnInit(): void {
-    
+
 
     /** Busca el PLU despues de un tiempo de escribir el input 
     this.buildingForm.get('plu')!.valueChanges.pipe(debounceTime(2000)).subscribe(pluInput => this.showPluDetails(pluInput));
     this.buildingForm.get('plu')!.valueChanges.subscribe(() => { if(this.buildingForm.get('plu')!.dirty) this.bFetchingData = true });
     */
+  }
+
+  onSubmit(){
+    (this.building) ? this.uploadBuilding() : this.createBuilding();
   }
 
   /**
@@ -89,7 +113,7 @@ export class CreateBuildingFormComponent implements OnInit {
         location: this.buildingForm.controls.location?.value,
         floors: this.buildingForm.controls.floors?.value,
         letter: this.buildingForm.controls.letter?.value,
-        images: this.buildingForm.controls.images?.value,
+        images: this.images.map(elem=> JSON.stringify(elem.cloudinary)),
     }
     console.log(payload);
     this.buildingService.createBuilding(payload).subscribe({
@@ -103,10 +127,35 @@ export class CreateBuildingFormComponent implements OnInit {
     });
   }
 
-  addFile(event:CoolFile[]){
+  uploadBuilding(){
+    this.bSubmitting = true;
+    const payload: UpdateBuildingPayload = {
+      id: this.building.id,
+      address: this.buildingForm.controls.address.value,
+      location: this.buildingForm.controls.location?.value,
+      floors: this.buildingForm.controls.floors?.value,
+      letter: this.buildingForm.controls.letter?.value,
+      images: this.images.map(elem=> JSON.stringify(elem.cloudinary))
+    }
     
-    const names = event.map(elem=> elem.name);
-    this.buildingForm.controls.images.setValue(names);
+    this.buildingService.updateBuilding(payload).subscribe({
+      next: () => {
+        this.snackBarService.open(`Se modifico el edificio.`, "Aceptar", 6000, "success-snackbar");
+        this.buildingsSharedService.updateTable();
+        this.dialogRef.close(); 
+      },
+      
+      error: (error) => this.bSubmitting = false,
+    });
+  }
+
+  addFile(event:CoolFile[]){
+    if(!event) return;
+    console.log(event);
+    
+    this.images.push(...event);
+    const sources = this.images.map(elem=> JSON.stringify(elem.cloudinary));
+    this.buildingForm.controls.images.setValue(sources);
     console.log(event[0], this.buildingForm.controls.images.value);
     
 }
@@ -115,7 +164,7 @@ export class CreateBuildingFormComponent implements OnInit {
    * [NO FUNCIONA] Un validator para ver si se encontro el plu buscado
    * Es valido buildingPlu no es null
    * @returns ValidatorFn para verificar que el formControl plu sea valido
-   */
+  
   pluValidator(plu: BuildingsListProduct | null): ValidatorFn{
     return (control: AbstractControl) : ValidationErrors | null => {
       if(plu != null){
@@ -134,14 +183,14 @@ export class CreateBuildingFormComponent implements OnInit {
   /**
    * Busca el plu solicitado, si es valido se lo asigna a buildingPlu y se muestra, si no encuentra el plu muestra un error
    * @param plu El plu a buscar, ingresado en el input
-   */
+   
    showPluDetails(plu: string){
     this.bFetchingData = false;
     if(plu === null) {
       this.buildingPlu = null; 
       return;
     }
-    
+    */
     // Si gdmService no encuentra el plu devuelve un undefined object, no devuelve un error
     /* this.gdmService.getPluInformation(plu).subscribe(pluObject => {
       if(pluObject !== undefined){
@@ -151,7 +200,7 @@ export class CreateBuildingFormComponent implements OnInit {
         this.snackBarService.open("PLU no encontrado", "Aceptar", 5000, "error-snackbar");
         this.buildingPlu = null; 
       } 
-    }) */
+    }) 
   }
 
   resetPluControl(){
@@ -160,4 +209,5 @@ export class CreateBuildingFormComponent implements OnInit {
       this.buildingForm.get('plu')!.reset();
     }
   }
+  */
 }

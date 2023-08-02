@@ -8,7 +8,6 @@ import { CoolFileInputModule } from "../../ui/cool-file-input/cool-file-input.mo
 import { CoolInputModule } from "../../ui/cool-input/cool-input.module";
 import { RangeSliderModule } from "../../ui/range-slider/range-slider.module";
 import { ComponentDebuggingComponent } from './component-debugging/component-debugging.component';
-import { ZplComponent } from "./zpl/zpl.component";
 import { SnackBarTesterComponent } from './snack-bar-tester/snack-bar-tester.component';
 import { DashboardCardModule } from '../../ui/dashboard-card/dashboard-card.module';
 import { DynamicSearchModule } from "../../ui/dynamic-search/dynamic-search.module";
@@ -16,10 +15,6 @@ const routes: Routes = [
     {
         path: 'component-debugging',
         component: ComponentDebuggingComponent,
-    },
-    {
-        path: 'zpl',
-        component: ZplComponent,
     },
     {
         path: 'snackbar-tester',
@@ -39,7 +34,6 @@ const routes: Routes = [
         BankCardModule,
         RangeSliderModule,
         CoolCardModule,
-        ReactiveFormsModule,
         CoolInputModule,
         CoolFileInputModule,
         DashboardCardModule,
@@ -47,7 +41,6 @@ const routes: Routes = [
     ],
     declarations: [
         ComponentDebuggingComponent,
-        ZplComponent,
         SnackBarTesterComponent
     ],
     providers: []

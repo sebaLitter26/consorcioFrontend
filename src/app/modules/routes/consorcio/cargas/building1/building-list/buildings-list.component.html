@@ -7,8 +7,8 @@
     </div>
 
     <app-buildings-list-filters (onFiltersChanged)="onFiltersChanged($event)"></app-buildings-list-filters>
-    <div class="table-container">
-        <app-dynamic-table *ngIf="buildings && buildings.length > 0; else tableLoader"
+    <div class="table-container" *ngIf="building$ | async as buildings">
+        <app-dynamic-table *ngIf="buildings.length > 0; else tableLoader"
         [data]="buildings"
         [borderRadius]="'10px'"
         [tableDefinition]="tableDefinition"

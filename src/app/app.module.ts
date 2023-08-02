@@ -8,6 +8,12 @@ import { SharedModule } from './modules/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { OverlayModule } from './modules/overlay/overlay.module';
 import { GraphQLModule } from './graphql.module';
+import { RoutesCommonModule } from './modules/common/routes-common.module';
+import { DashboardCardModule } from './modules/ui/dashboard-card/dashboard-card.module';
+import { DynamicTableModule } from './modules/ui/dynamic-table/dynamic-table.module';
+import { CoolFileInputModule } from './modules/ui/cool-file-input/cool-file-input.module';
+import { LoadersModule } from './modules/ui/loaders/loaders.module';
+import { CoolInputModule } from './modules/ui/cool-input/cool-input.module';
 
 
 @NgModule({
@@ -20,8 +26,14 @@ import { GraphQLModule } from './graphql.module';
         BrowserAnimationsModule,
         SharedModule,
         GraphQLModule,
+        RoutesCommonModule,
         //HttpClientModule,
-        OverlayModule,        
+        OverlayModule,   
+        DashboardCardModule,
+        DynamicTableModule,     
+        CoolFileInputModule,
+        LoadersModule,
+        CoolInputModule,
     ],
     providers: [],
     bootstrap: [

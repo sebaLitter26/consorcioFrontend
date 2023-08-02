@@ -1,6 +1,6 @@
 import { BuildingSerialState, BuildingState, BuildingStateType, BuildingType } from "./model";
 
-export type ActionName = "crear" | "eliminar" | "detalle";
+export type ActionName = "update" | "delete" | "detail";
 
 /** El detalle del building */
 export interface BuildingDetail {
@@ -11,14 +11,15 @@ export interface BuildingDetail {
 
 /** Los datos que contiene el edificio */
 export interface Building {
-    id: string,
-    floors: number,
-    letter: string, 
-    appartments: any[],
-    createdAt: string, 
-    updatedAt: string,
-    address: string,
-    location: string,
+    id: string
+    floors: number
+    letter: string 
+    appartments: any[]
+    createdAt: string 
+    updatedAt: string
+    address: string
+    location: string
+    images: string[]
     /*
     id_estado: BuildingState,
     estado: BuildingStateType, 
@@ -98,11 +99,11 @@ export interface BuildingStateStyle {
 
 /** Payload para la creacion de un building */
 export interface CreateBuildingPayload{
-    address: string,
-    location: string,
-    floors: number,
-    letter: string,
-    images: string[]
+    address: string
+    location: string
+    floors: number
+    letter: string
+    images: string[] | null
 }
 
 /** Payload para informar un building */
@@ -126,13 +127,13 @@ export interface BuildingStateOption {
 }
 
 export interface BuildingListFilters {
-    tipo_building: BuildingType[],
-    fechaDesde: string | null,
-    fechaHasta: string | null,
-    estado: BuildingState[],
-    id_building: number | null,
-    plu: string | null,
-    usuario: string | null,
+    tipo_building: BuildingType[]
+    fechaDesde: string | null
+    fechaHasta: string | null
+    estado: BuildingState[]
+    id_building: number | null
+    plu: string | null
+    usuario: string | null
 }
 
 export interface CustomCard {

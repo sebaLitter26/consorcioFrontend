@@ -4,11 +4,10 @@ import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStat
 import { BehaviorSubject, Observable, Subject, switchMap } from "rxjs";
 import { User } from "../../main";
 import { ProfileService } from "../../main/services/profile.service";
-import { StationConfigurationService } from "../../station-configuration/services/configuration.service";
 import { AuthenticationService } from "../services/authentication.service";
 
 @Injectable()
-export class AuthenticationGuardService implements CanActivate, CanLoad {
+export class AuthenticationGuardService {
 
     private _activateSource: Subject<boolean> = new Subject<boolean>();
 

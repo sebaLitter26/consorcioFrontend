@@ -9,7 +9,6 @@ import { AuthorizationModule } from "../authorization/authorization.module";
 import { NavbarModule } from "../navbar/navbar.module";
 import { OverlayModule } from "../overlay/overlay.module";
 import { SharedModule } from "../shared.module";
-import { StationConfigurationModule } from "../station-configuration/station-configuration.module";
 import { DeviceModule } from "../ui/device/device.module";
 import { DialogsModule } from "../ui/dialogs/dialogs.module";
 import { HeaderComponent } from "./header/header.component";
@@ -23,14 +22,12 @@ import { VersionService } from "./services/version.service";
         MainRoutingModule,
         SharedModule,
         NavbarModule,
-        DialogsModule,
-        HttpClientModule,
+        //DialogsModule,
+        //HttpClientModule,
         DeviceModule,
         OverlayModule,
-        StationConfigurationModule,
         AuthorizationModule,
-        FormsModule, 
-        ReactiveFormsModule
+        
     ],
     declarations: [
         HeaderComponent,
