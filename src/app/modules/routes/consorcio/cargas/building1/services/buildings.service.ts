@@ -10,13 +10,9 @@ import { BUILDING, BUILDINGS, CREATE_BUILDING, DELETE_BUILDING, UPDATE_BUILDING 
 
 
 const DEFAULT_BUILDING_FILTERS: BuildingListFilters = {
-    tipo_building: [],
-    fechaDesde: null,
-    fechaHasta: null,
-    estado: [],
-    id_building: null,
-    plu: null,
-    usuario: null,
+    address: null,
+    location: null,
+    floors: null
 }
 
 @Injectable()      
@@ -37,11 +33,7 @@ export class BuildingService {
             query: BUILDINGS,
             variables: filters,
             fetchPolicy: 'network-only'
-        }).valueChanges.pipe(map((result: any) => {  
-            console.log(result.data.buildings);
-            
-            return result.data.buildings;
-        }));
+        }).valueChanges.pipe(map((result: any) => result.data.buildings));
     
         //return this.http.post<Building[]>(`${environment.apiUrl}/getbuildings`, filters);
     }
@@ -86,14 +78,14 @@ export class BuildingService {
      * Envia el id de un building para que se le cambie el estado a informado
      * @return un observable con el resultado de la peticion
      */
-    updateBuilding(updateBuildingPayload: UpdateBuildingPayload): Observable<any>{
+    updateBuilding(updateBuildingPayload: UpdateBuildingPayload): Observable<Building>{
 
         return this.apollo.mutate({
             mutation: UPDATE_BUILDING,
             variables: {input: updateBuildingPayload},
             fetchPolicy: 'network-only'
         }).pipe(map((result: any) => {  
-            return result.data.building;
+            return result.data.updateBuilding;
         }));
 
     }
@@ -102,7 +94,7 @@ export class BuildingService {
      * Envia el id de un edificio para que se elimine
      * @return un observable con el edificio eliminado
      */
-    deleteBuilding(buildingId: string): Observable<any> {
+    deleteBuilding(buildingId: string): Observable<Building> {
         /* const payload: IDBuildingPayload = {
             id: buildingId
         } */

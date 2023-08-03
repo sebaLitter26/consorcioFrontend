@@ -123,6 +123,9 @@ $file-image-size: 2rem;
     
                     .file-name {
                         margin-bottom: 0.25em;
+                        width: -webkit-fill-available;
+                        overflow-wrap: break-word;
+                        inline-size: 114px;
                     }
 
                     .file-size {

@@ -16,8 +16,12 @@
         [columnFormaters]="columnFormaters"
         [columnStyles]="columnStyles"
         [usePagination]="true"
-        [pageSize]="16"
+        [useFilters]="true"
+        [useAutoComplete]="true"
+        [notFilteredColumns]="[0,4,5]"
+        [pageSize]="10"
         [updateSource]="buildingsUpdateSource.asObservable()"
+        (dataFilterEvent)="handleFilteredData($event)"
         >
         </app-dynamic-table>
         <ng-template #tableLoader>

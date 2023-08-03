@@ -16,31 +16,29 @@ export interface Tile {
 })
 export class ImageDialogComponent implements OnInit {
 
-    colors: string[] = ['lightblue','lightgreen','lightpink','#DDBDF1'];
     tiles: Tile[] = [
-       /*  {src: 'One', cols: 3, rows: 1, color: 'lightblue'},
-        {src: 'Two', cols: 1, rows: 2, color: 'lightgreen'},
-        {src: 'Three', cols: 1, rows: 1, color: 'lightpink'},
-        {src: 'Four', cols: 2, rows: 1, color: '#DDBDF1'}, */
-      ];
+        
+        {src: '', cols: 1, rows: 2, color: 'lightpink'},
+        {src: '', cols: 1, rows: 1, color: 'lightgreen'},
+        {src: '', cols: 2, rows: 1, color: '#DDBDF1'},
+        {src: '', cols: 3, rows: 1, color: 'lightblue'},
+        
+    ];
+
+    tiles_src: Tile[] = [];
 
     constructor(
         public dialogRef: MatDialogRef<ImageDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: string[],
     ) {
         this.data.map((elem,i)=>{
-            this.tiles[i] = {
-                src: elem,
-                cols: 1,
-                rows: i+1,
-                color: this.colors[i]
-            }
+            this.tiles_src[i] = {...this.tiles[i], src: this.data[i]}
         });
         
     }
 
     ngOnInit(): void {
-        console.log(this.tiles);
+        
         
     }
 }

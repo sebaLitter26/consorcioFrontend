@@ -11,23 +11,10 @@ export const environment = {
     apiTrack: "http://test3web18/TrackingApi/api/", */
     version: `${require('../../package.json').version}-dev`,
 
-    cloudinaryName: 'latinmed', 
-    cloudinaryPreset: 'itidmuni',
-    cloudinaryApiKey: '716319916531578',
+    cloudinary: {
+        name: 'latinmed', 
+        preset: 'itidmuni',
+        api_key: '716319916531578',
+        api_secret: 'PYBHq86YlkJLo_BpnWtrmIlMfeM' 
+    }
 }
-
-/* export const environment_ticket = {
-    production: false,
-    preProduction: false,
-    staging: false,
-    'https://sistema-jwt.herokuapp.com/graphql'
-    
-
-    apiUrlpreProduction: `http://apps24/MesaDevoCotoDigi/devol-services-new/api/`,
-    apiUrlproduction: `http://apps24/MesaDevoCotoDigi/devol-services/api/`,
-    apiUrlstaging: `http://apps24/MesaDevoCotoDigiNueva/devol-services/api/`,
-    local: `http://localhost:53979/api/`,
-    desa: `http://desa4web18/MesaDevoCotoDigi/devol-services/api/`,
-    desaNew: `http://desa4web18/MesaDevoCotoDigiNueva/devol-services/api/`,
-    version: `${require('../../package.json').version}-dev`,
-} */

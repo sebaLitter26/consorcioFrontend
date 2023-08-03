@@ -25,13 +25,9 @@ export class BuildingListComponent implements OnInit {
   //buildings: Building[]= [];
 
   filters: BuildingListFilters = {
-    tipo_building: [],
-    fechaDesde: null,
-    fechaHasta: null,
-    estado: [],
-    id_building: null,
-    plu: null,
-    usuario: null,
+    address: null,
+    floors: null,
+    location: null
   }
 
   building$: Observable<Building[]> = this.buildingService.getBuildings(this.filters)
@@ -110,7 +106,6 @@ export class BuildingListComponent implements OnInit {
     this.activatedRoute.data.subscribe(data => {
       //this.buildings = data.buildings;
       this.loading = false;
-      console.log("hola", data);
     });
 
     this.buildingSharedService.updateBuildingEvent.subscribe((update: boolean) => {
@@ -125,6 +120,20 @@ export class BuildingListComponent implements OnInit {
     this.filters = filters;
     //this.updateTable();
   }
+
+    /**
+         * Función que maneja la recepción de data filtrada en la tabla.
+         */
+    handleFilteredData($event: any): void {
+        console.log($event);
+        setTimeout(() => {
+            this.overlayService.hideLoadingOverlay();
+            this.loading = false;
+            this.buildingsUpdateSource.next(true);
+            this.changeDetectorRef.detectChanges();
+          }, 100);
+        
+    }
 
   /**
    * Actualiza la tabla con los filtros seleccionados

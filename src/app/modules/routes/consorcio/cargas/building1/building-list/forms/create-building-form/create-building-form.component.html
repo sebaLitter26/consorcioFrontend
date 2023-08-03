@@ -1,5 +1,5 @@
 <main>
-    <h2>{{buildingAction}}r edificio</h2>
+    <h2>{{buildingAction}}ar edificio</h2>
     <form class="form" [formGroup]="buildingForm" (ngSubmit)="onSubmit()">
         
 
@@ -37,7 +37,7 @@
        
     </form>
 
-    <app-cool-file-input height="200px" [initialFiles]="this.building.images" (finalizaCarga)="addFile($event)"></app-cool-file-input>
+    <app-cool-file-input height="200px" [initialFiles]="this.images" (finalizaCarga)="addFile($event)"></app-cool-file-input>
 
     <div class="submit-button-and-spinner">
         <button *ngIf="!bSubmitting; else submitting"
@@ -62,7 +62,7 @@
         >
         
             <mat-icon>send</mat-icon>&nbsp;
-            {{buildingAction}}r
+            {{buildingAction}}ar
         </button>
 
         <ng-template #submitting>

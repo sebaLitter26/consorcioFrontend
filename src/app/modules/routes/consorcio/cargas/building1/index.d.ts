@@ -127,13 +127,9 @@ export interface BuildingStateOption {
 }
 
 export interface BuildingListFilters {
-    tipo_building: BuildingType[]
-    fechaDesde: string | null
-    fechaHasta: string | null
-    estado: BuildingState[]
-    id_building: number | null
-    plu: string | null
-    usuario: string | null
+    address: string | null
+    location: string | null
+    floors: number | null
 }
 
 export interface CustomCard {

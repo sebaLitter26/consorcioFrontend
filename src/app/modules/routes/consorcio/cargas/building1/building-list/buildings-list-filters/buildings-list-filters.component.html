@@ -1,15 +1,15 @@
 <form class="form " [formGroup]="filtersForm" (ngSubmit)="onSubmitFilters()">
     <div class="filters-container">
-        <mat-form-field class="state-form-field" appearance="fill" color="primary">
+        <!-- <mat-form-field class="state-form-field" appearance="fill" color="primary">
             <mat-label>Tipo de Edificio</mat-label>
             <mat-select multiple formControlName="tipo_building">
                 <mat-option class="first-option" [value]="'all'" (click)="setAllBuildingTypeOptions()">Todos</mat-option>
                 <mat-option *ngFor="let typeOption of buildingTypeOptions" [value]="typeOption.value">{{ typeOption.displayValue }}</mat-option>
             </mat-select>
-        </mat-form-field>
+        </mat-form-field> 
         
         <mat-form-field appearance="fill" color="primary">
-            <mat-label>Fecha del Edificio</mat-label>
+            <mat-label>Dirección</mat-label>
             <mat-date-range-input [rangePicker]="deliveryDate">
                 <input matStartDate placeholder="" formControlName="fechaDesde" name="deliveryDateFrom" autocomplete="off">
                 <input matEndDate placeholder="" formControlName="fechaHasta" name="deliveryDateTo" autocomplete="off">
@@ -24,21 +24,25 @@
                 <mat-option class="first-option" [value]="'all'" (click)="setAllBuildingStateOptions()">Todos</mat-option>
                 <mat-option *ngFor="let stateOption of buildingStateOptions" [value]="stateOption.value">{{ stateOption.displayValue }}</mat-option>
             </mat-select>
-        </mat-form-field>
+        </mat-form-field> 
+    -->
         
         <mat-form-field appearance="fill" color="primary">
-            <mat-label>ID Edificio</mat-label> 
-            <input matInput type="number" formControlName="id_building">
+            <mat-label>Dirección</mat-label> 
+            <input matInput type="text" formControlName="address">
         </mat-form-field>
 
         <mat-form-field appearance="fill" color="primary">
-            <mat-label>PLU</mat-label> 
-            <input matInput type="number" formControlName="plu">
+            <mat-label>Localidad</mat-label> 
+            <input matInput type="text" formControlName="location">
         </mat-form-field>
 
-        <mat-form-field appearance="fill" color="primary">
-            <mat-label>Usuario</mat-label> 
-            <input matInput type="text" formControlName="usuario">
+        <mat-form-field class="state-form-field" appearance="fill" color="primary">
+            <mat-label>Pisos</mat-label>
+            <mat-select formControlName="floors">
+                <!-- <mat-option class="first-option" [value]="'all'" >P</mat-option> -->
+                <mat-option *ngFor="let floor of floors" [value]="floor">{{ floor }}</mat-option>
+            </mat-select>
         </mat-form-field>
     </div>
     <div class="filters-actions">

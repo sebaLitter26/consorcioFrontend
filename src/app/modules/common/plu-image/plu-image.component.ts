@@ -38,8 +38,6 @@ export class PluImageComponent implements CustomCellComponent, OnInit {
                 
             })
             
-            
-            console.log('cloudinary_source', cloudinary_source);
             this.images = cloudinary_source.map(elem=> elem.secure_url);
             
         }

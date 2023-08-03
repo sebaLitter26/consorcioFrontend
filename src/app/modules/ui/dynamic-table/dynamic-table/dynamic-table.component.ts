@@ -882,6 +882,8 @@ export class DynamicTableComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     private __applyFilterSort__(): void {
         this._filteredOrderedData = [...this.data];
+        console.log(this._filteredOrderedData);
+        
 
         this.__applyFilters__();
         this.__applySort__();

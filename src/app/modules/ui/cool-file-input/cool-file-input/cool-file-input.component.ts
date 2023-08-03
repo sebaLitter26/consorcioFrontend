@@ -65,26 +65,20 @@ export class CoolFileInputComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(this.initialFiles);
         this.initialFiles.forEach(elem=>{
-            console.log(elem);
             
             const arch = JSON.parse(elem) as Cloudinary;
             const coolFile: CoolFile = {
                 src: new Blob([arch.secure_url]),
-                name: arch.original_filename,
+                name: arch.asset_id,
                 type: arch.resource_type,
                 extension: arch.secure_url.substring(arch.secure_url.lastIndexOf("."), arch.secure_url.length),
                 progress: 100,
                 size: arch.bytes,
-                loaded: 0,
+                loaded: arch.bytes,
                 cloudinary: arch
             }
             this.files.push(coolFile);
-            /* let file = this.uploadService.getFile(elem).subscribe(elem=>{
-                console.log(elem, file);
-            }); */
-            
             
         })
     }
@@ -96,9 +90,14 @@ export class CoolFileInputComponent implements OnInit {
     removeFile(index: number): void {
         if(!this.files[index].cloudinary) return;
         this.uploadService.deleteFile(this.files[index].cloudinary!).subscribe(elem=>{
-            console.log(elem);
+            if(elem.result=="ok"){
+                this.files.splice(index, 1);
+                this.finalizaCarga.emit(this.files);
+            }else{
+                this.snackBarService.open(`${elem.result}.`, "Aceptar", 5000, "error-snackbar");
+            }
             
-            this.files.splice(index, 1);
+                
         });
         
     }
@@ -139,7 +138,7 @@ export class CoolFileInputComponent implements OnInit {
                                 loaded: event.loaded
                                 
                             }
-                            await this.uploadService.uploadFile(currentFile).subscribe(elem=> coolFile.cloudinary= elem);
+                            
 
                             if (fileIndex < 0) {
                                 this.files.push(coolFile);
@@ -147,26 +146,43 @@ export class CoolFileInputComponent implements OnInit {
                                 this.files[fileIndex] = coolFile;
                             }
                             this.changeDetectorRef.detectChanges();
+
+                           
                                 
-                               
-                            
-                            
                         };
 
                         fileReader.onprogress = (event: ProgressEvent<FileReader>) => {
-                            const fileIndex: number = this.files.findIndex(file => file.name == currentFile?.name);
+                            const fileIndex: number = this.files.findIndex(file => file.name == currentFile?.name) ?? 0;
 
-                            this.files[fileIndex].progress = (event.loaded / event.total) * 100;
-                            this.files[fileIndex].loaded = event.loaded;
+                            this.uploadService.uploadFile(this.files[fileIndex]).subscribe(elem=> {
+                       
+                                this.files[fileIndex].progress = (event.loaded / event.total) * 100;
+                                this.files[fileIndex].loaded = event.loaded;
 
-                            this.changeDetectorRef.detectChanges();
+                                
+
+                                if(elem.type ==4 ){
+                                    const cloudinary_file = elem.body as Cloudinary;
+                                
+                                    this.files[fileIndex].cloudinary = cloudinary_file;
+                                    this.files[fileIndex].name = cloudinary_file.public_id;
+                                    if(this.files.every( (val, i, arr) => val.progress === 100 )){
+                                        this.finalizaCarga.emit(this.files);
+                                    }
+                                    
+                                    
+                                }
+                                
+                                
+                            });
                         };
 
-                        fileReader.onloadend = (event: ProgressEvent<FileReader>) => {
+                        /* fileReader.onloadend = (event: ProgressEvent<FileReader>) => {   //no se dispara nunca
                             if(this.files.every( (val, i, arr) => val.progress === 100 )){
-                                this.finalizaCarga.emit(this.files);
+                                //this.finalizaCarga.emit(this.files);
+                                
                             }
-                        };
+                        }; */
 
                         fileReader.readAsArrayBuffer(fileSrc);
                     }),
