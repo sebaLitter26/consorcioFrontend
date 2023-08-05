@@ -89,9 +89,10 @@
                     <!-- Columnas de datos -->
                     <ng-container [matColumnDef]="column" *ngIf="column != 'chevron' && column != 'hoverColumn' && column != 'filters' && column != 'handle' && column != 'selection'">
                         <th mat-header-cell *matHeaderCellDef>
-                            <div class="column-header-content" [style.justify-content]="_filtersActive ? 'start' : 'start'">
+                            <div class="column-header-content" >
                                 <div class="column-header-text" (click)="__onSortChange__(i)">
-                                    <p [style.margin]="_filtersActive ? '1em 0' : '0'" [innerHTML]="headerCellDefinitions[i]"></p>
+                                    <p [innerHTML]="headerCellDefinitions[i]+(_filtersActive && !notFilteredColumns.includes(i) ? ' :':'')"></p>
+                                    <!-- [style.margin]="_filtersActive ? '1em 0' : '0'"  -->
                                     <mat-icon *ngIf="_getSortIndex(i) >= 0">{{ _activeSorts[_getSortIndex(i)].value == 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
                                 </div>
 
@@ -106,7 +107,7 @@
                                             type="text"
                                             matInput
                                             #trigger="matAutocompleteTrigger"
-                                            (ngModelChange)="__onFilterChange__($event, column, i)" 
+                                            (ngModelChange)="__onFilterChange__(''+$event, column, i)" 
                                             [ngModel]="lastFilterValue"
                                             [matAutocomplete]="auto"
                                         >
@@ -126,7 +127,7 @@
                                         <input
                                             type="text"
                                             matInput
-                                            (ngModelChange)="__onFilterChange__($event, column, i)" 
+                                            (ngModelChange)="__onFilterChange__(''+$event, column, i)" 
                                             [ngModel]="lastFilterValue"
                                         >
                                     </ng-template>

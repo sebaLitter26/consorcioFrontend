@@ -729,7 +729,6 @@ export class DynamicTableComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     __onFilterChange__($event: any, column: string, index: number): void {
         let currentIndex: number = this._activeFilters.findIndex(activeFilter => activeFilter.filter == column);
-
         // Guardo / actualizo el filtro actual
         if (currentIndex < 0) {
             if ($event) {
@@ -882,8 +881,6 @@ export class DynamicTableComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     private __applyFilterSort__(): void {
         this._filteredOrderedData = [...this.data];
-        console.log(this._filteredOrderedData);
-        
 
         this.__applyFilters__();
         this.__applySort__();
@@ -893,6 +890,9 @@ export class DynamicTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.paginator) {
             this.dataSource.paginator = this.paginator;
         }
+        setTimeout(() => {
+            this.__loadCustomCellComponents__();
+        }, 100)
 
         this.dataFilterEvent.emit(this._filteredOrderedData);
     }
@@ -942,6 +942,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     private __loadCustomCellComponents__(): void {
         if (this.dataSource) {
+            
             // Obtiene el índice de la fila actual, dependiendo del paginado actual de la tabla
             const getRowIndex: () => number = () => {
                 return this.dataSource.paginator ? (this.pageSize * this.dataSource.paginator.pageIndex) : 0;
@@ -975,11 +976,12 @@ export class DynamicTableComponent implements OnInit, AfterViewInit, OnDestroy {
             let _startIndex: number = 0;
 
             if (this._customCellDirectiveQueryList) {
+                
                 this._customCellDirectiveQueryList.forEach((item: CustomCellDirective) => {
                     // Flag que indica si se encontró un componente custom para la columna actual
                     let found: boolean = false;
- 
-                    while (!found) {
+                    
+                    while (!found && columnIndex< 50) {
                         if (this.customColumnComponents[columnIndex]) {
                             const columnComponent = this.customColumnComponents[columnIndex];
 
@@ -1006,6 +1008,7 @@ export class DynamicTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     // Al terminar de recorrer la página actual, se vuelve a empezar y se busca el siguiente componente custom
                     if (rowIndex == maxIndex) {
+                        
                         rowIndex = getRowIndex();
                         _startIndex++;
                     }

@@ -90,10 +90,9 @@ export class CoolFileInputComponent implements OnInit {
     removeFile(index: number): void {
         if(!this.files[index].cloudinary) return;
         this.uploadService.deleteFile(this.files[index].cloudinary!).subscribe(elem=>{
-            if(elem.result=="ok"){
-                this.files.splice(index, 1);
-                this.finalizaCarga.emit(this.files);
-            }else{
+            this.files.splice(index, 1);
+            this.finalizaCarga.emit(this.files);
+            if(elem.result!="ok"){
                 this.snackBarService.open(`${elem.result}.`, "Aceptar", 5000, "error-snackbar");
             }
             

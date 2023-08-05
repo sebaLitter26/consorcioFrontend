@@ -26,26 +26,23 @@ export class PluImageComponent implements CustomCellComponent, OnInit {
     ) {}
 
     ngOnInit(): void {
-        if (this.data) {
-            if (!this.componentData?.propertyPath) {
-                return;
-            }
+        if (!this.data || !this.componentData?.propertyPath)  return;
 
-            let cloudinary_source: Cloudinary[] = [];
+        let cloudinary_source: Cloudinary[] = [];
 
-            this.data[this.componentData?.propertyPath!].forEach((elem: string)=>{
-                cloudinary_source.push( JSON.parse(elem));
-                
-            })
+        this.data[this.componentData?.propertyPath!].forEach((elem: string)=>{
+            cloudinary_source.push( JSON.parse(elem));
             
-            this.images = cloudinary_source.map(elem=> elem.secure_url);
+        })
+        
+        this.images = cloudinary_source.map(elem=> elem.secure_url);
             
-        }
+        
     }
 
     openPluImage($event: MouseEvent): void {
         $event.stopPropagation();
-
+        if(this.images.length==0) return;
         this.matDialog.open(ImageDialogComponent, {
             data: this.images ,
             panelClass: "xs-padding-panel",

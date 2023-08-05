@@ -125,13 +125,13 @@ export class BuildingListComponent implements OnInit {
          * Función que maneja la recepción de data filtrada en la tabla.
          */
     handleFilteredData($event: any): void {
-        console.log($event);
+        /* console.log($event);
         setTimeout(() => {
             this.overlayService.hideLoadingOverlay();
             this.loading = false;
             this.buildingsUpdateSource.next(true);
             this.changeDetectorRef.detectChanges();
-          }, 100);
+          }, 100); */
         
     }
 
