@@ -65,6 +65,12 @@ const routes: Routes = [
                 outlet: "carga",
                 data: { animation: 'isLeft' } 
             },
+
+            {
+                path: '',
+                redirectTo: '/consorcio/cargas/(carga:building1/buildings-list)',
+                pathMatch: 'full'
+            },
         ]
 
     },

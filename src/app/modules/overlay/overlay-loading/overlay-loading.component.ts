@@ -17,18 +17,18 @@ export class OverlayLoadingComponent implements OnInit, OnDestroy {
         private overlayService: OverlayService,
         private router: Router,
     ) {
-    this.router.events.subscribe(
-        event => {
+    this.router.events.subscribe({
+        next: (event) => {
             if (event instanceof ResolveStart) {
                 this.overlayService.displayLoadingOverlay();
             } else if (event instanceof ResolveEnd) {
                 this.overlayService.hideLoadingOverlay();
             }
         },
-        () => {
+        complete: () => {
             this.overlayService.hideLoadingOverlay();
         }
-    );
+    });
     }
 
     ngOnInit(): void {

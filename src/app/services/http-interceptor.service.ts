@@ -96,6 +96,8 @@ export class HttpInterceptorService implements HttpInterceptor {
                     return of(error);
                 }),
                 map((event: HttpEvent<any>) => {
+                    console.log(event);
+                    
                     if (event instanceof HttpResponse && event.status == 200) {
                         if ((<RRHHResponse>(event.body)).status.ok) {
                             event = event.clone({
