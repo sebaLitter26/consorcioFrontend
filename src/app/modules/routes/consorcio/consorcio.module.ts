@@ -35,8 +35,8 @@ const routes: Routes = [
         data: { animation: 'isLeft' } 
     }, 
     {
-        path: '',
-        redirectTo: '/cargas',
+        path: '**',
+        redirectTo: 'cargas',
         pathMatch: 'full'
     },
 ]

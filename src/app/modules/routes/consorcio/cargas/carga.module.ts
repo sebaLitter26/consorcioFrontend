@@ -19,8 +19,6 @@ import { ReportComponent } from './../reporte/report.component';
 import { EmpleadoInformationComponent } from './../reporte/empleado-detail/empleado-detail.component';
 import { CoolFileInputModule } from '../../../ui/cool-file-input/cool-file-input.module';
 
-import { BuildingComponent } from './building/building.component';
-import { AppartmentComponent } from './appartment/appartment.component';
 import { TenantComponent } from './tenant/tenant.component';
 import { OwnerComponent } from './owner/owner.component';
 
@@ -31,22 +29,15 @@ const routes: Routes = [
         //resolve: {empleadoDetail: LegajoDetailResolver},
         children: [
             {
-                path: 'building1',
-                loadChildren: () => import('./building1/buildings.module').then(m => m.BuildingsModule),
-                //resolve: {empleadoDetail: LegajoDetailResolver},
-                outlet: 'carga',
-                data: { animation: 'isRight' } 
-            },
-            {
                 path: 'building',
-                component: BuildingComponent,
+                loadChildren: () => import('./building/buildings.module').then(m => m.BuildingsModule),
                 //resolve: {empleadoDetail: LegajoDetailResolver},
                 outlet: 'carga',
                 data: { animation: 'isRight' } 
             },
             {
                 path: 'appartment',
-                component: AppartmentComponent,
+                loadChildren: () => import('./appartments/appartments.module').then(m => m.AppartmentsModule),
                 //resolve: {empleadoDetail: LegajoDetailResolver},
                 outlet: "carga",
                 data: { animation: 'isLeft' } 
@@ -67,8 +58,8 @@ const routes: Routes = [
             },
 
             {
-                path: '',
-                redirectTo: '/consorcio/cargas/(carga:building1/buildings-list)',
+                path: '*',
+                redirectTo: 'cargas/(carga:building)',
                 pathMatch: 'full'
             },
         ]
@@ -96,8 +87,6 @@ const routes: Routes = [
     declarations: [
         
         CargasComponent,
-        BuildingComponent,
-        AppartmentComponent,
         TenantComponent,
         OwnerComponent
         

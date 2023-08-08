@@ -1,0 +1,143 @@
+<header>
+    <h1>Departamentos</h1>
+
+    <form [formGroup]="sucursalFormGroup" class="filter-columns" (ngSubmit)="getCuposSucursal()">
+
+        <mat-form-field appearance="fill" color="warn">
+            <mat-label>Sucursal</mat-label>
+            <input type="text"
+                   placeholder="Ingrese Sucursal"
+                   aria-label="Sucursal"
+                   matInput
+                   formControlName="sucursalControl"
+                   [matAutocomplete]="auto">
+        </mat-form-field>
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let suc of sucursal$ | async" [value]="suc.id_suc">
+            {{suc.id_suc +' - '+suc.descripcion}}
+            </mat-option>
+        </mat-autocomplete>
+
+        <mat-form-field appearance="fill" color="warn">
+            <mat-label>Horas</mat-label>
+            <mat-select [formControl]="selectedHours" multiple>
+                <mat-option *ngFor="let topping of horasList" [value]="topping">{{topping}}</mat-option>
+              <!-- <mat-select-trigger>
+                {{selectedHours.value?.[0] || ''}}
+                <span *ngIf="(selectedHours.value?.length || 0) > 1" class="example-additional-selection">
+                  (+{{(selectedHours.value?.length || 0) - 1}} otro{{selectedHours.value!.length > 2 ? 's' : ''}})
+                </span>
+              </mat-select-trigger> -->
+              <!-- <mat-option *ngFor="let topping of horasList" [value]="topping">{{topping}}</mat-option> -->
+            </mat-select>
+        </mat-form-field>
+
+
+        <!-- <mat-form-field appearance="fill" color="primary" (click)="fillFilterValues('hora_desde')">
+            <mat-label>Hora Desde</mat-label>
+            <input type="text"
+                placeholder="Hora desde.."
+                [patterns]="patterns" 
+                mask="01:21"
+                aria-label="Number"
+                matInput
+                [dropSpecialCharacters]="false"
+                formControlName="horaDesdeControl">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" color="primary" (click)="fillFilterValues('hora_hasta')">
+            <mat-label>Hora Hasta</mat-label>
+            <input type="text"
+                placeholder="Hora hasta.."
+                [patterns]="patterns" 
+                mask="01:21"
+                aria-label="Number"
+                matInput
+                [dropSpecialCharacters]="false"
+                formControlName="horaHastaControl">
+        </mat-form-field> -->
+
+        <button
+            mat-flat-button
+            color="warn"
+            class="confirm-btn"
+            appRoundButton
+            type="submit"
+            [disabled]="sucursalFormGroup.invalid"
+        >
+            <mat-icon>warehouse</mat-icon>&nbsp;
+            Ver Cupos
+        </button>
+
+        <button
+            mat-flat-button
+            color="accent"
+            class="confirm-btn"
+            appRoundButton
+            type="button"
+            (click)="openConfirmationDialog()"
+            *ngIf="selectedCupos.length > 0 && !this.sucursalFormGroup.invalid"
+        >
+            <mat-icon>warehouse</mat-icon>&nbsp;
+            Guardar los cambios
+        </button>
+    </form>
+</header>
+
+<main>
+    <div class="table-container">
+        <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+        
+        <div *ngIf="cupos && cupos.length > 0; else tableLoader">
+            <mat-grid-list cols="{{CANT_DAYS_WEEK+1}}" rowHeight="30px" class="header-days">
+                <mat-grid-tile></mat-grid-tile>
+                <mat-grid-tile *ngFor="let day of week; let i = index;" class="header-day-content">
+                    <label title="Asignados: 0 &nbsp;&nbsp; Utilizados: 0 ">
+                        <!-- <mat-checkbox (click)="$event.stopPropagation()" (change)="updateDateColumns($event,day.compareDate)" [checked]="_allDayColumnSelected(day.compareDate)"  ></mat-checkbox> -->
+                        {{cupos[0][i].nomfecha}} &nbsp;&nbsp; {{day.formatDate}} <!-- *ngIf="availableColumRow(day.compareDate)" -->
+                    </label>
+                    
+                </mat-grid-tile>
+                
+            </mat-grid-list>
+            
+            <div *ngFor="let cupo of cupos; let c = index" >
+                <mat-grid-list cols="{{CANT_DAYS_WEEK+1}}" rowHeight="175px" >
+                    <mat-grid-tile class="firstCupo">
+                        <label>
+                            
+                            <!-- <mat-checkbox (click)="$event.stopPropagation()" (change)="updateCupoRows($event, c)" [checked]="_allCupoRowsSelected(c)"  ></mat-checkbox> -->
+                            {{cupos[c][0].hora}} hs 
+                            <!--  [disabled]="!cupo.enabled"   *ngIf="allowSelectAll" (change)="updateAllRows($event)"  [checked]="_allRowsSelected" [disabled]="allRowsAreDisabled()"*ngIf="cupo.enabled" -->
+                        </label>
+                    </mat-grid-tile>
+                    
+                    <mat-grid-tile *ngFor="let day of week; let d = index">
+                       
+                        <app-cupo-registry *ngIf="cupo[d]" class="cupos-block"
+                            [updateSource]="cupoUpdateEvent.asObservable()"
+                            [cupo] = cupo[d]
+                            [dia] = day
+                            (cupoSelectedEvent)="handleCupoSelected($event)"
+                        >
+                        </app-cupo-registry>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </div>
+            
+        </div>
+
+        <ng-template #tableLoader>
+            <app-table-loader *ngIf="loading; else tableNoResult"
+                [backgroundColor]="'var(--color-card-fade)'"
+                [borderRadius]="'4px'"
+                [columns]="8"
+                [rows]="1"
+            ></app-table-loader>
+
+            <ng-template #tableNoResult>
+                <p class="no-results">NO SE ENCONTRARON CUPOS EN ESTA SUCURSAL</p>
+            </ng-template>
+        </ng-template>
+    </div>
+</main>

@@ -26,8 +26,8 @@ const routes: Routes = [
         canActivate: [ AuthorizationGuard ],
     },
     {
-        path: '',
-        redirectTo: '/consorcio/cargas',
+        path: '**',
+        redirectTo: 'consorcio',
         pathMatch: 'full'
     },
 ];

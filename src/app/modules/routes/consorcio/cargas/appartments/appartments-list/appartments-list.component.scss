@@ -1,0 +1,99 @@
+@use "../../../../variables" as var;
+
+
+::ng-deep .mat-mdc-menu-panel{
+    //background-color: transparent
+   
+}
+
+header {
+    padding: var.$container-padding;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    
+
+    
+
+    .filter-columns {
+        display: flex;
+        flex-direction: row;
+        //align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+
+        
+
+        .mat-mdc-form-field:not(:last-child) {
+            margin-right: 1rem;
+            
+        }
+
+        .confirm-btn {
+            
+            margin: 15px;
+            /* height: 50px;
+            width: 120px; */
+        }
+    }
+}
+
+main {
+    padding: 10 var.$container-padding;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    
+
+    .table-container{
+        width: 100%;
+        padding-right: 10px;
+
+        .firstCupo{
+            font-size: 1.2vw;
+        }
+        
+
+        .cupos-block{
+            padding: 3px;
+            width: -webkit-fill-available;
+            height: -webkit-fill-available;
+        }
+
+        .no-results{
+            text-align: center;
+        }
+        
+    }
+
+    .header-days {
+        position: sticky !important;
+        position: -webkit-sticky;
+        top: 4em !important;
+        font-size: 1.2vw;
+        z-index: 1;
+        
+        .header-day-content {
+            //background-color: var(--color-primary);
+            //opacity: 0.8;
+
+            mat-checkbox{
+                margin: -4px;
+            }
+
+            div{
+                padding: 0 5px;
+            }
+
+        }
+    }
+
+    .mat-grid-list{
+        margin-bottom: 5px;
+    }
+}

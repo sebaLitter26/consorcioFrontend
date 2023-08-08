@@ -1,0 +1,45 @@
+<main *ngIf="cupo" class="cupo">
+    <mat-card [ngStyle]="{'background-color':getBackgroundColor()}">
+        <mat-card-subtitle >{{dia.formatDate}} <span>{{cupo.hora}} hs</span></mat-card-subtitle> <!-- style="background-color: rgb(194, 173, 131);" -->
+        
+        <mat-card-subtitle>Útilizados <span>{{cupo.cupoutilizado}}</span></mat-card-subtitle> <!-- style="background-color: rgb(210, 154, 56);" -->
+        <mat-card-subtitle>Máx actual <span>{{cupo.cupomaximo}}</span></mat-card-subtitle> <!-- style="background-color: rgb(185, 122, 6);" -->
+        <mat-card-content>
+        <div class="scroll-content">
+            <form [formGroup]="formRenditionListGroup" >
+                <mat-form-field appearance="fill" color="warn">
+                    <mat-label>Cupo maximo</mat-label>
+                    <input matInput autocomplete="off" type="number" placeholder="{{cupo.cupomaximonuevo}}" formControlName="cupoMaximoControl" min="0" (change)="updateCupoDay();">
+                </mat-form-field>
+            </form>
+          <!-- <span *ngIf="ocupacion">
+            Ocupación
+            <h6 *ngFor="let hour of ocupacion;" [ngStyle]="{'color':(hour.enabled) ? '' : 'var(--color-ok)'}">{{hour.hora_desde}} a {{hour.hora_hasta}} </h6>
+          </span> -->
+        </div>
+        <!--<p *ngIf="disponibilidad">{{disponibilidad.hora_desde}} a {{disponibilidad.hora_hasta}}</p> -->
+        </mat-card-content>
+        <!-- <mat-divider inset></mat-divider>
+        <mat-card-actions>
+            <mat-menu #appMenu="matMenu">
+                <ng-template matMenuContent>
+                  
+              
+                  <button mat-menu-item  (click)="updateCupoDay($event);" >{{currentBox.selected ? 'DE':''}}SELECCIONAR</button>
+                </ng-template>
+              </mat-menu>
+              
+              <button mat-icon-button [matMenuTriggerFor]="appMenu" >  <!-- [disabled]="disponibilidad" 
+                <mat-icon>more_horiz</mat-icon>
+              </button>
+             
+        </mat-card-actions>
+    -->
+        <!-- <mat-card-footer>
+          {{cupo.descripcion}}
+        </mat-card-footer> -->
+    </mat-card>
+     
+    
+
+</main>

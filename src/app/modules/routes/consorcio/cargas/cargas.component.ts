@@ -82,7 +82,7 @@ export class CargasComponent implements OnInit{
 
     ngOnInit(): void {
         /** Obtiene la lista de conteos precargada por el resolver */
-        this.loading = true;
+        
     
         /* this.psicotecnico = this.activatedRoute.snapshot.queryParams as Psico;
         if(!this.psicotecnico.legajo){
@@ -104,9 +104,9 @@ export class CargasComponent implements OnInit{
     changeTab(tab:number){
         this.tabIndex = tab; 
         
-        const arrDir = ['building1', 'appartment', 'owner', 'tenant'];
+        const arrDir = ['building', 'appartment', 'owner', 'tenant'];
         
-        this.router.navigate(['/consorcio/cargas',{ outlets: { carga: [`${arrDir[tab]}`] } }]);
+        this.router.navigate(['consorcio/cargas',{ outlets: { carga: [`${arrDir[tab]}`] } }]);
 
         /* const input_id = document.querySelector('input[id^="coolinput"]')?.id;
         if(input_id) document.getElementById(input_id)?.focus(); */

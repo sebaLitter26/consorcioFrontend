@@ -1,0 +1,49 @@
+<main>
+
+    <mat-card *ngIf="data">
+        
+        <mat-card-header >
+            <!-- <div class="profile-image-container">
+                <img mat-card-image [src]="data.foto" alt="{{ data.apellido_nombre }}">
+            </div>
+
+            <div class="empleado-detail">
+                
+                <mat-card-title class="title-space">Cargo</mat-card-title>
+                <mat-card-subtitle>Legajo: {{ data.cupomaximo }}</mat-card-subtitle>
+                <mat-card-subtitle>Funcion: {{ data.cupoutilizado }}</mat-card-subtitle>
+                <mat-card-subtitle>Gerencia: {{ data.gerencia }}</mat-card-subtitle>
+                <mat-card-subtitle>Sector: {{ data.sector }}</mat-card-subtitle>
+                <mat-card-subtitle>Sucursal: {{ data.subdivision }}</mat-card-subtitle>
+
+                
+                <mat-card-subtitle>Fecha de toma: {{data.fecha_toma | date}}</mat-card-subtitle>
+                <mat-card-subtitle>Resultado: {{ data.result}}</mat-card-subtitle>
+                <mat-card-subtitle>Puesto: {{data.puesto_postulado}}</mat-card-subtitle>
+                
+            </div>
+
+            <div class="empleado-detail">
+                <mat-card-title>Persona</mat-card-title>
+                <mat-card-subtitle>Nombre: {{data.apellido_nombre}}</mat-card-subtitle>
+                <mat-card-subtitle>Edad: {{ data.edad}} años</mat-card-subtitle>
+                <mat-card-subtitle>Documento: {{data.nrodoc}}</mat-card-subtitle>
+                <mat-card-subtitle>En la Empresa: {{data.antiguedad}}</mat-card-subtitle>
+                <mat-card-subtitle>Fecha de ingreso {{data.fec_ing | date}}</mat-card-subtitle>
+ 
+                <div class="action-btn">
+                    <button appRoundButton mat-flat-button color="accent" class="btn btn-info back" (click)="findLegajo()">
+                        <mat-icon>drive_file_rename_outline</mat-icon> Modificar Ficha
+                    </button>
+                </div>
+            </div>
+        --> 
+            
+        </mat-card-header>
+
+    </mat-card>
+
+</main>
+
+
+ 

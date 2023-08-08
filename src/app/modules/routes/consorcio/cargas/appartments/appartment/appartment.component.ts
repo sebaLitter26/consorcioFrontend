@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import { Appartment, Building, Owner, Tenant} from '../../../model';
-import { ResourceService } from '../../services/resource-control.service'
+import { Appartment, Building} from '../../../../model';
+import { ResourceService } from '../../../services/resource-control.service'
 import { Observable, Subject } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { OverlayService } from '../../../../overlay/services/overlay.service';
+import { OverlayService } from '../../../../../overlay/services/overlay.service';
 import { SnackBarService } from 'src/app/services/snackbar.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,9 +11,9 @@ import { ProfileService } from 'src/app/modules/main/services/profile.service';
 
 
 @Component({
-    selector: 'app-building',
-    templateUrl: './building.component.html',
-    styleUrls: ['./building.component.scss'],
+    selector: 'app-appartment',
+    templateUrl: './appartment.component.html',
+    styleUrls: ['./appartment.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         trigger(
@@ -39,7 +39,7 @@ import { ProfileService } from 'src/app/modules/main/services/profile.service';
         )
     ]
 })
-export class BuildingComponent implements OnInit{
+export class AppartmentComponent implements OnInit{
 
     building$: Observable<Building[]> = this.recursosService.getBuildings(); 
 
@@ -47,12 +47,11 @@ export class BuildingComponent implements OnInit{
     loading: boolean = false;
     isChangedAnimation: Subject<boolean> = new Subject<boolean>();
 
-    formBuilding = new FormGroup ({
+    formAppartment = new FormGroup ({
         /** `FormControl` con el tipo de legajo a filtrar. */
-        streetControl: new FormControl('', [Validators.required]),
-        numberControl: new FormControl('', [Validators.required]),
-        locationControl: new FormControl('', [Validators.required]),
-        imageControl: new FormControl(null, [Validators.required])
+        buildingControl: new FormControl('',[Validators.required]),
+        floorControl: new FormControl(1,[Validators.required, Validators.pattern("^[0-9]{1,2}$")]),
+        divisionControl: new FormControl('',[Validators.required, Validators.pattern("^[A-Ha-h]{1}$")]),
     });
 
     
@@ -70,8 +69,6 @@ export class BuildingComponent implements OnInit{
     ngOnInit(): void {
         /** Obtiene la lista de conteos precargada por el resolver */
         this.loading = true;
-        console.log('HOLAAA');
-        
     
         /* this.psicotecnico = this.activatedRoute.snapshot.queryParams as Psico;
         if(!this.psicotecnico.legajo){
@@ -83,23 +80,22 @@ export class BuildingComponent implements OnInit{
         
     }
 
-    createBuilding(): void{
-        const formBuilding = this.formBuilding.controls;
+    createAppartment(): void{
+        const formAppartment = this.formAppartment.controls;
 
         //if (!filters.legajo ) return;
         this.overlayService.displayLoadingOverlay();
         this.loading = true;
 
-        const building: any = {
-            street: formBuilding.streetControl.value,
-            number: formBuilding.numberControl.value,
-            location: formBuilding.locationControl.value,
-            photo: formBuilding.imageControl.value,
+        const appartment: any = {
+            building: formAppartment.buildingControl.value,
+            division: formAppartment.divisionControl.value,
+            floor: formAppartment.floorControl.value,
             status: 1
             //id: (this.tabIndex<1 && this.psicotecnico?.id) ? this.psicotecnico?.id : 0,
         }
 
-        this.recursosService.insertBuilding(building).subscribe((data: Building) => {
+        this.recursosService.insertAppartment(appartment).subscribe((data: Appartment) => {
             this.snackBarService.open(`Se registraron los cambios.`, "Aceptar", 6000, "success-snackbar");
             //this.empleado = data.Data;
             setTimeout(() =>{
@@ -112,7 +108,7 @@ export class BuildingComponent implements OnInit{
     }
 
     
-
+ /*
     modifyPsicotecnico() : void {
 
         
@@ -128,14 +124,7 @@ export class BuildingComponent implements OnInit{
         
     }
 
-
-    addFile(event:any){
-        console.log(event);
-        this.formBuilding.controls.imageControl.setValue(event);
-        
-    }
-
-    /* updateForm(){
+    updateForm(){
         const formList = this.formRenditionListGroup;
         
         if(this.tabIndex>0 || !this.empleado$){

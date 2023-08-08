@@ -106,11 +106,12 @@
                                         <input
                                             type="text"
                                             matInput
-                                            #trigger="matAutocompleteTrigger"
                                             (ngModelChange)="__onFilterChange__(''+$event, column, i)" 
                                             [ngModel]="lastFilterValue"
                                             [matAutocomplete]="auto"
+                                            autocomplete="off"
                                         >
+                                        <!-- #trigger="matAutocompleteTrigger" -->
                                         <mat-autocomplete
                                             #auto="matAutocomplete"
                                             (optionSelected)="onSelectionFilter(column)"
