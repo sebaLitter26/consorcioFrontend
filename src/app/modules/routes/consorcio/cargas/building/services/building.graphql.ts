@@ -22,28 +22,6 @@ query buildings{
 }
 `;
 
-export const login = gql`
-query login($email: String!, $password: String!) {
-  login(email: $email, password: $password) {
-    status
-    message
-    token
-  }
-}
-`;
-
-/* export const getUsers = gql`
-query {
-  users {
-    id
-    name
-    lastname
-    email
-    registerDate
-  }
-}
-`; */
-
 export const BUILDING = gql`
 query building($id: String!){
     building(id: $id) {

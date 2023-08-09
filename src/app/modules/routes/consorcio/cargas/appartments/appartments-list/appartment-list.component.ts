@@ -1,10 +1,9 @@
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { CupoSeleccionado, CupoSelection, CupoSucursal, Sucursal, UpdateResponse } from '..';
+import { Appartment, Building, BuildingListFilters, CupoSeleccionado, CupoSelection, CupoSucursal, Sucursal, UpdateResponse } from '..';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '../../../../../ui/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { SucursalService } from '../services/sucursal.service';
 import { OverlayService } from '../../../../../overlay/services/overlay.service';
 import { SnackBarService } from 'src/app/services/snackbar.service';
 import { finalize, take } from 'rxjs/operators';
@@ -12,7 +11,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ArrayUtils } from 'src/app/utils/array.utils';
-import { HttpErrorResponse } from '@angular/common/http';
+import { AppartmentService } from '../services/appartment.service';
 
 
 const day_format = (miliseconds: string) => [miliseconds.slice(0, 4), '-', miliseconds.slice(4,6), '-',miliseconds.slice(6,8)].join('');
@@ -49,9 +48,9 @@ class ColumnDay {
 }
 
 @Component({
-    selector: 'app-appartments-list',
-    templateUrl: './appartments-list.component.html',
-    styleUrls: ['./appartments-list.component.scss'],
+    selector: 'app-appartment-list',
+    templateUrl: './appartment-list.component.html',
+    styleUrls: ['./appartment-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppartmentsListComponent {
@@ -61,7 +60,7 @@ export class AppartmentsListComponent {
     cupoUpdateEvent: Subject<CupoSelection[]> = new Subject<CupoSelection[]>();
 
     /** Los andenes actuales. */
-    cupos: CupoSucursal[][] = [];
+    cupos: Appartment[][] = [];
 
     /* patterns = {
         '0': { pattern: new RegExp(/[0-2]/) },
@@ -69,10 +68,10 @@ export class AppartmentsListComponent {
         '2': { pattern: new RegExp(/[0-5]/) }
       }; */
 
-    sucursalFormGroup: FormGroup = new FormGroup({
+      buildingFormGroup: FormGroup = new FormGroup({
         /* horaHastaControl : [<string>'', Validators.required],
         horaDesdeControl : [<string>'', Validators.required], */
-        sucursalControl: new FormControl( '', Validators.required),
+        buildingControl: new FormControl( '', Validators.required),
     });
 
     cupos_error: number[] = [];
@@ -87,7 +86,7 @@ export class AppartmentsListComponent {
 
     horasList: number[] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
 
-    sucursal$ : Observable<Sucursal[]> | null = null;
+    building$ : Observable<Building[]> | null = null;
     
     /* options_time_desde: string[] = [];
     options_time_hasta: string[] = []; */
@@ -95,13 +94,13 @@ export class AppartmentsListComponent {
 
     constructor(
         private matDialog: MatDialog,
-        private sucursalService: SucursalService,
+        private appartmentService: AppartmentService,
         private overlayService: OverlayService,
         private snackBarService: SnackBarService,
         private changeDetectorRef: ChangeDetectorRef,
         //private fb: FormBuilder,
     ) {
-        this.sucursal$ = this.sucursalService.getSucursales();
+        this.building$ = this.appartmentService.getBuildings();
     }
 
 
@@ -125,30 +124,40 @@ export class AppartmentsListComponent {
     /**
      * Actualiza la tabla de CUPOS con los filtros indicados.
      */
-    getCuposSucursal(errors: number[] = []): void {
+    getAppartments(errors: number[] = []): void {
 
-        if(this.sucursalFormGroup.invalid || this.selectedHours.value?.length==0) return;
+        if(this.buildingFormGroup.invalid) return;
         //this.sucursalService.horaDesde = this.sucursalFormGroup.controls.horaDesdeControl.value ?? '';
         
-        const sucursal: CupoSeleccionado = {SUCURSAL: this.sucursalFormGroup.controls.sucursalControl.value!, TIPO: 'D', BANDAS: this.selectedHours.value ??[]}
+        const building: BuildingListFilters = {buildingId: this.buildingFormGroup.controls.buildingControl.value}
+
         this.overlayService.displayLoadingOverlay();
         this.loading = true;
-        this.sucursalService.getCuposSucursal(sucursal, errors).pipe(
+        this.appartmentService.getAppartments(building).pipe(
             take(1),
             finalize(() => {
                 this.overlayService.hideLoadingOverlay();
                 this.loading = false;
             })
             ).subscribe({
-            next: (result: any) => {
+            next: (result: Building) => {
                 this.loading = false;
-                if (!result || result.length == 0){
-                    this.snackBarService.open("No se encontraron cupos para la sucursal ingresada", "Aceptar", 6000, "warning-snackbar");
+                console.log(result);
+                
+                if (!result || result.appartments.length == 0){
+                    this.snackBarService.open("No se encontraron departamentos para el edificio seleccionado", "Aceptar", 6000, "warning-snackbar");
                     this.loading = false;
                 }
                     
                 else{
-                    this.cupos = result;
+                    //this.cupos = result;
+
+                    /* let arr = result.data.building.appartments;
+                arr.forEach((elem: Appartment)=> elem.forEach((cupo,i, arr2)=> {
+                    //const cupo1 = {...cupo, cupomaximonuevo : cupo.cupomaximo, error : errors.includes(cupo.idhorariosentregacuposfecha) }
+                    arr2[i]= cupo1;
+                }))
+                return arr; */
                     
                     this.week= [];
                     for (let i= 0; i < this.CANT_DAYS_WEEK; i++) {
@@ -241,7 +250,7 @@ export class AppartmentsListComponent {
             
             
             let selected: CupoSelection[] = [];
-            this.cupos.map((elem)=>selected.push(...elem.filter(elem=> elem.dia == day)));
+            //this.cupos.map((elem)=>selected.push(...elem.filter(elem=> elem.dia == day)));
             
             /* this.cupos.forEach((cupo:CupoSucursal) =>{
                 //const abailable = this.cupos?.disponibilidad[cupo.hora];
@@ -260,10 +269,10 @@ export class AppartmentsListComponent {
 
     updateCupoRows(event:MatCheckboxChange, pos: number) {
         
-        if(!event.checked)
+        /* if(!event.checked)
             this.selectedCupos = ArrayUtils.removeDuplicate(this.selectedCupos,'hora','dia', this.cupos[pos][0].hora)  //.filter(e=> e.hora != hora);
         else
-            this.selectedCupos.push(...this.cupos[pos]);
+            this.selectedCupos.push(...this.cupos[pos]); */
         this.cupoUpdateEvent.next(this.selectedCupos);
         this.changeDetectorRef.detectChanges();
     }
@@ -271,7 +280,7 @@ export class AppartmentsListComponent {
 
     
     openConfirmationDialog(){
-        if(this.sucursalFormGroup.invalid || this.selectedCupos.length < 1) return;
+        if(this.buildingFormGroup.invalid || this.selectedCupos.length < 1) return;
         let updatedCupos: CupoSelection[] = this.selectedCupos.filter(elem => elem.cupomaximonuevo !== elem.cupomaximo );
         updatedCupos = ArrayUtils.unique(updatedCupos,'idhorariosentregacuposfecha');
         
@@ -299,12 +308,11 @@ export class AppartmentsListComponent {
                 this.overlayService.displayLoadingOverlay();
                 this.loading = true;
                 //const fn =() => (this.disponibilizar) ?  this.sucursalService.updateCupoCalendar : this.sucursalService.reserveCupo
-                this.sucursalService.updateSucursalesCupos(updatedCupos)
+                /* this.appartmentService.updateSucursalesCupos(updatedCupos)
                 .pipe(take(1))
                 .subscribe({
                     next: (result: UpdateResponse) => {
-                        /* this.overlayService.hideLoadingOverlay();
-                        this.loading = false; */
+                        
                         let msg = 'No se registraron cambios para los cupos seleccionados';
                         if (result) {
                             this.getCuposSucursal(result.error);
@@ -317,7 +325,7 @@ export class AppartmentsListComponent {
                         this.overlayService.hideLoadingOverlay();
                         this.loading = false;
                     }
-                });
+                }); */
             }
         });
     }

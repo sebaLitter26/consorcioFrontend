@@ -1,8 +1,55 @@
-export interface FilterCupos {
-    fechadesde: string | null,
-    fechahasta: string | null,
-    sucursal: string | null,
+export interface BuildingListFilters {
+    buildingId: string | null,
 }
+
+export interface Building {
+    id: string
+    floors: number
+    letter: string 
+    appartments: Appartment[]
+    createdAt: string 
+    updatedAt: string
+    address: string
+    location: string
+    images: string[]
+    /*
+    id_estado: BuildingState,
+    estado: BuildingStateType, 
+    nombre: string,
+    hostname: string,
+    flujo: BuildingFlow[];
+    eventos: BuildingEvent[];
+    series: BuildingSerial[]; 
+    */
+}
+
+export interface Appartment {
+    id:      String 
+    createdAt:   String
+    updatedAt:   string
+    observation: string
+    floor:       number
+    letter:      string
+    building:    Building
+    owner:      any
+    tenant:      any
+}
+
+
+/** Payload para la creacion de un building */
+export interface CreateAppartmentPayload{
+    buildingId: string
+    observation: string
+    floor: number
+    letter: string
+}
+
+/** Payload para informar un building */
+export interface UpdateBuildingPayload extends CreateAppartmentPayload {
+    id: string;
+}
+
+//----------------------------------------------
 
 export interface CuposUpdatePayload {
     cuponuevo: number;

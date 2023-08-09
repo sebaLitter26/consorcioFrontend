@@ -3,12 +3,11 @@ import { forkJoin, Observable, of } from "rxjs";
 import { tap, take, switchMap, map } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
-import { FilterCupos, CuposUpdatePayload, CupoSeleccionado, CupoSucursal, CupoSelection, UpdateResponse, CuposHistorico, Sucursal } from "..";
-//import { GRAL, RESOURCE_CUPOS } from "src/app/modules/routes/model";
+import { CuposUpdatePayload, CupoSeleccionado, CupoSucursal, CupoSelection, UpdateResponse, CuposHistorico, Sucursal } from "..";
 import { SnackBarService } from "src/app/services/snackbar.service";
 import { ProfileService } from "src/app/modules/main/services/profile.service";
 
-const DEFAULT_CUPOS_FILTERS: FilterCupos = {
+const DEFAULT_CUPOS_FILTERS: any = {
     fechadesde: null,
     fechahasta: null,
     sucursal: null,
@@ -96,7 +95,7 @@ export class SucursalService {
         );
     }
 
-    getCuposHistorico(filters: FilterCupos): Observable<CuposHistorico[]> {
+    getCuposHistorico(filters: any): Observable<CuposHistorico[]> {
         return this.http.get<CuposHistorico[]>(`${environment.apiUrl}/GetCuposHistorico`+ this.convertJsonToUrlParams(filters));
     }
 }

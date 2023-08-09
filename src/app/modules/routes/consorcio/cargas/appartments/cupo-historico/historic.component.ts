@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Type} from '@angular/core';
-import { CuposHistorico, FilterCupos, Sucursal } from '..';
+import { CuposHistorico, Sucursal } from '..';
 import { SucursalService } from '../services/sucursal.service'
 import { Observable, Subject } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -138,7 +138,7 @@ export class CupoHistoricComponent{
     cuposHistoricos: CuposHistorico[] = [];
 
     constructor(
-        public recursosService: SucursalService,
+        private recursosService: SucursalService,
         private overlayService: OverlayService,
         //private fb: FormBuilder,
         private changeDetectorRef: ChangeDetectorRef,
@@ -152,7 +152,7 @@ export class CupoHistoricComponent{
     searchCupo() : void {
         const formList = this.formRenditionListGroup.controls;
 
-        const filters: FilterCupos = {
+        const filters: any = {
             fechadesde: this.datepipe.transform(new Date(formList.fechaDesdeControl.value!), 'yyyyMMdd')!, 
             fechahasta: this.datepipe.transform(new Date(formList.fechaHastaControl.value ?? this.today), 'yyyyMMdd')!,
             sucursal: formList.sucursalControl.value ?? ''

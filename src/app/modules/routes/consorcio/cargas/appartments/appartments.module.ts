@@ -4,15 +4,15 @@ import { RouterModule, Routes } from "@angular/router";
 import { SharedModule } from "../../../../shared.module";
 import { LoadersModule } from "../../../../ui/loaders/loaders.module";
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
-import { AppartmentsListComponent } from "./appartments-list/appartments-list.component";
-import { CupoComponent } from "./cupo-registry/cupo-registry.component";
-import { SucursalService } from "./services/sucursal.service";
+import { AppartmentsListComponent } from "./appartments-list/appartment-list.component";
 import { CupoHistoricComponent } from "./cupo-historico/historic.component";
 import { CupoInformationComponent } from "./cupo-historico/cupo-detail/cupo-detail.component";
 import { DynamicTableModule } from "../../../../ui/dynamic-table/dynamic-table.module";
 import { DatePipe } from '@angular/common';
 import { RoutesCommonModule } from "../../../../common/routes-common.module";
 import { AppartmentComponent } from "./appartment/appartment.component";
+import { AppartmentSharedService } from "./services/appartment-shared.service";
+import { AppartmentService } from "./services/appartment.service";
 
 const routes: Routes = [
 
@@ -22,12 +22,12 @@ const routes: Routes = [
         data: { animation: 'isLeft' } 
     },
     {
-        path: 'appartments-list',
+        path: 'appartment-list',
         component: AppartmentsListComponent,
     },
     {
         path: '',
-        redirectTo: 'appartments-list',
+        redirectTo: 'appartment-list',
         pathMatch: 'full',
     }
 ];
@@ -44,13 +44,14 @@ const routes: Routes = [
     ],
     declarations: [
         AppartmentsListComponent,
-        CupoComponent,
+        AppartmentComponent,
         CupoHistoricComponent,
         CupoInformationComponent,
         AppartmentComponent
     ],
     providers: [
-        SucursalService,
+        AppartmentService,
+        AppartmentSharedService,
         DatePipe
     ],
 })

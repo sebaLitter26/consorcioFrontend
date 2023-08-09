@@ -9,16 +9,16 @@ import { first, map, Observable, of, Subscription, takeWhile } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-    selector: 'app-cupo-registry',
-    templateUrl: './cupo-registry.component.html',
-    styleUrls: ['./cupo-registry.component.scss'],
+    selector: 'app-appartment-registry',
+    templateUrl: './appartment-registry.component.html',
+    styleUrls: ['./appartment-registry.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CupoComponent{
+export class AppartmentComponent{
 
     /* @Input() disponibilidad: Disponibilidad[] = [];
     @Input() ocupacion: Ocupacion[] = []; */
-    @Input() cupo?: CupoSucursal;
+    @Input() appartment?: CupoSucursal;
     @Input() dia: any;
     @Input() updateSource: Observable<CupoSelection[]> = of([]);
 
@@ -56,12 +56,12 @@ export class CupoComponent{
 
         //Validaciones especiales de acuerdo al perfil del usuario
         this.formRenditionListGroup.patchValue({
-            cupoMaximoControl: this.cupo?.cupomaximo
+            cupoMaximoControl: this.appartment?.cupomaximo
         });
         
         
-        if (this.cupo && this.dia && this.dia.compareDate) {
-            this.currentBox = {...this.cupo, selected: false   };  // hora: this.cupo.hora, dia: this.dia.compareDate,
+        if (this.appartment && this.dia && this.dia.compareDate) {
+            this.currentBox = {...this.appartment, selected: false   };  // hora: this.appartment.hora, dia: this.dia.compareDate,
           
             this.subscription$ = this.updateSource.subscribe((selectedCupos: CupoSelection[]) =>{
                 
@@ -112,12 +112,12 @@ export class CupoComponent{
 
     closecupo($event: MouseEvent): void{
         $event.stopPropagation();
-        this.cupoSelectedEvent.emit(this.currentBox);
+        this.appartmentSelectedEvent.emit(this.currentBox);
     }
 
     updateCupoDay($event?: MouseEvent){
         
-        if(this.cupo){
+        if(this.appartment){
             this.currentBox.selected = ($event) ? !this.currentBox.selected : true;
             let valor = this.formRenditionListGroup.controls.cupoMaximoControl.value;
             valor = (!valor || valor<0) ? 0 : valor;
@@ -132,7 +132,7 @@ export class CupoComponent{
                 this.currentBox.cupomaximonuevo = valor;
                 this.currentBox.error = false;
                 
-                this.cupoSelectedEvent.emit(this.currentBox);
+                this.appartmentSelectedEvent.emit(this.currentBox);
             }else
                 this.formRenditionListGroup.controls.cupoMaximoControl.setValue(this.currentBox.cupomaximonuevo);
             //this.changeDetectorRef.detectChanges();
@@ -146,7 +146,7 @@ export class CupoComponent{
             this.currentBox.selected = true;
             this.currentBox.error = false;
             
-            this.cupoSelectedEvent.emit(this.currentBox);
+            this.appartmentSelectedEvent.emit(this.currentBox);
         }
     }
 
